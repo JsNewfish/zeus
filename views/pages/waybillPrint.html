@@ -1,0 +1,52 @@
+<form class="w5c-form form-horizontal" w5c-form-validate="" name="validateForm">
+<div class="modal-header" >
+    <button type="button" class="close" aria-label="Close" ng-click="cancel()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h3 class="modal-title">选择打印机</h3>
+</div>
+<div class="modal-body">
+    <div class="bg-warning slogan slogan-help ">
+        <img style="margin-top: -6px;" src="images/pages/reminder.png" alt="" class="slogan-icon">
+
+        <div class="slogan-content">
+            <ul>
+                <li ng-show="!unmatch" style="margin: 0px;">提醒：请确认打印机是否存在，若打印机不存在，请重新选择打印机并勾选下面的复选框锁定。</li>
+                <li ng-show="unmatch" style="margin: 0px;">默认锁定的打印机<span class="text-warning">“{{defaultPrint}}”</span>
+                    已经不存在，可能是打印机名称变了，请重新选择打印机并勾选下面的复选框锁定。</li>
+            </ul>
+        </div>
+    </div>
+
+        <div class="form-group">
+            <label class="col-xs-3 control-label">选择打印机：</label>
+
+            <div class="controls col-xs-9">
+                <select class="form-control input-long static" ng-model="printer" required name="printerName">
+                    <option value="">--打印机列表--</option>
+                    <option ng-value="printer.name" ng-repeat="printer in printers">{{printer.name}}</option>
+                </select>
+            </div>
+        </div>
+    <div class="form-group">
+        <div class="col-sm-10">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" ng-model="lockPrint">以后打印<span class="text-warning">{{templateName}}</span>
+                    模板时，自动使用此打印机。
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="text-remind">
+        强烈建议勾选上面的选项，避免每次都弹出这个对话框。<br>
+        如果要更换打印机，请到“设置 → 快递单模板/发货单模板”中修改。
+    </div>
+</div>
+<div class="modal-footer">
+    <div class="text-center">
+        <button class="btn btn-base w-100" w5c-form-submit="save()">确定</button>
+        <button class="btn btn-default w-100" data-dismisss="modal" ng-click="cancel()">取消</button>
+    </div>
+</div>
+</form>

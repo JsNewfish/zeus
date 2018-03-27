@@ -1,0 +1,115 @@
+<div class="view view-list express-template print" ng-controller="destinationBigCtrl">
+    <div class="container-fluid">
+
+        <div class="title-bar">
+            <div class="title-bar-inner">
+                <h3 class="title">目的地大字</h3>
+            </div>
+        </div>
+        <div class="bg-warning slogan slogan-help ">
+            <img src="images/pages/reminder.png" alt="" class="slogan-icon">
+
+            <div class="slogan-content">
+                <h5>温馨提示：</h5>
+                <ul>
+                    <div>卖家编辑过的目的地以绿色显示；没有编辑过的目的地以正常颜色显示。</div>
+                </ul>
+            </div>
+        </div>
+        <div class="search-bar collapsed" dp-filter-bar>
+            <form class="form">
+                <div class="search-pane ">
+                    <div class="normal-search">
+                        <div class="form-group">
+                            <label class="control-label">快递公司：</label>
+
+                            <div class="controls">
+                                <select class="form-control input-medium" ng-model="express"
+                                        ng-options="x as x.name for x in expressCo">
+                                </select>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">收货省份：</label>
+
+                            <div class="controls">
+                                <select class="form-control input-medium" ng-model="areaId"
+                                        ng-options="x.id as x.name for x in province">
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="operations ">
+                    <div class="right">
+                        <button class="btn btn-warning btn-sm w-100" ng-click="search()">
+                            查询
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+
+        <div class="data-table-wrap">
+            <div class="tool-bar">
+                <div class="left">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-click="selectAll()" ng-model="checkAll">全选
+                        </label>
+
+                    </div>
+                </div>
+                <div class="right">
+                    <button class="btn btn-sm btn-warning" ng-click="editDestinationBig()">批量编辑地区目的地</button>
+                    <button class="btn btn-sm btn-warning" ng-click="revert()">重置为系统默认</button>
+                </div>
+            </div>
+            <table class="table data-table" ng-class="{'no-data':noData}" cg-busy="{promise:loading ,message:'加载中。。。'}">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>序号</th>
+                    <th>快递公司</th>
+                    <th>省市区</th>
+                    <th>目的地大字</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-show="!noData" ng-repeat="TerminiBigChar in TerminiBigChars"
+                    ng-class="{'selected': TerminiBigChar.selected}">
+                    <td><input type="checkbox" ng-model="TerminiBigChar.selected" ng-click="selectItem(TerminiBigChar)">
+                    </td>
+                    <td>{{$index+1}}</td>
+                    <td>{{expressName}}</td>
+                    <td>{{TerminiBigChar.areaString}}</td>
+                    <td ng-class="{'text-success': TerminiBigChar.companyId!=0}">{{TerminiBigChar.bigChar}}</td>
+                    <td>
+                        <ul class="operations">
+                            <li ng-click="editDestinationBig(TerminiBigChar)"><a>编辑</a> </li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr ng-show="noData">
+                    <td colspan="20">
+                        <div class="none-item-container">
+                            <div class="none-item">
+                                <div class="icon"></div>
+                                暂时没有数据哦~换个筛选条件试试吧~
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+
+
+    </div>
+</div>

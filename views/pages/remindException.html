@@ -1,0 +1,31 @@
+<div class="modal-header">
+    <button type="button" class="close" aria-label="Close" ng-click="cancel()">
+        <span aria-hidden="true">&times;</span></button>
+    <h3 class="modal-title">系统提醒</h3>
+</div>
+<div class="modal-body ">
+    <div class="show-table" style="overflow: auto">
+        <div class="confirm-icon">
+            <img ng-src="images/components/alert/alert-forbid.png">
+        </div>
+        <div class="confirm-content">
+            <h4 class="confirm-title">所选订单存在异常，是否要继续选中？</h4>
+            <div>
+                此订单存在以下异常状态，处理时需谨慎防止错发漏发？
+                <div class="text-warning">{{content}}</div>
+                <div class="checkbox">
+                    <label >
+                        <input type="checkbox" ng-model="closeTip" >
+                        我知道了，接下来不再对此异常状态进行确认提示
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <div class="text-center">
+        <a class="btn btn-base btn-sm" ng-click="save()" >确定</a>
+        <a class="btn btn-default btn-sm" ng-click="cancel()" >取消</a>
+    </div>
+</div>

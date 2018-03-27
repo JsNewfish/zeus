@@ -1,0 +1,84 @@
+<div class="modal-header">
+    <button type="button" class="close" aria-label="Close" ng-click="cancel()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title">选择被折分订单的打印状态</h4>
+</div>
+<div class="modal-body ">
+    <div style="padding-top: 9px;padding-left: 12px;">
+        <div>
+            您期望拆分后订单的打印状态是
+            <span class="text-warning">(若不选择默认为未打印)：</span>
+        </div>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" format-checkbox ng-model="isPrintExpress"> 已打印快递单 (选中此项，拆分后的订单将会被标记为已打印过快递单的状态)
+            </label>
+        </div>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" format-checkbox ng-model="isPrintDeliveryBill"> 已打印发货单 (选中此项，拆分后的订单将会被标记为已打印过发货单的状态)
+            </label>
+        </div>
+    </div>
+    <table class="table trade-table table-bordered" >
+        <tbody >
+        <tr >
+            <td width="130">
+                <a target="_blank" href="https://www.taobao.com/webww/ww.php?ver=3&touid={{trade.buyerNick}}&siteid=cntaobao&status=2&charset=utf-8">
+                    <img border="0" ng-src="https://amos.alicdn.com/realonline.aw?v=2&uid={{trade.buyerNick}}&site=cntaobao&s=2&charset=utf-8"/>
+                </a>
+                {{trade.buyerNick}}
+            </td>
+            <td>
+                <label>
+                    <span tooltip="该单地址发生了变更" class="text-danger" ng-show="package.normalPackage.addressChangeTids&&(package.normalPackage.addressChangeTids.indexOf(trade.tid)!=-1)">
+                        <span>{{trade.receiverName}}，{{trade.receiverMobile}}，</span>
+                        {{trade.receiverState}}{{trade.receiverCity}}
+                        {{trade.receiverDistrict}}{{trade.receiverTown}}
+                        {{trade.receiverAddress}}
+                    </span>
+                    <span ng-hide="package.normalPackage.addressChangeTids&&(package.normalPackage.addressChangeTids.indexOf(trade.tid)!=-1)">
+                        <span>{{trade.receiverName}}，{{trade.receiverMobile}}，</span>
+                        {{trade.receiverState}}{{trade.receiverCity}}
+                    {{trade.receiverDistrict}}{{trade.receiverTown}}
+                    {{trade.receiverAddress}}
+                </span>
+                </label>
+                <div class="font-size-sm ">
+                    <span class="text-primary" ng-show="trade.buyerMessage">
+                        <i class="glyphicon glyphicon-comment"></i>
+                        {{trade.buyerMessage}} |
+                    </span>
+                    <label ng-show="trade.sellerFlag!=undefined">
+                        <img ng-src="images/components/sellerFlagRED.png"
+                             ng-if="trade.sellerFlag==1">
+                        <img ng-src="images/components/sellerFlagYELLOW.png"
+                             ng-if="trade.sellerFlag==2">
+                        <img ng-src="images/components/sellerFlagGREEN.png"
+                             ng-if="trade.sellerFlag==3">
+                        <img ng-src="images/components/sellerFlagBLUE.png"
+                             ng-if="trade.sellerFlag==4">
+                        <img ng-src="images/components/sellerFlagPURPLE.png"
+                             ng-if="trade.sellerFlag==5">
+                    </label>
+                    <span class="text-warning">{{trade.sellerMemo}}</span>
+                    <span ng-show="trade.sysMemo"> | {{trade.sysMemo}}</span>
+                </div>
+            </td>
+            <td width="113px;" ng-show="trade.isPrintExpress">
+                <span class="text-warning">
+                    【已打快递单】
+                </span>
+            </td>
+        </tr>
+    </table>
+</div>
+</div>
+<div class="modal-footer">
+    <div class="text-center">
+        <button class="btn btn-base w-100" ng-click="back()">上一步</button>
+        <button class="btn btn-base w-100" ng-click="save()">确定</button>
+        <button class="btn btn-default w-100" data-dismisss="modal" ng-click="cancel()">取消</button>
+    </div>
+</div>

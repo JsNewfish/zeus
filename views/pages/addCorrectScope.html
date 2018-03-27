@@ -1,0 +1,82 @@
+<div class="modal-header">
+    <button type="button" class="close" aria-label="Close" ng-click="cancel()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h3 class="modal-title">添加纠错范围</h3>
+</div>
+<div class="modal-body">
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label class="col-xs-2 control-label">快递公司：</label>
+
+            <div class="col-xs-10">
+                <label class="form-text">
+                    {{express.name}}
+                </label>
+            </div>
+        </div>
+        <div ng-hide="edit">
+            <div class="form-group">
+                <label class="col-xs-2 control-label">派送省份：</label>
+
+                <div class="col-xs-3">
+
+                    <select class="form-control " ng-model="provinceId" ng-options="x.id as x.name for x in province">
+                        <option value="">--请选择--</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-2 control-label">派送城市：</label>
+
+                <div class="col-xs-3">
+                    <select class="form-control " ng-model="cityId" ng-options="x.id as x.name for x in city">
+                        <option value="">--全部--</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-2 control-label">派送县城：</label>
+
+                <div class="col-xs-3">
+                    <select class="form-control" ng-model="countryId" ng-options="x.id as x.name for x in country">
+                        <option value="">--全部--</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div ng-show="edit">
+            <div class="form-group">
+                <label class="col-xs-2 control-label">派送地区：</label>
+
+                <div class="col-xs-5 ">
+                    <label class="form-text">{{data.province}}</label>
+                    <label class="form-text">{{data.city}}</label>
+                    <label class="form-text">{{data.district}}</label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-2 control-label">派送状态：</label>
+
+            <div class="col-xs-10">
+                <div class="radio-inline">
+                    <label>
+                        <input type="radio" value="1" name="2" ng-model="isReach">可以派送
+                    </label>
+                </div>
+                <div class="radio-inline">
+                    <label>
+                        <input type="radio" value="0" name="2" ng-model="isReach">不能派送
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <div class="text-center">
+        <button class="btn btn-base w-100" ng-click="save()">保存</button>
+        <button class="btn btn-default w-100" data-dismisss="modal" ng-click="cancel()">取消</button>
+    </div>
+</div>

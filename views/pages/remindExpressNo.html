@@ -1,0 +1,45 @@
+<div class="modal-header">
+    <button type="button" class="close" aria-label="Close" ng-click="cancel()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h3 class="modal-title">请确认联想输入的运单号</h3>
+</div>
+<div class="modal-body">
+    <div class="bg-warning slogan slogan-help ">
+        <img style="margin-top: -6px;" src="images/pages/reminder.png" alt="" class="slogan-icon">
+
+        <div class="slogan-content">
+            <p style="margin: 0px;" >本次一共联想输入了{{length}}个<span class="text-warning">[{{expressName}}]</span>的运单号，请确认以下单号是否输入的正确：</p>
+        </div>
+    </div>
+    <div class="area-list">
+            <table class="table table-bordered">
+                <tbody ng-show="!one">
+                <tr>
+                    <td>第一个运单号</td>
+                    <td>
+                        {{firstSid}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>最后一个运单号</td>
+                    <td>
+                        {{lastSid}}
+                    </td>
+                </tr>
+                </tbody>
+                <tbody ng-show="one">
+                    <tr>
+                        <td>运单号</td>
+                        <td>{{firstSid}}</td>
+                    </tr>
+                </tbody>
+            </table>
+    </div>
+</div>
+<div class="modal-footer">
+    <div class="text-center">
+        <button ng-show="isConsign" class="btn btn-base w-100"  ng-click="save()">发货</button>
+        <button class="btn btn-default w-100" data-dismisss="modal" ng-click="cancel()">关闭</button>
+    </div>
+</div>

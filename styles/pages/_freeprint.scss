@@ -1,0 +1,70 @@
+.view-freeprint {
+  .form-group{
+    margin-bottom: 0;
+
+  }
+  .source-bar{
+    .control-label{
+      width: 136px;
+    }
+  }
+  .panel{
+    margin-bottom: 0;
+    .panel-heading {
+      padding: 0;
+    }
+    .panel-body{
+      padding: 10px;
+      .control-label{
+        width: 110px;
+      }
+    }
+  }
+
+  .tpl-bar {
+    background-color: #eaeaea;
+    padding-left: 10px;
+    line-height: 40px;
+    margin-bottom: 10px;
+  }
+  .operation {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .export-logos {
+    .import {
+      float: left;
+      width: 230px;
+      text-align: center;
+      .logo {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        .text-logo {
+          width: 150px;
+          line-height: 65px;
+          color: #fff;
+          background-color: #107FE4;
+          display: inline-block;
+        }
+        .img-logo, .text-logo {
+          cursor: pointer;
+        }
+      }
+    }
+    .import:hover {
+      background-color: rgb(243, 243, 243);
+    }
+  }
+
+
+}
+
+//
+.view-addFreePrintTbTrade {
+  .tpl-bar {
+    background-color: #eaeaea;
+    padding-left: 10px;
+    line-height: 30px;
+    margin-bottom: 10px;
+  }
+}

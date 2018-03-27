@@ -1,0 +1,53 @@
+<div class="modal-header" >
+    <button type="button" class="close" aria-label="Close" ng-click="cancel()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h3 class="modal-title">系统提供的快递单图片</h3>
+</div>
+<div class="modal-body table" cg-busy="{promise:loading,message:'数据加载中。。。'}">
+    <div class="form-horizontal" >
+        <div class="bg-warning slogan slogan-help ">
+            <div class="slogan-content">
+                <ul>
+                    <li style="margin: 0;">提醒：若此处没有你所使用的快递面单请点此联系我们客服添加
+                        <a target="_blank" class="wangwang" style="display: inline-block;margin-top: 9px;" href="https://amos.alicdn.com/getcid.aw?v=2&amp;uid=%E5%85%A8%E8%83%BD%E6%8E%8C%E6%9F%9C%E6%9C%8D%E5%8A%A1%E4%B8%AD%E5%BF%83&#10;&amp;site=cntaobao&amp;s=1&amp;groupid=0&amp;charset=utf-8"><img border="0" src="https://amos.alicdn.com/realonline.aw?v=2&amp;uid=%E5%85%A8%E8%83%BD%E6%8E%8C%E6%9F%9C%E6%9C%8D%E5%8A%A1%E4%B8%AD%E5%BF%83&#10;&amp;site=cntaobao&amp;s=1&amp;charset=utf-8" alt="点这里给我发消息"></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="search-bar" style="padding-top:5px;">
+            <div class="form-group">
+                <label class="col-xs-2 control-label" style="width: 97px;">
+                    快递公司：
+                </label>
+                <div class="col-xs-10">
+                    <select name="expressCompany" class="form-control input-medium static" ng-model="expressId" ng-options="x.id as x.name for x in expressList">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="bgImg-list">
+            <ul>
+                <li ng-repeat="imgBlock in data" ng-click="save(imgBlock)">
+                    <div class="img"><img ng-src="{{imgBlock.bgImg}}"></div>
+                    <div class="img-title">
+                         模板名：<span>{{imgBlock.name}} </span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="none-item-container" ng-hide="data">
+            <div class="none-item">
+                <div class="icon"></div>
+                暂无相关模板背景图片哦~可联系在线客服添加~
+            </div>
+        </div>
+    </div>
+    <div class="text-center">
+        <div paging page="pageNo" page-size="pageSize" total="count"
+             paging-action="getBgImg(page,pageSize,total)" show-prev-next="true"
+             class="pagination">
+        </div>
+    </div>
+</div>
+

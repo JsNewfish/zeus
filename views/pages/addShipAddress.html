@@ -1,0 +1,127 @@
+<form class="form-horizontal w5c-form" role="form" w5c-form-validate="" name="validateForm" novalidate>
+    <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" ng-click="cancel()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h3 class="modal-title">
+           <span ng-show="edit">编辑</span><span ng-hide="edit">新增</span>发货地址
+        </h3>
+    </div>
+    <div class="modal-body" cg-busy="{promise:loading ,message:'数据加载中。。'}">
+
+        <div class="form-group">
+            <label class="col-xs-2 control-label"><span class="text-danger">*&nbsp</span>联系人：</label>
+
+            <div class="col-xs-10">
+                <input name="contactName" required ng-maxlength="8" type="text" class="form-control input-short"
+                       ng-model="address.contactName" placeholder="请输入名字">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-2 control-label"><span class="text-danger">*&nbsp</span>所在地区：</label>
+
+            <div class="col-xs-10">
+                <div class="static" style="vertical-align: top;">
+                    <select name="address" required class="form-control " ng-model="address.province"
+                            ng-options="x.name as x.name for x in province">
+                        <option value="">--请选择--</option>
+                    </select>
+                </div>
+                <div class="static" style="vertical-align: top;">
+                    <select name="city" required class="form-control " ng-model="address.city"
+                            ng-options="x.name as x.name for x in city">
+                        <option value="">--请选择--</option>
+                    </select>
+                </div>
+                <div class="static" style="vertical-align: top;">
+                    <select name="country" class="form-control " ng-model="address.country"
+                            ng-options="x.name as x.name for x in country">
+                        <option value="">--请选择--</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-2 control-label"><span class="text-danger">*&nbsp</span>街道地址：</label>
+
+            <div class="col-xs-9">
+
+                <input placeholder="请输入街道地址" type="text" name="addr" required ng-maxlength="50" class="form-control"
+                       ng-model="address.addr">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-2 control-label"><span class="text-danger">*&nbsp</span>邮编：</label>
+
+            <div class="col-xs-10">
+
+                <input placeholder="请输入邮政编码" type="text" name="zipCode" required ng-maxlength="6"
+                       class="form-control input-short"
+                       ng-model="address.zipCode">
+            </div>
+        </div>
+        <div class="form-group input-inline">
+            <label class="col-xs-2 control-label">联系电话：</label>
+
+            <div class="col-xs-10">
+                <div class="static" style="vertical-align: top;">
+                    <input type="text" name="phoneHead" ng-model="phoneHead" ng-maxlength="4" placeholder="区号"
+                           class=" form-control input-xshort">
+                </div>
+                <div class="static" style="vertical-align: top;">
+                    <input type="text" name="phoneBody" ng-model="phoneBody" ng-maxlength="12" placeholder="电话号"
+                           class=" form-control input-short">
+                </div>
+                <!--<div class="static" style="vertical-align: top;">
+                    <input type="text" name="phoneEnd" ng-model="phoneEnd" ng-maxlength="4" placeholder="分机号"
+                           class=" form-control input-short">
+                </div>-->
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-2 control-label">手机：</label>
+
+            <div class="col-xs-10">
+                <input type="text" placeholder="请输入手机号码" name="mobilePhone" ng-maxlength="11"
+                       class="form-control input-short"
+                       ng-model="address.mobilePhone">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-2 control-label">公司（店铺）名称：</label>
+
+            <div class="col-xs-5">
+                <input type="text" placeholder="请输入公司名称" name="sellerCompany" ng-maxlength="30" class="form-control"
+                       ng-model="address.sellerCompany">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-2 control-label">备注：</label>
+
+            <div class="col-xs-10">
+                <textarea name="memo" class="form-control input-xlong" placeholder="请输入备注" ng-maxlength="128" cols="50" rows="3"
+                          ng-model="address.memo"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-2 control-label">设为默认地址：</label>
+
+            <div class="col-xs-10">
+                <label class="radio-inline">
+                    <input type="radio" value="1" name="def" ng-model="address.getDef">是
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" value="0" name="def" ng-model="address.getDef">否
+                </label>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="modal-footer">
+        <div class="text-center">
+            <button class="btn btn-base w-100" w5c-form-submit="save()">保存</button>
+            <button class="btn btn-default w-100" data-dismisss="modal" ng-click="cancel()">取消</button>
+        </div>
+    </div>
+</form>

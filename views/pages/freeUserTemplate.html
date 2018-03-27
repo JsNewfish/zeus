@@ -1,0 +1,26 @@
+
+    <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" ng-click="cancel()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h3 class="modal-title">批量更换模板</h3>
+    </div>
+    <div class="modal-body">
+        <div class="fm">
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label col-xs-2">选择模板：</label>
+                    <div class="col-xs-10">
+                        <select class="form-control static" ng-model="template" ng-options="x as x.name for x in userTemplate">
+                            <option value="">-- 请选择--</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="text-center">
+            <button class="btn btn-base w-100" ng-click="save(template)">保存</button>
+        </div>
+    </div>

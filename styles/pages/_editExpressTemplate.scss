@@ -1,0 +1,301 @@
+.editExpressTemplate {
+  .entry-box {
+    position: absolute;
+    left: 893px;
+    top: 52px;
+    width: 270px;
+    z-index: 100;
+    .title {
+      background-color: #888888;
+      border: 2px solid #999999;
+      color: #FFFFFF;
+      text-align: center;
+      font-size: 14px;
+      height: 34px;
+      line-height: 30px;
+    }
+    .search-bar {
+      border-left: 2px solid #999999;
+      border-right: 2px solid #999999;
+      border-bottom: 2px solid #999999;
+      padding: 4px;
+      background-color: #eaeaea;
+      button {
+        margin-left: 2px;
+      }
+    }
+    .collapsed{
+      display: block;
+    }
+    .entry-list {
+      height: 498px;
+
+      border-left: 2px solid #999999;
+      border-right: 2px solid #999999;
+      border-bottom: 2px solid #999999;
+      overflow-y: auto;
+      background-color: #F5F5F5;
+      li {
+        height: 29px;
+        line-height: 26px;
+        padding-left: 6px;
+        font-size: 12px;
+        border: 1px solid #F5F5F5;
+      }
+      .division-line{
+        border-bottom: 1px #A5A4A4 solid;
+      }
+      .add {
+        padding-left: 6px;
+        display: none;
+      }
+      li:hover {
+        border: 1px solid #5690D2;
+        background-color: #E9EFF6;
+        .add {
+          display: inline;
+        }
+      }
+
+    }
+  }
+  .workspace {
+
+    position: relative;
+    .layout-toolbar {
+      -moz-user-select: none;
+      -webkit-user-select: none;
+      -ms-user-select: none;
+      -khtml-user-select: none;
+      user-select: none;
+      input {
+        color: #2B81EC;
+      }
+      .short-input{
+        width: 55px;
+      }
+      .input-group{
+        width: 131px;
+      }
+      .offset {
+        margin-left: 7px;
+        i {
+          cursor: pointer;
+        }
+      }
+    }
+    .templateWidth{
+      .w5c-error{
+        position: absolute;
+        top: 38px;
+        left: 0;
+        display: block;
+      }
+    }
+
+  }
+
+  .edit-btns {
+    padding: 0 10px;
+    padding-bottom: 8px;
+  }
+
+  .layout-toolbar {
+    padding: 5px 10px;
+    border-top:1px solid #ccc;
+  }
+  .designer-container {
+    position: relative;
+    .field {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 9;
+      width: 100%;
+      height: 100%;
+      .item-box {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: inline-block;
+        min-width: 50px;
+        min-height: 22px;
+        border-radius: 2px;
+        outline: 0;
+        .item-box-inner {
+          position: absolute;
+          top: 0;
+          left: 0;
+          z-index: 11;
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+          color: #000;
+          word-break: break-all;
+        }
+        i.close {
+          position: absolute;
+          top: -8px;
+          right: -8px;
+          z-index: 12;
+          display: none;
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          background: #ff7300;
+          font-size: 13px;
+          font-style: normal;
+          text-align: center;
+          line-height: 16px;
+          color: #fff;
+          opacity: 1;
+          cursor: pointer;
+        }
+        i.tip {
+          position: absolute;
+          z-index: 11;
+          display: none;
+          width: 7px;
+          height: 7px;
+          background: #0a7cca;
+          border-radius: 1px;
+        }
+        span.bg {
+          position: absolute;
+          top: 0;
+          left: 0;
+          z-index: 10;
+          box-sizing: border-box;
+          display: inline-block;
+          width: 100%;
+          height: 100%;
+          border: 1px solid #666;
+          border-radius: 2px;
+          background: #fff;
+          opacity: .9;
+        }
+
+      }
+      .shade {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: none;
+        width: 100%;
+        height: 100%;
+        background: #000;
+        z-index: 20;
+        opacity: 0.2;
+        filter: alpha(opacity=20);
+      }
+    }
+  }
+}
+
+.edit-bar {
+  position: absolute;
+  top: -50px;
+  left: 0;
+  z-index: 999;
+  display: none;
+  width: 320px;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, .18);
+  border-radius: 2px;
+  border: 1px solid #cdcdcd;
+  background: #fff;
+  background: linear-gradient(to bottom, #fff, #f2f2f2) #fff;
+  cursor: default;
+  .edit-bar-inner {
+    padding: 5px 10px 5px 5px;
+    font-size: 0;
+    font-weight: 400;
+    select {
+      margin: 0 2px;
+      display: inline-block;
+      height: 24px;
+      font-size: 12px;
+      vertical-align: top;
+    }
+    .edit-bar-checkbox, .edit-bar-radio {
+      position: relative;
+      margin: 0 2px;
+      display: inline-block;
+      vertical-align: top;
+      color: #666;
+      cursor: pointer;
+
+      .inner.ico.bold {
+        background-position: 0 0;
+      }
+      .inner.ico.italic {
+        background-position: -26px 0;
+      }
+      .inner.ico.underline {
+        background-position: -48px 0;
+      }
+      .inner.ico.left {
+        background-position: -72px 0;
+      }
+      .inner.ico.center {
+        background-position: -96px 0;
+      }
+      .inner.ico.right {
+        background-position: -120px 0;
+      }
+      .inner.ico {
+        width: 24px;
+        height: 24px;
+        border-width: 1px;
+        border-style: solid;
+        border-color: transparent;
+        border-radius: 2px;
+        background: url(../images/components/tool-bar-ico.png) no-repeat;
+        font-size: 12px;
+        text-align: center;
+        line-height: 12px;
+      }
+      .inner.ico.choose {
+        background-color: #ffe69f;
+        border-color: #dcac6c;
+      }
+      .inner {
+        display: inline-block;
+        padding: 5px;
+      }
+
+    }
+    .edit-bar-checkbox input[type=checkbox], .edit-bar-checkbox input[type=radio], .edit-bar-radio input[type=checkbox], .edit-bar-radio input[type=radio] {
+      position: absolute;
+      top: 1px;
+      opacity: 0;
+      filter: alpha(opacity=0);
+      margin: 0;
+      padding: 0;
+    }
+  }
+
+}
+
+.bgImg-list {
+  margin:10px 0;
+  li{
+    float: left;
+    padding: 3px;
+    font-size: 12px;
+    border:3px solid #ffffff;
+    .img{
+      img{
+        max-width: 250px;
+        min-height: 125px;
+      }
+    }
+    .img-title{
+      text-align: center;
+    }
+
+  }
+  li:hover{
+    border:3px solid #40A144;
+  }
+  overflow-y:auto;
+}

@@ -1,0 +1,189 @@
+<div class="view view-list print" ng-controller="waybillReportCtrl">
+    <div class="container-fluid" cg-busy="{promise:loading ,message:'加载数据中。。'}">
+        <div class="title-bar">
+            <div class="title-bar-inner">
+                <h3 class="title">电子面单记录
+                </h3>
+            </div>
+        </div>
+
+        <div class="search-bar " dp-filter-bar>
+            <form name="filterForm" novalidate class="w5c-form form" w5c-form-validate="validateOptions" >
+
+                <div class="search-pane clearfix">
+                    <div class="adv-search" id="collapseExample">
+                        <div class="form-group col-xs-4">
+                            <label class="control-label">电子面单号：</label>
+
+                            <div class="controls">
+                                <input type="text" class="form-control input-medium" ng-model="expressNo">
+                            </div>
+                        </div>
+                        <div class="form-group col-xs-4">
+                            <label class="control-label">订单编号：</label>
+
+                            <div class="controls">
+                                <input type="text" class="form-control input-medium" ng-model="tid">
+                            </div>
+                        </div>
+
+                        <div class="form-group col-xs-4">
+                            <label class="control-label">面单状态：</label>
+
+                            <div class="controls">
+                                <select class="form-control input-medium"
+                                        ng-model="isRecycle">
+                                    <option value="">-- 请选择--</option>
+                                    <option value="0">已使用</option>
+                                    <option value="1">已回收</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-xs-4">
+                            <div class="controls">
+                                <select class="form-control static " style="width: 130px;"
+                                        ng-model="recipientProvince"
+                                        ng-options="x.name as x.name for x in province">
+                                    <option value="">-- 收货地区省--</option>
+                                </select>
+                                <select class="form-control static input-medium"
+                                        ng-model="recipientCity"
+                                        ng-options="x.name as x.name for x in city">
+                                    <option value="">-- 收货地区市--</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-xs-4">
+                            <label class="control-label">物流公司：</label>
+
+                            <div class="controls">
+                                <select class="form-control input-medium"
+                                        ng-model="expressCode"
+                                        ng-options="x.code as x.name for x in expressCo">
+                                    <option value="">-- 请选择--</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!--<div class="form-group col-xs-4">
+                            <label class="control-label">去除重复运单号：<br>(仅下载有效)</label>
+
+                            <div class="controls">
+                                <div class="form-text">
+                                    <input type="checkbox" ng-model="deduplication" format-checkbox>
+                                </div>
+
+                            </div>
+                        </div>-->
+                        <div class="row" style="margin: 0px;">
+                            <div class="form-group col-xs-6 timePick" ng-class="{'has-error':filterForm.printExpressStartTime.$invalid||filterForm.printExpressEndTime.$invalid}">
+                                <label class="control-label">打印日期：</label>
+
+                                <div class="controls">
+                                    <input type="text" ng-model="startTime"
+                                           name="startTime" compare-type="datetime"
+                                           dp-datetimepicker="limitTime1"
+                                           dp-datepicker class="form-control static input-medium readonly" readonly
+                                           dp-valid-lower-than="{{printExpressEndTime|date:'yyyy-MM-dd HH:mm:ss'}}">
+                                    <span>~</span>
+                                    <input type="text" ng-model="endTime"
+                                           name="endTime" dp-datepicker dp-datetimepicker="limitTime2"
+                                           class="form-control static input-medium readonly" readonly>
+
+                                    <div class="error" ng-show="filterForm.printExpressStartTime.$invalid||filterForm.printExpressEndTime.$invalid">
+                                    <span class="help-block static"
+                                          ng-show="filterForm.printExpressStartTime.$error.dpValidLowerThan">开始时间必须小于结束时间</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="operations clearfix">
+                    <div class="right">
+                        <button class="btn btn-sm btn-warning w-100" w5c-form-submit="searchData()">筛选</button>
+                        <button class="btn btn-sm btn-warning w-100" w5c-form-submit="exportData()">导出</button>
+                        <button class="btn btn-sm btn-primary w-100" ng-click="reset()">重置</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+        <div class="data-table-wrap">
+            <table class="table data-table " ng-class="{'no-data':usedWaybillList.length==0}">
+                <thead>
+                <tr>
+                    <th width="160">
+                        打印日期
+                    </th>
+                    <th>
+                        订单编号
+                    </th>
+                    <th>
+                        物流公司
+                    </th>
+                    <th>
+                       电子面单号
+                    </th>
+                    <th>
+                        收货地址
+                    </th>
+                    <th>
+                        面单状态
+                    </th>
+                </tr>
+                </thead>
+                <tbody ng-repeat="usedWaybill in usedWaybillList" ng-show="usedWaybillList.length">
+                <tr class="triple-height" ng-class="{'selected':freePackage.selected}">
+                    <td>
+                        {{usedWaybill.createTime}}
+                    </td>
+                    <td>
+                        <span>
+                            <a target="_blank" ng-href="https://trade.taobao.com/trade/detail/trade_order_detail.htm?biz_order_id={{usedWaybill.tid}}">{{usedWaybill.tid}}</a>
+                        </span>
+                    </td>
+                    <td>
+                        {{usedWaybill.userExpressName}}
+                    </td>
+                    <td>
+                        {{usedWaybill.expressNo}}
+                    </td>
+                    <td>
+                        {{usedWaybill.recipientProvince}}{{usedWaybill.recipientCity}}{{usedWaybill.recipientDistrict}}
+                        {{usedWaybill.recipientDetail}}
+                    </td>
+                    <td>
+                        <span ng-show="usedWaybill.isRecycle" class="text-warning">已回收</span>
+                        <span ng-hide="usedWaybill.isRecycle">已使用</span>
+                    </td>
+                </tr>
+
+                </tbody>
+                <tbody ng-show="usedWaybillList.length==0">
+                <tr >
+                    <td colspan="20">
+                        <div class="none-item-container">
+                            <div class="none-item">
+                                <div class="icon"></div>
+                                暂时没有数据哦~换个筛选条件试试吧~
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="tool-bar-footer">
+                <div class="right">
+                    <div paging page="pageNo" page-size="pageSize" total="count"
+                         paging-action="searchData(page,pageSize)" show-prev-next="true"
+                         class="pagination">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,78 @@
+<div class="view view-list express-template print" ng-controller="invoiceTemplateCtrl">
+    <div class="container-fluid">
+
+        <div class="title-bar">
+            <div class="title-bar-inner">
+                <h3 class="title">发货单模板</h3>
+            </div>
+        </div>
+        <div class="bg-warning slogan slogan-help ">
+            <img src="images/pages/reminder.png" alt="" class="slogan-icon">
+
+            <div class="slogan-content">
+                <h5>温馨提示：</h5>
+                <ul>
+                    <div>请设置一个默认模板，在打印发货页面将自动采用您在这里设置的默认模板。</div>
+                </ul>
+            </div>
+        </div>
+        <div class="data-table-wrap">
+            <div class="tool-bar">
+                <div class="left">
+                    <a ng-href="#/print/editDeliveryTemplate" class="btn btn-sm btn-warning">
+                        新增发货单模板
+                    </a>
+                </div>
+            </div>
+            <table class="table data-table" ng-class="{'no-data':deliveryTemplateList.length==0}"
+                   cg-busy="{promise:loading ,message:'加载数据中。。'}">
+                <thead>
+                <tr>
+                    <th>排序</th>
+                    <th>模板名称</th>
+                    <th>尺寸</th>
+                    <th>整体偏移</th>
+                    <th>打印机</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="deliveryTemplate in deliveryTemplateList" ng-show="deliveryTemplateList.length">
+                    <td>{{$index+1}}</td>
+                    <td>{{deliveryTemplate.name}}</td>
+                    <td>{{deliveryTemplate.width}}*{{deliveryTemplate.height}}mm</td>
+                    <td>
+                        <div>横向：{{deliveryTemplate.calibrationX}}</div>
+                        <div>纵向：{{deliveryTemplate.calibrationY}}</div>
+                    </td>
+                    <td>{{deliveryTemplate.printerKey}}<a ng-show="deliveryTemplate.printerKey"
+                                                          ng-click="printerUnLock(deliveryTemplate)">【取消锁定】</a> <a
+                            ng-show="!deliveryTemplate.printerKey" ng-click="printerLock(deliveryTemplate)">【锁定打印机】</a>
+                    </td>
+                    <td>
+                        <ul class="operations">
+                            <li class="operation" ng-if="deliveryTemplate.isDefault"><a>默认模板</a> </li>
+                            <li class="operation" ng-if="!deliveryTemplate.isDefault" ng-click="setDefault(deliveryTemplate)"><a>设为默认</a> </li>
+                            <li class="operation" ng-click="preview(deliveryTemplate)"><a>预览</a></li>
+                            <li class="operation" ng-click="edit(deliveryTemplate)"><a>编辑</a></li>
+                            <li class="operation" ng-hide="deliveryTemplate.isDefault" ng-click="delete(deliveryTemplate)"><a>删除</a></li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr ng-show="deliveryTemplateList.length==0">
+                    <td colspan="20">
+                        <div class="none-item-container">
+                            <div class="none-item">
+                                <div class="icon"></div>
+                                暂时没有数据哦~~
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="deliveryTemplate"></div>
+    </div>
+</div>

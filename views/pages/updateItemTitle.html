@@ -1,0 +1,77 @@
+
+<form class="w5c-form" w5c-form-validate="" name="validateForm" novalidate>
+
+    <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" ng-click="cancel()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h3 class="modal-title">修改打印时宝贝简称</h3>
+    </div>
+    <div class="modal-body">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="control-label col-xs-2" style="width: 178px;">
+                    宝贝名称：
+                </label>
+                <div class="col-xs-8">
+                    <div class="form-text">
+                        <a target="_blank" ng-href="https://item.taobao.com/item.htm?id={{normalOrder.numIid}}">
+                            {{normalOrder.title}}
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-xs-2" style="width: 178px;">
+                    宝贝简称：
+                </label>
+                <div class="col-xs-8">
+                    <div class="form-text">
+                        {{itemTitleSort}}
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-xs-2" style="width: 178px;">
+                    修改本次打印显示简称：
+                </label>
+                <div class="col-xs-8">
+                    <textarea ng-maxlength="30" placeholder="最长不得超过30个字" name="abbrevName" class="form-control input-xlong" ng-model="normalOrder.abbrevName"
+                              cols="30" rows="5"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-xs-2" style="width: 178px;">
+                    将打印显示简称更新为此宝贝简称
+                </label>
+                <div class="col-xs-8">
+                    <label class="radio-inline">
+                        <input type="radio" name="syncItem" value="1" ng-model="isSyncItem"> 是
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="syncItem" value="0" ng-model="isSyncItem"> 否
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-xs-2" style="width: 178px;">
+                    将打印显示简称更新至所有未打印订单
+                </label>
+                <div class="col-xs-8">
+                    <label class="radio-inline">
+                        <input type="radio" name="isAllUpdate" value="1" ng-model="isAllUpdate"> 是
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="isAllUpdate" value="0" ng-model="isAllUpdate"> 否
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="text-center">
+            <button class="btn btn-base w-100" w5c-form-submit="save()">保存</button>
+            <button class="btn btn-default w-100" data-dismisss="modal" ng-click="cancel()">取消</button>
+        </div>
+    </div>
+</form>

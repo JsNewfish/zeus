@@ -1,0 +1,315 @@
+<div class="view view-list view-preparingBillDetail print" ng-controller="preparingBillDetailCtrl">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="head col-xs-12">
+                <div class="title-bar">
+                    <div class="title-bar-inner">
+                        <h3 class="title">备货单详情
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="body" cg-busy="{promise:loading ,message:'加载数据中。。'}">
+            <div class="preparing-time clearfix">
+                <span class="pull-left">
+                    付款时间/货到付款拍下时间：
+                    <span style="color: darkgrey;">{{preparingBillDto.payStartTime}} ~ {{preparingBillDto.payEndTime}}</span>
+                </span>
+                <span class="pull-right">
+                    生成时间：
+                    <span style="color: darkgrey;">{{preparingBillDto.createTime}}</span>
+                </span>
+            </div>
+            <div class="" style="border: 1px solid #ddd; margin-top: 10px;">
+                <form class="form-horizontal clearfix">
+                    <div style=" margin-bottom: 0px;" class="form-group">
+                        <label class="control-label col-xs-1">打印项：</label>
+                        <div class="controls col-xs-11">
+                            <div class="checkbox radio-inline" >
+                                <label>
+                                    <input type="checkbox" ng-click="update(preparingBillSetting)" format-checkbox ng-model="preparingBillSetting.isShowItemPic">图片
+                                </label>
+                            </div>
+                            <div class="checkbox radio-inline">
+                                <label>
+                                    <input type="checkbox" format-checkbox ng-model="preparingBillSetting.isShowItemNo">商家编码
+                                </label>
+                            </div>
+                            <div class="checkbox radio-inline">
+                                <label>
+                                    <input type="checkbox" format-checkbox ng-model="preparingBillSetting.isShowItemTitle">宝贝名称/简称
+                                </label>
+                            </div>
+                            <div class="checkbox radio-inline">
+                                <label>
+                                    <input type="checkbox" format-checkbox ng-model="preparingBillSetting.isShowItemStore">货位
+                                </label>
+                            </div>
+                            <div class="checkbox radio-inline">
+                                <label>
+                                    <input type="checkbox" format-checkbox ng-model="preparingBillSetting.isShowSkuNo">单品商家编码
+                                </label>
+                            </div>
+                            <div class="checkbox radio-inline">
+                                <label>
+                                    <input type="checkbox" format-checkbox ng-model="preparingBillSetting.isShowSkuName">单品名称
+                                </label>
+                            </div>
+                            <div class="checkbox radio-inline">
+                                <label>
+                                    <input type="checkbox" format-checkbox ng-model="preparingBillSetting.isShowSkuNum">单品销量
+                                </label>
+                            </div>
+                            <div class="checkbox radio-inline">
+                                <label>
+                                    <input type="checkbox" format-checkbox ng-model="preparingBillSetting.isShowSkuFee">单品销售额
+                                </label>
+                            </div>
+                            <div class="checkbox radio-inline">
+                                <label>
+                                    <input type="checkbox" format-checkbox ng-model="preparingBillSetting.isShowTotalNum">合计销量
+                                </label>
+                            </div>
+                            <div class="checkbox radio-inline">
+                                <label>
+                                    <input type="checkbox" format-checkbox ng-model="preparingBillSetting.isShowTotalFee ">合计销售额
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-xs-1">宝贝排序：</label>
+
+                        <div class="dropdown" style="display: inline-block;">
+                            <a  data-toggle="dropdown" aria-haspopup="true" class="btn-operation"
+                                aria-expanded="false">
+                                <span ng-if="preparingBillSetting.itemSequence==3">按总销量升序排列</span>
+                                <span ng-if="preparingBillSetting.itemSequence==0">按总销量降序排列</span>
+                                <span ng-if="preparingBillSetting.itemSequence==1">按商家编码升序排列</span>
+                                <span ng-if="preparingBillSetting.itemSequence==2">按商家编码降序排列</span>
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="dLabel">
+                                <li ng-click="switchTradeSort(3)">按总销量升序排列</li>
+                                <li ng-click="switchTradeSort(0)">按总销量降序排列</li>
+                                <li ng-click="switchTradeSort(1)">按商家编码升序排列</li>
+                                <li ng-click="switchTradeSort(2)">按商家编码降序排列</li>
+                            </ul>
+                        </div>
+                        &nbsp;&nbsp;&nbsp;
+                        <label class="control-label">单品排序：</label>
+                        <div class="dropdown" style="display: inline-block;">
+                            <a  data-toggle="dropdown" aria-haspopup="true" class="btn-operation"
+                                aria-expanded="false">
+                                <span ng-if="preparingBillSetting.skuSequence==0">按单品销量升序排列</span>
+                                <span ng-if="preparingBillSetting.skuSequence==3">按单品销量降序排列</span>
+                                <span ng-if="preparingBillSetting.skuSequence==1">按单品编码升序排列</span>
+                                <span ng-if="preparingBillSetting.skuSequence==2">按单品编码降序排列</span>
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="dLabel">
+                                <li ng-click="switchSkuSort(0)">按单品销量升序排列</li>
+                                <li ng-click="switchSkuSort(3)">按单品销量降序排列</li>
+                                <li ng-click="switchSkuSort(1)">按单品编码升序排列</li>
+                                <li ng-click="switchSkuSort(2)">按单品编码降序排列</li>
+                            </ul>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="data-table-wrap">
+                <style>
+                    .table{
+                        margin-bottom: 0;
+                        background-color: #fff;
+                        width: 100%;
+                        max-width: 100%;
+                        border-spacing: 0;
+                        border-collapse: collapse;
+                        display: table;
+                        border-color: grey;
+                        font-family: "Microsoft Yahei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+                        line-height: 1.42857;
+                        color: #666;
+                    }
+                    .table th{
+                        word-break: keep-all;
+                        white-space: nowrap;
+                        font-size: 11px;
+                    }
+                    .table thead > tr > th, .table tbody > tr > th, .table tfoot > tr > th, .table thead > tr > td, .table tbody > tr > td, .table tfoot > tr > td {
+                        border-color: #eee;
+                        padding: 10px;
+                    }
+                    .table > thead > tr > th {
+                        vertical-align: bottom;
+                        border-bottom: 1px solid #ddd;
+                    }
+                    .table td.middle {
+                        vertical-align: middle;
+                    }
+                    .table > thead > tr > th, .table > tbody > tr > td {
+                        line-height: 1.42857143;
+
+                    }
+                    .table> tbody + tbody {
+                          border: none;
+                      }
+                    .table .first-tr td{
+                        border-top:none;
+                    }
+                    .table td {
+                        text-align: center;
+                        border-top: 1px solid #ddd;
+                        font-size: 10px;
+                    }
+                    .handle{
+                        display: none;
+                    }
+                    .text-center{
+                        text-align: center;
+                        font-size: 13px;
+                    }
+                    .title{
+                        padding: 0;
+                    }
+                    .ng-hide{
+                        display: none;
+                    }
+                    .timeNow{
+                        float: right;
+                    }
+                    .table td.text-left,.table th.text-left{
+                        text-align: left;
+                    }
+                    a{
+                        text-decoration: none;
+                        color:#666;
+                    }
+                    .table .embed-table {
+                        background-color: inherit;
+                        -webkit-box-shadow: none;
+                        box-shadow: none;
+                    }
+
+                </style>
+                <div class="title text-center title-hide"><strong>备货单</strong><span class="timeNow">{{timeNow}}</span></div>
+                <table class="table data-table">
+                    <thead>
+
+                    <tr>
+                        <th style="width: 50px;">序号</th>
+                        <th style="width: 80px;" ng-if="preparingBillSetting.isShowItemPic">图片</th>
+                        <th  ng-if="preparingBillSetting.isShowItemNo">商家编码</th>
+                        <th style="max-width: 200px;" class="text-left" ng-if="preparingBillSetting.isShowItemTitle">宝贝名称/简称</th>
+                        <th style="width: 60px;" ng-if="preparingBillSetting.isShowItemStore">货位</th>
+                        <th style="padding: 0;">
+                            <table class="table embed-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 93px;" ng-if="preparingBillSetting.isShowSkuNo">单品商家编码</th>
+                                        <th style="width: 130px;" ng-if="preparingBillSetting.isShowSkuName">单品名称</th>
+                                        <th style="width: 65px;" ng-if="preparingBillSetting.isShowSkuNum">单品销量</th>
+                                        <th style="width: 76px;" ng-if="preparingBillSetting.isShowSkuFee">单品销售额</th>
+
+                                    </tr>
+                                </thead>
+                            </table>
+                        </th>
+                        <th style="width: 50px;" ng-if="preparingBillSetting.isShowTotalNum">合计销量</th>
+                        <th style="width: 50px;" ng-if="preparingBillSetting.isShowTotalFee">合计销售额</th>
+                        <th class="handle" style="width: 60px;">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody ng-show="itemList.length" ng-repeat="item in itemList">
+                    <tr>
+                        <td class="middle">{{$index+1}}</td>
+                        <td ng-if="preparingBillSetting.isShowItemPic" class="middle">
+                            <img ng-src="{{item.picPath}}_60x60.jpg">
+                        </td>
+                        <td class="middle" ng-if="preparingBillSetting.isShowItemNo">{{item.itemCode}}</td>
+                        <td class="middle text-left" ng-if="preparingBillSetting.isShowItemTitle">
+                            <a target="_blank" href="https://item.taobao.com/item.htm?id={{item.itemId}}">{{item.title}}</a>
+                        </td>
+                        <td class="middle" ng-if="preparingBillSetting.isShowItemStore">{{item.warehouse}}</td>
+                        <td style="padding: 0;" width="364px;">
+                            <table class="embed-table table">
+                                <tbody>
+                                    <tr ng-repeat="element in item.skuPreparingBillDtoList" ng-class="{'first-tr':$index==0}">
+                                        <td style="width: 93px;" ng-if="preparingBillSetting.isShowSkuNo">{{element.skuCode}}</td>
+                                        <td style="width: 130px;" ng-if="preparingBillSetting.isShowSkuName">{{element.skuPropertiesName}}</td>
+                                        <td style="width: 65px;" ng-if="preparingBillSetting.isShowSkuNum">{{element.skuTotalNum}}</td>
+                                        <td style="width: 76px;" ng-if="preparingBillSetting.isShowSkuFee">{{element.skuTotalPrice|centToDollar}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                        <td rowspan="{{item.skuPreparingBillDtoList.length}}" class="middle" ng-if="preparingBillSetting.isShowTotalNum">{{item.totalNum}}</td>
+                        <td rowspan="{{item.skuPreparingBillDtoList.length}}" class="middle" ng-if="preparingBillSetting.isShowTotalFee">{{item.totalPrice|centToDollar}}</td>
+                        <td rowspan="{{item.skuPreparingBillDtoList.length}}" class="middle handle" >
+                            <div class="operations">
+                                <a class="btn-operation" ng-click="deletes(item, $index)">隐藏</a>
+                            </div>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                    <tbody ng-show="itemList.length">
+                    <tr>
+                        <td>合计</td>
+                        <td ng-if="preparingBillSetting.isShowItemPic"></td>
+                        <td ng-if="preparingBillSetting.isShowItemNo"></td>
+                        <td ng-if="preparingBillSetting.isShowItemTitle"></td>
+                        <td ng-if="preparingBillSetting.isShowItemStore"></td>
+                        <td style="padding: 0;" >
+                            <table class="embed-table table" >
+                                <tbody >
+                                <tr >
+                                    <td style="width: 93px; border: none;" ng-if="preparingBillSetting.isShowSkuNo"></td>
+                                    <td style="width: 130px;border: none;" ng-if="preparingBillSetting.isShowSkuName"></td>
+                                    <td style="width: 65px; border: none;" ng-if="preparingBillSetting.isShowSkuNum">{{allNum}}</td>
+                                    <td style="width: 76px; border: none;" ng-if="preparingBillSetting.isShowSkuFee">{{allPrice|centToDollar}}</td>
+
+                                </tr>
+                                </tbody>
+                            </table>
+                        </td>
+
+                        <td ng-if="preparingBillSetting.isShowTotalNum">{{allNum}}</td>
+                        <td ng-if="preparingBillSetting.isShowTotalFee">{{allPrice|centToDollar}}</td>
+                        <td ng-if="preparingBillSetting.isShowSellerMemos"></td>
+                        <td class="handle"></td>
+                    </tr>
+                    </tbody>
+                    <tbody ng-show="!itemList.length">
+                    <tr>
+                        <td colspan="13">
+                            <div class="none-item-container">
+                                <div class="none-item">
+                                    <div class="icon"></div>
+                                    暂时没有数据哦~换个筛选条件试试吧~
+                                    <a href=""></a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="operation-bar operation-bar-bottom" style="text-align: center">
+                <div class="dropdown">
+                    <button type="button" data-toggle="dropdown" class="btn btn-warning">
+                        打印备货单
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li ng-click="previewPreparing(false)">打印备货单</li>
+                        <li ng-click="previewPreparing(true)">预览备货单</li>
+                    </ul>
+                    <button class="btn" ng-click="back()">返回</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

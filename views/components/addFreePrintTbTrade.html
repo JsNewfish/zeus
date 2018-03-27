@@ -1,0 +1,159 @@
+<div class="modal-header">
+    <button type="button" class="close" aria-label="Close" ng-click="cancel()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <label ng-if="data==2">查询淘宝集市/商城订单（如果输入多个订单编号，则将被合并为一条打印记录）</label>
+    <label ng-if="data==3">查询淘宝分销平台订单（如果输入多个分销流水号，则将被合并为一条打印记录）</label>
+</div>
+<div class="modal-body view-addFreePrintTbTrade print">
+    <div class="search">
+        <div class="form-horizontal clearfix">
+            <div class="form-group">
+                <label class="control-label col-xs-3" style="width: 160px;">
+                    <span ng-if="data==2">请输入淘宝订单编号：</span>
+                    <span ng-if="data==3">请输入分销流水号：</span>
+                </label>
+
+                <form class="w5c-form" w5c-form-validate="" name="validateForm" novalidate>
+                    <div class="controls col-xs-9" style="width: 430px;">
+                        <div class="pull-left">
+                            <input type="text" ng-model="tids" required name="tids"
+                                   class="input-medium form-control">
+                        </div>
+                        <div class="pull-left" style="padding-left: 5px;">
+                            <button class="btn btn-base btn-sm" w5c-form-submit="queryForm(tids)">查询</button>
+                            <button class="btn btn-base btn-sm" ng-click="importTaobaoTrade(tradeList)">插入</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div ng-if="data==2" cg-busy="{promise:loading,message:'查询中。。。'}" class="trade-info">
+        <div class="tpl-bar">
+            订单信息
+        </div>
+        <div class="">
+            <table ng-if="tradeList.length" class="table">
+                <tr ng-repeat="trade in tradeList">
+                    <td>订单编号：{{trade.tid}}</td>
+                    <td>拍下时间：{{trade.created}}</td>
+                    <td>付款时间：{{trade.payTime}}</td>
+                    <td>状态：{{trade.status|orderStatus}}</td>
+                </tr>
+            </table>
+            <div class="text-center" ng-if="tradeList.length==0">
+                <label>未查到相应的订单数据~~</label>
+            </div>
+        </div>
+    </div>
+    <div class="receipt-info">
+        <div class="tpl-bar">
+            收货信息
+        </div>
+        <div class="">
+            <table class="table" ng-show="tradeList.length!=0">
+                <tr ng-repeat="trade in tradeList">
+                    <td>
+                        <input type="radio" ng-value="trade" ng-model="$parent.mainTrade" name="tradeAddress">
+                        {{trade.receiverState}} {{trade.receiverCity}} {{trade.receiverDistrict}}
+                        {{trade.receiverAddress}}，
+                        {{trade.receiverZip}}， {{trade.receiverName}}，{{trade.buyerNick}}， {{trade.receiverMobile}}
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="shop-info">
+        <div class="tpl-bar">
+            商品信息
+        </div>
+        <div>
+
+            <table class="table" ng-if="tradeList.length">
+                <tbody ng-repeat="trade in tradeList">
+                <tr>
+                    <td style="width: 60%;">
+                        <table style="width:100%">
+                            <tbody>
+                            <tr ng-repeat="freeOrder in trade.freeOrderList">
+                                <td>
+                                    <div class="img"
+                                         style="margin-right: 5px; display: inline-block; float: left;">
+                                        <a href="https://item.taobao.com/item.htm?id={{freeOrder.numIid}}"
+                                           target="_blank">
+                                            <img style="float:left;" width="60" ng-src="{{freeOrder.picPath}}">
+                                        </a>
+                                    </div>
+                                    <div class="text" style="padding-left: 5px;">
+                                        <p>
+                                            <span ng-show="!freeOrder.abbrevName">{{freeOrder.title}}</span>
+                                            <span ng-show="freeOrder.abbrevName">{{freeOrder.abbrevName}}</span>
+                                        </p>
+
+                                        <p>{{freeOrder.skuPropertiesName}}
+                                            <span class="pull-right" title="单价 x 数量">
+                                                {{freeOrder.price}} x {{freeOrder.num}}
+                                            </span>
+                                        </p>
+                                        <p>
+                                            <span class="pull-right text-danger">
+                                                {{freeOrder.refundStatus|refundStatus}}
+                                            </span>
+                                        </p>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </td>
+                    <td rowspan="20" style="width: 40%; border-left: 1px solid #ddd;">
+                        <div>{{trade.payment|centToDollar}} =
+                            {{trade.totalPrice|centToDollar}} + <span
+                                    class="text-danger">{{trade.postFee|centToDollar}}</span>-
+                            {{-trade.totalAdjustFee|centToDollar}}
+                        </div>
+                        <div style="word-break: break-all;">买家留言：{{trade.buyerMessage}}</div>
+                        <div style="word-break: break-all;">卖家备注：
+                            <label>
+                                <img ng-src="images/components/sellerFlagRED.png"
+                                     ng-if="trade.sellerFlag==1">
+                                <img ng-src="images/components/sellerFlagYELLOW.png"
+                                     ng-if="trade.sellerFlag==2">
+                                <img ng-src="images/components/sellerFlagGREEN.png"
+                                     ng-if="trade.sellerFlag==3">
+                                <img ng-src="images/components/sellerFlagBLUE.png"
+                                     ng-if="trade.sellerFlag==4">
+                                <img ng-src="images/components/sellerFlagPURPLE.png"
+                                     ng-if="trade.sellerFlag==5">
+                            </label>
+                            {{trade.sellerMemo}}
+                        </div>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+    <div class="slogan slogan-help">
+        <img src="images/pages/reminder.png" alt="" class="slogan-icon"/>
+
+        <div class="slogan-content">
+            <h5>注意事项：</h5>
+            <ul >
+                <li>1、操作步骤：① 输入
+                    <span ng-if="data==2">订单编号</span>
+                    <span ng-if="data==3">分销流水号</span>
+                    ；② 点击“查询”按钮；③ 点击“插入”按钮;</li>
+                <li>2、如果输入了多笔订单(
+                    <span ng-if="data==2">订单编号</span>
+                    <span ng-if="data==3">分销流水号</span>
+                    之间以逗号分隔)，则这些订单将被合并成一条打印记录，需要选择其中的一条记录以确定最终的收货地址信息;</li>
+                <li>3、本插入功能仅仅是将订单插入到页面上，只有点击“打印”或“保存”后才会将订单信息保存到系统中;</li>
+            </ul>
+        </div>
+    </div>
+</div>

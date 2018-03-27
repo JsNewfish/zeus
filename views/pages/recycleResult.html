@@ -1,0 +1,72 @@
+<div class="modal-header">
+    <button type="button" class="close" aria-label="Close" ng-click="cancel()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h3 class="modal-title">电子面单号回收结果</h3>
+</div>
+<div class="modal-body">
+    <div class="bg-warning slogan slogan-help ">
+        <img style="margin-top: -6px;" src="images/pages/reminder.png" class="slogan-icon">
+
+        <div class="slogan-content">
+            <p style="margin: 0px;" >
+                您对<span class="text-warning">[{{totalNum}}]</span>笔订单电子面单号进行了回收，其中<span class="text-success">[{{successRecycleList.length}}]</span>笔回收成功，<span class="text-danger">[{{errorRecycleList.length}}]</span>笔回收失败.
+                <a data-target="#packList" data-toggle="collapse">
+                    显示详细
+                </a>
+            </p>
+        </div>
+    </div>
+    <div class="area-list collapse in" id="packList">
+        <table class="table " >
+            <thead>
+            <tr>
+                <th style="white-space: nowrap;">订单编号</th>
+                <th style="white-space: nowrap;">买家昵称</th>
+                <th style="white-space: nowrap;">快递公司</th>
+                <th style="white-space: nowrap;">回收结果</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="error in errorRecycleList">
+                <td style="width: 152px;word-break: break-all;">
+                    <div ng-repeat="tid in error.tids.split(',')">
+                        {{tid}}
+                    </div>
+
+                </td>
+                <td>
+                    <span ng-show="error.normalPackage.buyerNick">{{error.normalPackage.buyerNick}}</span>
+                    <span ng-show="error.freePackage.buyerNick">{{error.freePackage.buyerNick}}</span>
+                </td>
+                <td>
+                    {{error.userExpressName}}
+                </td>
+                <td>
+                    {{error.errorMsg|errorMsg}}
+                </td>
+            </tr>
+            <tr ng-repeat="success in successRecycleList">
+                <td style="white-space: nowrap;">
+                    {{success.tids}}
+                </td>
+                <td>
+                    <span ng-show="success.normalPackage.buyerNick">{{success.normalPackage.buyerNick}}</span>
+                    <span ng-show="success.freePackage.buyerNick">{{success.freePackage.buyerNick}}</span>
+                </td>
+                <td>
+                    {{success.userExpressName}}
+                </td>
+                <td>
+                    <i class="glyphicon glyphicon-ok"></i>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal-footer">
+    <div class="text-center">
+        <button class="btn btn-default w-100" data-dismisss="modal" ng-click="cancel()">关闭</button>
+    </div>
+</div>

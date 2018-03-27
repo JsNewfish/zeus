@@ -1,0 +1,170 @@
+<form class="w5c-form" w5c-form-validate="" novalidate name="addressForm">
+    <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" ng-click="cancel()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">合并订单选择新的收货地址</h4>
+    </div>
+    <div class="modal-body ">
+        <div class="bg-warning slogan slogan-help ">
+            <img style="margin-top: -6px;" src="images/pages/reminder.png" alt="" class="slogan-icon">
+
+            <div class="slogan-content">
+                <ul>
+                    <li style="margin: 0;">提醒：1、此操作会同时修改淘宝里订单的收货地址。</li>
+                    <li style="margin: 0;">2、存在部分发货订单时，地址以部分发货的为准。</li>
+                </ul>
+            </div>
+        </div>
+        <div style="padding-top: 9px;padding-left: 12px;">
+            <div>
+                您期望合并后订单的打印状态是
+                <span class="text-warning">(若不选择默认为未打印)：</span>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" format-checkbox ng-model="isPrintExpress"> 已打印快递单
+                    (选中此项，合并后的订单将会被标记为已打印过快递单的状态)
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" format-checkbox ng-model="isPrintDeliveryBill"> 已打印发货单
+                    (选中此项，合并后的订单将会被标记为已打印过发货单的状态)
+                </label>
+            </div>
+        </div>
+        <div class="tool-bar clearfix">
+            <div class="pull-left">
+
+            </div>
+            <div class="pull-right" ng-hide="existDelivered&&(!package.partDelivered)">
+                <a ng-show="!customAdd" ng-click="customAddress()">自定义收货地址</a>
+                <a ng-show="customAdd" ng-click="customAddress()">返回</a>
+            </div>
+        </div>
+        <table ng-show="!customAdd" class="table trade-table table-bordered"
+               cg-busy="{promise:loading ,message:'加载中。。。'}">
+            <tbody>
+            <tr ng-repeat="package in packages">
+
+                <td>
+                    <input ng-hide="existDelivered&&(!package.partDelivered)" type="radio"
+                           ng-model="$parent.mainPackage" ng-value="package" name="packages">
+                </td>
+
+                <td width="130">
+                    <a target="_blank"
+                       href="https://www.taobao.com/webww/ww.php?ver=3&touid={{package.normalPackage.buyerNick}}&siteid=cntaobao&status=2&charset=utf-8">
+                        <img border="0"
+                             ng-src="https://amos.alicdn.com/realonline.aw?v=2&uid={{package.normalPackage.buyerNick}}&site=cntaobao&s=2&charset=utf-8"/>
+                    </a>
+                    {{package.normalPackage.buyerNick}}
+                </td>
+
+                <td>
+                    <label>
+                        <span>{{package.normalPackage.receiverName}}，{{package.normalPackage.receiverMobile}}，</span>
+                        {{package.normalPackage.receiverState}}{{package.normalPackage.receiverCity}}
+                        {{package.normalPackage.receiverDistrict}}{{package.normalPackage.receiverTown}}
+                        {{package.normalPackage.receiverAddress}}
+                    </label>
+
+                    <div class="font-size-sm ">
+                    <span class="text-primary" ng-show="package.buyerMessages">
+                        <i class="glyphicon glyphicon-comment"></i> {{package.buyerMessages}} |</span>
+
+                        <label ng-show="package.sellerFlags!=undefined">
+                        <span ng-repeat="sellerFlag in package.sellerFlags.split('|') track by $index">
+                            <img ng-src="images/components/sellerFlagRED.png"
+                                 ng-if="sellerFlag.indexOf(1)!=-1">
+                            <img ng-src="images/components/sellerFlagYELLOW.png"
+                                 ng-if="sellerFlag.indexOf(2)!=-1">
+                            <img ng-src="images/components/sellerFlagGREEN.png"
+                                 ng-if="sellerFlag.indexOf(3)!=-1">
+                            <img ng-src="images/components/sellerFlagBLUE.png"
+                                 ng-if="sellerFlag.indexOf(4)!=-1">
+                            <img ng-src="images/components/sellerFlagPURPLE.png"
+                                 ng-if="sellerFlag.indexOf(5)!=-1">
+                        </span>
+                        </label>
+
+                        <span class="text-warning">{{package.sellerMemos}}</span>
+                        <span ng-show="package.sysMemos"> | {{package.sysMemos}}</span>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <div ng-show="customAdd" class="form-horizontal">
+
+            <div class="form-group">
+                <label class="col-xs-2 control-label">收货人姓名：</label>
+
+                <div class="col-xs-10">
+                    <input type="text" name="receiverName" required ng-maxlength="5"
+                           placeholder="请输入名字" class="form-control input-short" ng-model="receiverName">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-2 control-label">收货人手机：</label>
+
+                <div class="col-xs-10">
+                    <input type="number" name="receiverMobile" ng-maxlength="11" class="form-control input-short"
+                           placeholder="请输入手机号码" ng-model="receiverMobile">
+                </div>
+            </div>
+            <div class="form-group input-inline">
+                <label class="col-xs-2 control-label">收货人省市区：</label>
+
+                <div class="col-xs-10">
+                    <div class="static" style="vertical-align: top;">
+                        <select name="receiverState" required class="form-control " ng-model="receiverState"
+                                ng-options="x.name as x.name for x in provinceList">
+                            <option value="">--请选择--</option>
+                        </select>
+                    </div>
+                    <div class="static" style="vertical-align: top;">
+                        <select name="city" required class="form-control " ng-model="receiverCity"
+                                ng-options="x.name as x.name for x in cityList">
+                            <option value="">--请选择--</option>
+                        </select>
+                    </div>
+                    <div class="static" style="vertical-align: top;">
+                        <select name="country" required class="form-control " ng-model="receiverDistrict"
+                                ng-options="x.name as x.name for x in countryList">
+                            <option value="">--请选择--</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-2 control-label">收货人乡镇：</label>
+
+                <div class="col-xs-9">
+                    <input placeholder="请输入乡镇地址" name="receiverTown" ng-maxlength="10" type="text"
+                           class="form-control input-short"
+                           ng-model="receiverTown">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-2 control-label">收货人地址：</label>
+
+                <div class="col-xs-7">
+                    <input placeholder="请输入详细地址" type="text" name="receiverAddress" required ng-maxlength="50"
+                           class="form-control"
+                           ng-model="receiverAddress">
+                </div>
+            </div>
+
+        </div>
+    </div>
+    </div>
+    <div class="modal-footer">
+        <div class="text-center">
+            <button class="btn btn-base w-100" ng-click="back()">上一步</button>
+            <button ng-show="customAdd" class="btn btn-base w-100" w5c-form-submit="save()">确定</button>
+            <button ng-show="!customAdd" class="btn btn-base w-100" ng-click="save()">确定</button>
+            <button class="btn btn-default w-100" data-dismisss="modal" ng-click="cancel()">取消</button>
+        </div>
+    </div>
+</form>

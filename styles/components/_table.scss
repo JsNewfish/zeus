@@ -1,0 +1,56 @@
+.table {
+  tr.double-height {
+    td {
+      height: 60px;
+      vertical-align: middle;
+    }
+  }
+
+  tr.triple-height {
+    td {
+      height: 80px;
+      vertical-align: middle;
+    }
+  }
+
+  .tr.middle{
+    td{
+      vertical-align: middle;
+    }
+  }
+
+  td {
+    font-size: 13px;
+  }
+
+  td.middle {
+    vertical-align: middle;
+  }
+  .operations {
+    .btn-operation {
+
+    }
+    i {
+      font-style: normal;
+    }
+  }
+  .none-item-container {
+    text-align: center;
+    .none-item {
+      line-height: 50px;
+      color: #ddd;
+      font-size: 18px;
+      display: inline-block;
+      padding: 100px 0;
+    }
+    .icon {
+      height: 50px;
+      width: 50px;
+      background: url(../images/common/base.png) no-repeat -60px -60px;
+      position: absolute;
+      margin-left: -61px
+    }
+  }
+}
+
+

@@ -1,0 +1,36 @@
+.view-preparingBillDetail {
+  .preparing-time {
+    border: 1px solid #ddd;
+    margin-top: 2px;
+    line-height: 30px;
+    padding-left: 10px;
+    padding-right: 10px;
+    >.pull-left span, >.pull-right span{
+      color: #999;
+    }
+  }
+  .checkbox.radio-inline{
+    margin-left: 0px;
+  }
+  .handle{
+    display: table-cell;
+  }
+  .title-hide{
+    display: none;
+  }
+  .table{
+    font-size: 14px;
+  }
+  .table td{
+    text-align: left;
+    font-size: 13px;
+  }
+}
+.view-preparingBillForm{
+  .control-label{
+    width: 180px;
+  }
+  input.form-control{
+    width: 378px;
+  }
+}

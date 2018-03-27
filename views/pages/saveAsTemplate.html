@@ -1,0 +1,40 @@
+<form class="w5c-form" w5c-form-validate="" name="validateForm" novalidate>
+    <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" ng-click="cancel()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h3 class="modal-title">模板另存为</h3>
+    </div>
+    <div class="modal-body">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="control-label col-xs-3">
+                    新快递公司：
+                </label>
+
+                <div class="controls col-xs-9">
+                    <select name="expressCompany" required class="form-control input-medium static" ng-model="express" ng-options="x.id as x.name for x in data">
+                        <option value="">-- 请选择--</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-xs-3">
+                    新模板名称：
+                </label>
+
+                <div class="controls col-xs-9">
+                    <input type="text" name="templateName" class="form-control input-medium static" ng-maxlength="15" required ng-model="templateName">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+    <div class="modal-footer">
+        <div class="text-center">
+            <button class="btn btn-base w-100" w5c-form-submit="save()">保存</button>
+            <button class="btn btn-default w-100" data-dismisss="modal" ng-click="cancel()">取消</button>
+        </div>
+    </div>
+</form>

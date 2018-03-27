@@ -1,0 +1,579 @@
+/*
+{
+  "homePage": [
+    {
+      "key": "",
+      "title": "工作台",
+      "children": [
+        {
+          "param": {},
+          "key": "",
+          "title": "工作台",
+          "url": ""
+        }
+      ]
+    },
+    {
+      "key": "homePage",
+      "title": "帮助中心",
+      "children": [
+        {
+          "param": {},
+          "key": "helpCenter",
+          "title": "帮助中心",
+          "url": "#/homePage/helpCenter"
+        }
+      ]
+    }
+  ],
+  "concern": [
+    {
+      "key": "concern",
+      "title": "下单关怀",
+      "children": [
+        {
+          "param": {},
+          "key": "orderCreateInform",
+          "title": "下单关怀",
+          "url": "#/concern/orderCreateInform"
+        }
+      ]
+    },
+    {
+      "title": "订单催付",
+      "key": "concern",
+      "children": [
+        {
+          "param": {},
+          "key": "nonPaymentInform",
+          "title": "下单后催付",
+          "url": "#/concern/nonPaymentInform"
+        },
+        {
+          "param": {},
+          "key": "againNonPaymentInform",
+          "title": "关闭前催付",
+          "url": "#/concern/againNonPaymentInform"
+        },
+        {
+          "param": {},
+          "key": "jhsNonPaymentInform",
+          "title": "聚划算催付",
+          "url": "#/concern/jhsNonPaymentInform"
+        },
+        {
+          "param": {},
+          "key": "presellFrontNopaidInform",
+          "title": "预售催订金",
+          "url": "#/concern/presellFrontNopaidInform"
+        }
+      ]
+    },
+    {
+      "key": "concern",
+      "title": "付款关怀",
+      "children": [
+        {
+          "param": {},
+          "key": "paymentInform",
+          "title": "日常付款关怀",
+          "url": "#/concern/paymentInform"
+        },
+        {
+          "param": {},
+          "key": "presellFrontPaidInform",
+          "title": "预售付订金关怀",
+          "url": "#/concern/presellFrontPaidInform"
+        },
+        {
+          "param": {},
+          "key": "presellFinalPaidInform",
+          "title": "预售付尾款关怀",
+          "url": "#/concern/presellFinalPaidInform"
+        }
+      ]
+    },
+    {
+      "key": "concern",
+      "title": "发货通知",
+      "children": [
+        {
+          "param": {},
+          "key": "deliverGoodsInform",
+          "title": "即时发货提醒",
+          "url": "#/concern/deliverGoodsInform"
+        },
+        {
+          "param": {},
+          "key": "delayedInform",
+          "title": "延时发货关怀",
+          "url": "#/concern/delayedInform"
+        }
+      ]
+    },
+    {
+      "key": "concern",
+      "title": "物流提醒",
+      "children": [
+        {
+          "param": {},
+          "key": "sendCity",
+          "title": "同城到达提醒",
+          "url": "#/concern/sendCity"
+        },
+        {
+          "param": {},
+          "key": "signInInform",
+          "title": "包裹签收提醒",
+          "url": "#/concern/signInInform"
+        },
+        {
+          "param": {},
+          "key": "deliveryInform",
+          "title": "派件提醒",
+          "url": "#/concern/deliveryInform"
+        }
+      ]
+    },
+    {
+      "key": "concern",
+      "title": "退款关怀",
+      "children": [
+        {
+          "param": {},
+          "key": "waitSellerAgree",
+          "title": "买家申请退款",
+          "url": "#/concern/waitSellerAgree"
+        },
+        {
+          "param": {},
+          "key": "refundSuccess",
+          "title": "退款成功",
+          "url": "#/concern/refundSuccess"
+        },
+        {
+          "param": {},
+          "key": "waitBuyerReturnGoods",
+          "title": "等待买家退货",
+          "url": "#/concern/waitBuyerReturnGoods"
+        },
+        {
+          "param": {},
+          "key": "sellerRefuseBuyer",
+          "title": "卖家拒绝退款",
+          "url": "#/concern/sellerRefuseBuyer"
+        }
+      ]
+    },
+    {
+      "key": "concern",
+      "title": "回款答谢",
+      "children": [
+        {
+          "param": {},
+          "key": "affirmGoodsInform",
+          "title": "回款答谢",
+          "url": "#/concern/affirmGoodsInform"
+        }
+      ]
+    },
+    {
+      "key": "concern",
+      "title": "手工订单提醒",
+      "children": [
+        {
+          "param": {},
+          "key": "manualInform",
+          "title": "手工订单提醒",
+          "url": "#/concern/manualInform"
+        }
+      ]
+    }
+  ],
+  "marketing": [
+    {
+      "key": "marketing",
+      "title": "批量群发短信",
+      "children": [
+        {
+          "param": {},
+          "key": "marketingRecord",
+          "title": "批量群发短信",
+          "url": "#/marketing/marketingRecord"
+        }
+      ]
+    },
+    {
+      "key": "marketing",
+      "title": "指定号码发送",
+      "children": [
+        {
+          "param": {},
+          "key": "uploadGroup",
+          "title": "指定号码发送",
+          "url": "#/marketing/uploadGroup"
+        }
+      ]
+    }
+  ],
+  "tool": [
+    {
+      "key": "tool",
+      "title": "店铺促销",
+      "children": [
+        {
+          "param": {},
+          "key": "limitDiscount",
+          "title": "限时折扣",
+          "url": "#/tool/limitDiscount"
+        },
+        {
+          "param": {},
+          "key": "shopLimitDiscount",
+          "title": "全店限时折扣",
+          "url": "#/tool/shopLimitDiscount"
+        },
+        {
+          "param": {},
+          "key": "packageMail",
+          "title": "满送/包邮",
+          "url": "#/tool/packageMail"
+        },
+        {
+          "param": {},
+          "key": "shopPackageMail",
+          "title": "全店满送/包邮",
+          "url": "#/tool/shopPackageMail"
+        }
+      ]
+    },
+    {
+      "key": "tool",
+      "title": "优惠券营销",
+      "children": [
+        {
+          "param": {},
+          "key": "couponList",
+          "title": "优惠券列表",
+          "url": "#/tool/couponList"
+        },
+        {
+          "param": {},
+          "key": "sendCouponRecord",
+          "title": "发送记录",
+          "url": "#/tool/sendCouponRecord"
+        },
+        {
+          "param": {},
+          "key": "sendCoupon",
+          "title": "发送优惠券",
+          "url": "#/tool/sendCoupon"
+        }
+      ]
+    }
+  ],
+  "recordsCenter": [
+    {
+      "key": "recordsCenter",
+      "title": "会员数据",
+      "children": [
+        {
+          "param": {},
+          "key": "membersList",
+          "title": "会员列表",
+          "url": "#/recordsCenter/membersList"
+        },
+        {
+          "param": {},
+          "key": "statisticsData",
+          "title": "资料补充",
+          "url": "#/recordsCenter/statisticsData"
+        }
+      ]
+    },
+    {
+      "key": "recordsCenter",
+      "title": "会员分组",
+      "children": [
+        {
+          "param": {
+            "key": "groupType",
+            "value": 1
+          },
+          "key": [
+            "dynamicGroupMember",
+            "groupMemberList",
+            "newDynamicGroupMember"
+          ],
+          "title": "动态分组",
+          "url": "#/recordsCenter/dynamicGroupMember?groupType=1"
+        },
+        {
+          "param": {
+            "key": "groupType",
+            "value": 2
+          },
+          "key": [
+            "staticGroupMember",
+            "groupMemberList"
+          ],
+          "title": "静态分组",
+          "url": "#/recordsCenter/staticGroupMember?groupType=2"
+        },
+        {
+          "param": {
+            "key": "groupType",
+            "value": 3
+          },
+          "key": [
+            "systemGroupMember",
+            "groupMemberList"
+          ],
+          "title": "系统分组",
+          "url": "#/recordsCenter/systemGroupMember?groupType=3"
+        }
+      ]
+    },
+    {
+      "key": "recordsCenter",
+      "title": "历史订单导入",
+      "children": [
+        {
+          "param": {},
+          "key": "historicalDataImport",
+          "title": "历史订单导入",
+          "url": "#/recordsCenter/historicalDataImport"
+        }
+      ]
+    },
+    {
+      "key": "recordsCenter",
+      "title": "订单数据",
+      "children": [
+        {
+          "param": {},
+          "key": "tradeData",
+          "title": "订单数据",
+          "url": "#/recordsCenter/tradeData"
+        }
+      ]
+    },
+    {
+      "key": "recordsCenter",
+      "title": "短信账单",
+      "children": [
+        {
+          "param": {},
+          "key": "sendSMSStatistics",
+          "title": "短信发送统计",
+          "url": "#/recordsCenter/sendSMSStatistics"
+        },
+        {
+          "param": {},
+          "key": "SMSBill",
+          "title": "内购短信账单",
+          "url": "#/recordsCenter/SMSBill"
+        },
+        {
+          "param": {},
+          "key": "SMSSendLog",
+          "title": "短信发送日志",
+          "url": "#/recordsCenter/SMSSendLog"
+        }
+      ]
+    }
+  ],
+  "setting": [
+    {
+      "key": "setting",
+      "title": "短信充值",
+      "children": [
+        {
+          "param": {},
+          "key": "SMSTopUp",
+          "title": "套餐列表",
+          "url": "#/setting/SMSTopUp"
+        },
+        {
+          "param": {},
+          "key": "purchaseOrderList",
+          "title": "充值记录",
+          "url": "#/setting/purchaseOrderList"
+        }
+      ]
+    },
+    {
+      "key": "setting",
+      "title": "安全中心",
+      "children": [
+        {
+          "param": {},
+          "key": "safetyWarning",
+          "title": "系统安全预警",
+          "url": "#/setting/safetyWarning"
+        },
+        {
+          "param": {},
+          "key": "childrenPermissions",
+          "title": "子账号权限",
+          "url": "#/setting/childrenPermissions"
+        }
+      ]
+    },
+    {
+      "key": "setting",
+      "title": "黑名单管理",
+      "children": [
+        {
+          "param": {},
+          "key": "wangWangBlacklist",
+          "title": "旺旺黑名单",
+          "url": "#/setting/wangWangBlacklist"
+        },
+        {
+          "param": {},
+          "key": "phoneBlacklist",
+          "title": "手机黑名单",
+          "url": "#/setting/phoneBlacklist"
+        }
+      ]
+    }
+  ],
+  "print": [
+    {
+      "key":"print",
+      "title":"连打发货",
+      "children":[
+        {
+          "param":{},
+          "key": "unprintedExpress",
+          "title": "连打发货",
+          "url": "#/print/unprintedExpress"
+        }
+      ]
+    },
+
+    {
+      "key":"print",
+      "title":"打印备货单",
+      "children":[
+        {
+          "param":{},
+          "key": "preparingBillForm",
+          "title": "生成备货单",
+          "url": "#/print/preparingBillForm"
+        },
+        {
+          "param":{},
+          "key": ["preparingBill","preparingBillDetail"],
+          "title": "备货单列表",
+          "url": "#/print/preparingBill"
+        }
+      ]
+    },
+    {
+      "key":"print",
+      "title":"自由打印",
+      "children":[
+        {
+          "param":{},
+          "key": "freeprint",
+          "title": "录入/打印",
+          "url": "#/print/freeprint"
+        },
+        {
+          "param":{},
+          "key": "freeUnprintedExpress",
+          "title": "待打印【快递单】",
+          "url": "#/print/freeUnprintedExpress"
+        },
+        {
+          "param":{},
+          "key": "freePrintedExpress",
+          "title": "已打印【快递单】",
+          "url": "#/print/freePrintedExpress"
+        }
+      ]
+    },
+
+    {
+      "key": "print",
+      "title": "打印设置",
+      "children": [
+        {
+          "param":{},
+          "key": "baseSetting",
+          "title": "基本设置",
+          "url": "#/print/baseSetting"
+        },
+        {
+          "param":{},
+          "key": "itemManage",
+          "title": "宝贝简称",
+          "url": "//cx.cuxiao.quannengzhanggui.net/static/seller/index.html#/material/itemManage",
+          "blank":true
+        },
+        {
+          "param":{},
+          "key": "shipAddress",
+          "title": "发货地址",
+          "url": "#/print/shipAddress"
+        },
+        {
+          "param":{},
+          "key": "userExpress",
+          "title": "快递单模板",
+          "url": "#/print/userExpress"
+        },
+        {
+          "param":{},
+          "key": "expressCompany",
+          "title": "合作物流",
+          "url": "#/print/expressCompany"
+        },
+        {
+          "param":{},
+          "key": "deliveryTemplate",
+          "title": "发货单模板",
+          "url": "#/print/deliveryTemplate"
+        },
+        {
+          "param":{},
+          "key": "logisticsTradeSetting",
+          "title": "订单全链路",
+          "url": "#/print/logisticsTradeSetting"
+        },
+        {
+          "param":{},
+          "key": "destinationBig",
+          "title": "目的地大字",
+          "url": "#/print/destinationBig"
+        },
+        {
+          "param":{},
+          "key": "scopeOfDeliveryCorrect",
+          "title": "派送范围纠错",
+          "url": "#/print/scopeOfDeliveryCorrect"
+        }
+      ]
+    },
+    {
+      "key":"print",
+      "title":"工具箱",
+      "children":[
+        {
+          "param":{},
+          "key": "waybillReport",
+          "title": "电子面单记录",
+          "url": "#/print/waybillReport"
+        },
+        {
+          "param":{},
+          "key": "cancelWaybill",
+          "title": "回收电子面单",
+          "url": "#/print/cancelWaybill"
+        }
+      ]
+    }
+  ]
+}*/

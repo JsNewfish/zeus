@@ -1,0 +1,53 @@
+<div class="modal-header">
+    <button type="button" class="close" aria-label="Close" ng-click="cancel()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h3 class="modal-title">使用之前的电子面单号</h3>
+</div>
+<div class="modal-body">
+    <div class="slogan-help bg-warning slogan">
+        <img style="margin-top: -6px;" src="images/pages/reminder.png" class="slogan-icon">
+
+        <div class="slogan-content">
+            <p style="margin: 0px;" >
+                亲，此订单您共获取过<span class="text-danger">[{{usedWaybillList.length}}]</span>个电子面单（热敏面单）号，请选择一个需要重新打印的电子面单号并确认：
+            </p>
+        </div>
+    </div>
+    <table class="table ">
+        <thead>
+            <tr>
+                <th></th>
+                <th style="white-space: nowrap">电子面单号</th>
+                <th style="white-space: nowrap">快递公司</th>
+                <th style="white-space: nowrap">模板名称</th>
+                <th style="white-space: nowrap">获取时间</th>
+             </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="waybill in usedWaybillList">
+                <td>
+                    <input ng-model="$parent.selectWaybill" type="radio" ng-value="waybill" name="usedWaybill">
+                </td>
+                <td>
+                    {{waybill.expressNo}}
+                </td>
+                <td>
+                    {{waybill.userExpressName}}
+                </td>
+                <td>
+                    {{waybill.userExpressTemplateName}}
+                </td>
+                <td>
+                    {{waybill.createTime}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="modal-footer">
+    <div class="text-center">
+        <button class="btn btn-base w-100" ng-click="save()">确定</button>
+        <button class="btn btn-default w-100" data-dismisss="modal" ng-click="cancel()">关闭</button>
+    </div>
+</div>

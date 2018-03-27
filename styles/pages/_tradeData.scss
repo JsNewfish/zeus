@@ -1,0 +1,110 @@
+.view-tradeData {
+  min-height: 600px;
+  overflow-y: hidden;
+
+  .list {
+    .tooltip-inner{
+      max-width: none;
+    }
+    > .head, > .content > .top, > .content > .bottom {
+      border: 1px solid #ddd;
+      border-bottom: 0px;
+      height: 40px;
+      padding-left: 10px;
+      > div {
+        height: 40px;
+        line-height: 40px;
+        float: left;
+        margin-right: 20px;
+      }
+    }
+    > .content > .bottom {
+      border: 1px solid #ddd;
+      border-top: 0px;
+      margin-bottom: 10px;
+      div img {
+        width: 25px;
+        height: 25px;
+      }
+    }
+    > .content > .middle {
+      > table {
+        margin-bottom: 0px;
+        tr {
+          height: 102px;
+          > .td-1 {
+            width: 40%;
+            > .img {
+              float: left;
+            }
+            > .img {
+              margin-right: 10px;
+              img {
+                width: 60px;
+                height: 60px;
+              }
+            }
+            > .text {
+              padding-left: 80px;
+            }
+          }
+          > .td-2{
+            width: 15%;
+            text-align: center;
+            vertical-align: middle;
+          }
+          > .td-3 {
+            width: 10%;
+            text-align: center;
+            line-height: 100%;
+            vertical-align: middle;
+          }
+          > .td-4 {
+            width: 15%;
+            text-align: center;
+          }
+          > .td-5 {
+            width: 15%;
+            text-align: center;
+          }
+          > .td-6 {
+            width: 5%;
+            padding-left: 0px;
+            padding-right: 0px;
+            position: relative;
+            > .packUp {
+              position: absolute;
+              bottom: 10px;
+              text-align: center;
+              width: 100%;
+            }
+          }
+        }
+      }
+    }
+    >.content >.bottom > .consignee{
+      //max-width: 50%;
+      display: block;
+      //white-space: nowrap;
+      //overflow: hidden;
+      //text-overflow: ellipsis;
+    }
+    >.content{
+      .TRADE_NO_CREATE_PAY, .ALL_CLOSED, .TRADE_CLOSED_BY_TAOBAO, .TRADE_CLOSED{
+          color: #107FE4;
+      }
+      .WAIT_BUYER_PAY, .ALL_WAIT_PAY, .FRONT_PAID_FINAL_PAID{
+        color: #40A144;
+      }
+      .WAIT_SELLER_SEND_GOODS, .SELLER_CONSIGNED_PART, .FRONT_PAID_FINAL_NOPAID, .FRONT_NOPAID_FINAL_NOPAID,{
+        color: #F8D053;
+      }
+      .TRADE_FINISHED, .WAIT_BUYER_CONFIRM_GOODS{
+        color: #6CC2F9;
+      }
+      .WAIT_SELLER_AGREE, .WAIT_BUYER_RETURN_GOODS, .WAIT_SELLER_CONFIRM_GOODS{
+        color: red;
+      }
+    }
+  }
+}

@@ -1,0 +1,296 @@
+.unprinted-express {
+  //main
+  .content {
+    /*margin-left:150px;*/
+  }
+  .side-left {
+    float: left;
+    .title {
+      border-bottom: 1px solid #ccc;
+      span {
+        font-size: 20px;
+        padding: 6px;
+      }
+    }
+    .list li {
+      padding: 8px 0;
+    }
+  }
+
+  .package-num{
+    padding: 1px 5px;
+    padding-top: 4px;
+    padding-right: 9px;
+    border:1px solid #eee;
+    background-color: #fff;
+    .total-num{
+      display: inline-block;
+      width: 22px;
+      text-align: center;
+    }
+  }
+  .data-table-wrap .trade-table{
+    >tbody{
+      border-top: 1px solid #ddd;
+    }
+  }
+  .trade-table tbody.expanded{
+    border: 1px solid #ccc;
+    >tr{
+      background-color: #e4e4e4;
+    }
+    >tr:hover{
+      background-color:#e4e4e4;
+    }
+    >tr.selected:hover{
+      background-color:#FFFFDA;
+    }
+  }
+  .table > tbody > tr > td{
+    border: none;
+  }
+  .selectValue{
+    color: #59D85E;
+  }
+}
+.trade-table{
+  .detail{
+    cursor: pointer;
+  }
+  .table{
+    tbody{
+      border-width: 1px;
+
+    }
+
+
+    td{
+      border-top:none ;
+    }
+    .table{
+      -webkit-box-shadow: none;
+      box-shadow: none;
+
+      td{
+        border-top:none ;
+      }
+    }
+  }
+}
+.fixed-tooltip {
+  position: absolute;
+  border: 1px solid #999;
+  background: none repeat scroll 0 0 #FFFFFF;
+  color: #FF8040;
+  padding: 3px;
+  top: 27px;
+  left: 8px;
+  width: 256px;
+  margin-bottom: 0;
+  z-index: 10;
+  .close {
+    font-size: 17px;
+    margin-left: 5px;
+    margin-top: 0;
+  }
+
+}
+.unprintedTip{
+  width: 280px;
+  left: -38px;
+  top:11px;
+}
+.exceptionTip {
+  display: none;
+  border: 1px solid #FFD9BF;
+  width: 320px;
+  padding: 5px;
+  position: absolute;
+  background-color: #FFFAF2;
+  top: 100%;
+  left: 38%;
+  z-index: 10;
+  .btn-close {
+    text-align: right;
+  }
+}
+.consignInfo{
+  position: relative;
+}
+.consignInfo:hover{
+  .exceptionTip {
+    display: block;
+    z-index: 12;
+  }
+}
+.tool-bar {
+  /*background-color:#eaeaea;*/
+  padding-left: 10px;
+  padding-top: 8px;
+  padding-bottom: 3px;
+}
+
+.trade-table {
+
+  .tip-icon {
+    cursor: pointer;
+
+  }
+  .table-item{
+    background-color: transparent;
+  }
+
+  .Cod {
+    background-color: #7B5BC8;
+    .exceptionTip {
+      background-color: #ECEAF1;
+      border: 1px solid #7B5BC8;
+    }
+  }
+  .Ems {
+    background-color: #006600;
+    .exceptionTip {
+      background-color: #EEF3EE;
+      border: 1px solid #006600;
+    }
+  }
+
+  .NeedTipMatching {
+    display: inline-block;
+    position: relative;
+    margin-top: 3px;
+    font-size: 12px;
+    width: 18px;
+    height: 18px;
+    color: #FFFFFF;
+    cursor: pointer;
+    span{
+      padding-left: 3px;
+    }
+  }
+
+  .NeedTipMatching:hover {
+    .exceptionTip {
+      display: block;
+      z-index: 12;
+    }
+  }
+
+  .unusual{
+     // background-color: #FF9900;
+  }
+  .PrintExpress {
+    background-color: #4D71C7;
+    .exceptionTip {
+      background-color: #EDEFF3;
+      border: 1px solid #4D71C7;
+    }
+  }
+  .PrintDeliveryBill {
+    background-color: #11AFCC;
+    .exceptionTip {
+      background-color: #E7EDEF;
+      border: 1px solid #11AFCC;
+    }
+  }
+  .refundStatus {
+    background-color: #990000;
+    .exceptionTip {
+      background-color: #F1E9E9;
+      border: 1px solid #990000;
+    }
+  }
+  .consignStatus {
+    background-color: #EF618F;
+    .exceptionTip {
+      background-color: #F3ECEE;
+      border: 1px solid #EF618F;
+    }
+  }
+  .mergeStatus {
+    background-color: #F9854A;
+    .exceptionTip {
+      background-color: #F7EDE8;
+      border: 1px solid #F9854A;
+    }
+  }
+  .order-td {
+    padding: 0;
+    border-top:none;
+  }
+  .order-table {
+   // background-color: #dff0d8;
+    background-color: #fcfcfc;
+    .left {
+      border-right: 1px #CCCCCC solid;
+      padding-left: 15px;
+      width: 166px;
+
+    }
+    .middle {
+      padding: 0;
+      width: 588px;
+      vertical-align: top;
+      .consign-status{
+        width: 84px;
+        vertical-align: middle;
+      }
+      .img {
+        padding: 0px;
+        vertical-align: middle;
+        height: 90px;
+        width: 90px;
+      }
+      img {
+        max-height: 90px;
+        max-width: 100%;
+      }
+      .order-status {
+        width: 140px;
+        text-align: center;
+        vertical-align: middle;
+      }
+
+      .order-title {
+
+      }
+    }
+    .right {
+      min-width: 265px;
+      border-left: 1px #CCCCCC solid;
+    }
+  }
+  .order-table + .order-table {
+    border-top: 1px #CCCCCC solid;
+  }
+}
+
+.query-area {
+  label.ng-binding {
+    width: 75px;
+    cursor: pointer;
+    line-height: 2.4;
+    padding-left: 6px;
+    &:hover {
+      background-color: #eee;
+      color: gray;
+    }
+    input {
+      margin-right: 3px;
+    }
+  }
+  .select-list {
+    .title {
+      color: #40A144;
+    }
+    li {
+      border-bottom: 1px dashed #CCCCCC;
+      line-height: 30px;
+      height: auto;
+      span {
+        margin-right: 14px;
+      }
+    }
+  }
+}
+

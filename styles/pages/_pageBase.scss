@@ -1,0 +1,91 @@
+.view {
+  input[readonly] {
+    background-color: #fff;
+  }
+  .tool-bar-footer{
+    border-bottom: 1px solid #ddd;
+    padding: 7px 10px;
+    &:before,
+    &:after {
+      content: " ";
+      display: table;
+    }
+    &:after {
+      clear: both;
+    }
+    .left{
+      float: left;
+    }
+    .right{
+      float: right;
+    }
+  }
+  //busy-loading
+  .cg-busy-default-sign{
+    width: 230px;
+    height: 66px;
+    position: fixed;
+    top: 300px;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+    .cg-busy-default-text{
+      font-size: 15px;
+    }
+  }
+}
+
+.form-group {
+  margin-bottom: 10px;
+}
+.text-group{
+  >label{
+    text-align: right;
+  }
+}
+
+.required-icon {
+  position: absolute;
+  left: -1px;
+  top: 10px;
+}
+.modal-content{
+  .modal-body {
+    max-height: 446px;
+    overflow-y: auto;
+    .table {
+      background-color: #ffffff;
+      margin-bottom: 0;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+      border-bottom: none;
+    }
+  }
+  //busy-loading
+  .cg-busy-default-sign{
+    width: 230px;
+    height: 66px;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+    .cg-busy-default-text{
+      font-size: 15px;
+    }
+  }
+}
+
+input[type=number] {
+  -moz-appearance:textfield;
+}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.noClassify{
+  color:#cccccc;
+}
+.cg-busy{
+  z-index: 11;
+}
+
+
+

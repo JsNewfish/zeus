@@ -1,0 +1,57 @@
+<div class="modal-header">
+    <button type="button" class="close" aria-label="Close" ng-click="cancel()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h3 class="modal-title">失败提醒</h3>
+</div>
+<div class="modal-body">
+    <!--<div class="bg-warning slogan slogan-help ">
+        <img style="margin-top: -6px;" src="images/pages/reminder.png" class="slogan-icon">
+
+        <div class="slogan-content">
+            <p style="margin: 0px;" >打印{{totalNum}}张快递单，成功{{successNum}}张，失败{{errorNum}}张，
+                请确认打印机是否出纸{{successNum}}张。
+                <a data-target="#packList"
+                   data-toggle="collapse">
+                    显示详细
+                </a>
+            </p>
+        </div>
+    </div>-->
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>序号</th>
+                <th>昵称</th>
+                <th>订单编号</th>
+                <th>错误原因</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="error in errorList">
+            <td>{{$index+1}}</td>
+            <td>
+                {{error.buyerNick}}
+            </td>
+            <td style="word-break: keep-all;white-space: nowrap;">
+                {{error.tid}}
+            </td>
+            <td>
+                <span ng-show="error.isSuccess==0">
+                    {{error.errorMsg}}
+                </span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+<div class="modal-footer">
+    <div class="text-center">
+        <!--<button ng-show="operateType==1" class="btn btn-base" ng-class="{'w-100':allExistExpressNo}" ng-click="save()">
+
+        </button>-->
+        <button class="btn btn-default w-100" data-dismisss="modal" ng-click="cancel()">关闭</button>
+    </div>
+</div>

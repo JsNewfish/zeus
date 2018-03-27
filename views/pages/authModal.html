@@ -1,0 +1,40 @@
+<form name="authCodeValidate" novalidate class="w5c-form form" w5c-form-validate="">
+    <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" ng-click="cancel()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h3 class="modal-title">多次打印验证</h3>
+    </div>
+    <div class="modal-body">
+        <div class="bg-warning slogan slogan-help ">
+            <img style="margin-top: -6px;" src="images/pages/reminder.png" alt="" class="slogan-icon">
+
+            <div class="slogan-content">
+                <ul>
+                    <li style="margin: 0px;">提醒：您选择的订单中包含已被打印过的订单，请重新选择或输入验证码确认重新打印！</li>
+                </ul>
+            </div>
+        </div>
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="control-label col-xs-2">
+                    验证码：
+                </label>
+
+                <div class="controls col-xs-10">
+                    <input placeholder="验证码" type="text" w5c-customizer="validCode()" name="authCode"
+                           class="form-control form-control-static" ng-model="inputCode">
+                    <label class="authCode">{{authCode}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+    <div class="modal-footer">
+        <div class="text-center">
+            <button class="btn btn-base w-100" w5c-form-submit="save()">确认</button>
+            <button class="btn btn-default w-100" data-dismisss="modal" ng-click="cancel()">取消</button>
+        </div>
+    </div>
+</form>

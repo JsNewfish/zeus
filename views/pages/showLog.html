@@ -1,0 +1,362 @@
+<div class="modal-header">
+    <button type="button" class="close" aria-label="Close" ng-click="cancel()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title">操作日志</h4>
+</div>
+<div class="modal-body print" style="max-height: 510px;">
+
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a data-target="#express" ng-click="getLogs(1)" data-toggle="tab">
+                    快递单
+                </a>
+            </li>
+            <li>
+                <a data-target="#delivery" ng-click="getLogs(2)" data-toggle="tab">
+                    发货单
+                </a>
+            </li>
+            <li>
+                <a data-target="#consign" ng-click="getLogs(3)" data-toggle="tab">
+                    发货
+                </a>
+            </li>
+            <li>
+                <a data-target="#express_no" ng-click="getLogs(4)" data-toggle="tab">
+                    模板/运单号
+                </a>
+            </li>
+            <li>
+                <a data-target="#memo" ng-click="getLogs(5)" data-toggle="tab">
+                    备注
+                </a>
+            </li>
+            <li>
+                <a data-target="#address" ng-click="getLogs(6)" data-toggle="tab">
+                    收货信息
+                </a>
+            </li>
+            <li>
+                <a data-target="#item" ng-click="getLogs(7)" data-toggle="tab">
+                    宝贝信息
+                </a>
+            </li>
+            <li>
+                <a data-target="#merge" ng-click="getLogs(8)" data-toggle="tab">
+                    合并/拆分
+                </a>
+            </li>
+
+        </ul>
+        <div class="tab-content" style="height: 524px;padding: 0;">
+            <div class="tab-pane fade in active" id="express" cg-busy="{promise:loading ,message:'加载中。。。'}">
+                <table class="table ">
+                    <thead>
+                    <tr>
+                        <th width="142px">订单编号</th>
+                        <th width="150px">时间</th>
+                        <th>类型</th>
+                        <th>模板</th>
+                        <th>运单号</th>
+                        <th>流水号</th>
+                        <th>操作人</th>
+                    </tr>
+                    </thead>
+                    <tbody ng-repeat="data in logs">
+                        <tr ng-show="data.templateLogList.length==0">
+                            <td>{{data.tid}}</td>
+                            <td colspan="20">无操作记录</td>
+                        </tr>
+                        <tr ng-show="data.templateLogList.length!=0" ng-repeat="log in data.templateLogList">
+                            <td ng-if="$index==0">{{data.tid}}</td>
+                            <td ng-if="$index!=0" style="border: none;"></td>
+                            <td>{{log.createTime}}</td>
+                            <td>{{log.category|category}}</td>
+                            <td>{{log.userTemplateName}}</td>
+                            <td>{{log.expressNo}}</td>
+                            <td>{{log.serial}}</td>
+                            <td>{{log.operator}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-pane fade " id="delivery">
+                <table class="table ">
+                    <thead>
+                    <tr>
+                        <th width="142px">订单编号</th>
+                        <th width="150px">时间</th>
+                        <th>类型</th>
+                        <th>模板</th>
+                        <th>运单号</th>
+                        <th>流水号</th>
+                        <th>操作人</th>
+                    </tr>
+                    </thead>
+                    <tbody ng-repeat="data in logs">
+                    <tr ng-show="data.templateLogList.length==0">
+                        <td>{{data.tid}}</td>
+                        <td colspan="20">无操作记录</td>
+                    </tr>
+                    <tr ng-repeat="log in data.templateLogList">
+                        <td ng-if="$index==0">{{data.tid}}</td>
+                        <td ng-if="$index!=0" style="border: none;"></td>
+                        <td>{{log.createTime}}</td>
+                        <td>{{log.category|category}}</td>
+                        <td>{{log.userTemplateName}}</td>
+                        <td>{{log.expressNo}}</td>
+                        <td>{{log.serial}}</td>
+                        <td>{{log.operator}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-pane fade " id="consign">
+                <table class="table ">
+                    <thead>
+                    <tr>
+                        <th width="142px">订单编号</th>
+                        <th width="150px">时间</th>
+                        <th>类型</th>
+                        <th>状态</th>
+                        <th>物流信息</th>
+                        <th>操作人</th>
+                    </tr>
+                    </thead>
+                    <tbody ng-repeat="data in logs">
+                    <tr ng-show="data.consignLogList.length==0">
+                        <td>{{data.tid}}</td>
+                        <td colspan="20">无操作记录</td>
+                    </tr>
+                    <tr ng-repeat="log in data.consignLogList">
+                        <td ng-if="$index==0">{{data.tid}}</td>
+                        <td ng-if="$index!=0" style="border: none;"></td>
+                        <td>{{log.createTime}}</td>
+                        <td ng-if="log.type==1">自己联系发货</td>
+                        <td ng-if="log.type==2">在线下单发货</td>
+                        <td ng-if="log.type==3">虚拟发货</td>
+                        <td ng-if="log.type==4">用新单号重新发货</td>
+                        <td ng-if="log.status">成功</td>
+                        <td ng-if="log.status==0">失败</td>
+                        <td ng-if="!log.orderCode">{{log.userExpressName}}：{{log.expressNo}}</td>
+                        <td ng-if="log.orderCode">{{log.userExpressName}}：{{log.expressNo}}<br/>LC物流编码：{{log.orderCode}}</td>
+                        <td>{{log.operator}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-pane fade " id="express_no">
+                <table class="table ">
+                    <thead>
+                    <tr>
+                        <th width="142px">订单编号</th>
+                        <th width="150px">时间</th>
+                        <th>类型</th>
+                        <th>模板</th>
+                        <th>运单号</th>
+                        <th>操作人</th>
+                    </tr>
+                    </thead>
+                    <tbody ng-repeat="data in logs">
+                    <tr ng-show="data.templateLogList.length==0">
+                        <td>{{data.tid}}</td>
+                        <td colspan="20">无操作记录</td>
+                    </tr>
+                    <tr ng-repeat="log in data.templateLogList">
+                        <td ng-if="$index==0">{{data.tid}}</td>
+                        <td ng-if="$index!=0" style="border: none;"></td>
+                        <td>{{log.createTime}}</td>
+                        <td>{{log.category|category}}</td>
+                        <td>{{log.userTemplateName}}</td>
+                        <td>{{log.expressNo}}</td>
+                        <td>{{log.operator}}</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-pane fade " id="memo">
+                <table class="table ">
+                    <thead>
+                    <tr>
+                        <th width="142px">订单编号</th>
+                        <th width="150px">时间</th>
+                        <th width="98px">类型</th>
+                        <th>状态</th>
+                        <th>修改前/<span class="text-warning">修改后</span></th>
+                        <th>操作人</th>
+                    </tr>
+                    </thead>
+                    <tbody ng-repeat="data in logs">
+                    <tr ng-show="data.commonLogList.length==0">
+                        <td>{{data.tid}}</td>
+                        <td colspan="20">无操作记录</td>
+                    </tr>
+                    <tr ng-repeat="log in data.commonLogList">
+                        <td ng-if="$index==0">
+                            {{data.tid}}
+                        </td>
+                        <td ng-if="$index!=0" style="border: none;">
+
+                        </td>
+                        <td>{{log.createTime}}</td>
+                        <td>{{log.type|CommonLogType}}</td>
+                        <td ng-if="log.status">成功</td>
+                        <td ng-if="log.status==0">失败</td>
+                        <td ng-if="log.type==2">
+                            <img ng-src="images/components/sellerFlagRED.png"
+                                 ng-if="log.beforeModify==1">
+                            <img ng-src="images/components/sellerFlagYELLOW.png"
+                                 ng-if="log.beforeModify==2">
+                            <img ng-src="images/components/sellerFlagGREEN.png"
+                                 ng-if="log.beforeModify==3">
+                            <img ng-src="images/components/sellerFlagBLUE.png"
+                                 ng-if="log.beforeModify==4">
+                            <img ng-src="images/components/sellerFlagPURPLE.png"
+                                 ng-if="log.beforeModify==5">
+                            <img ng-src="images/components/sellerFlagGRAY.png"
+                                 ng-if="log.beforeModify==0">
+                            /<img ng-src="images/components/sellerFlagRED.png"
+                                  ng-if="log.afterModify==1">
+                            <img ng-src="images/components/sellerFlagYELLOW.png"
+                                 ng-if="log.afterModify==2">
+                            <img ng-src="images/components/sellerFlagGREEN.png"
+                                 ng-if="log.afterModify==3">
+                            <img ng-src="images/components/sellerFlagBLUE.png"
+                                 ng-if="log.afterModify==4">
+                            <img ng-src="images/components/sellerFlagPURPLE.png"
+                                 ng-if="log.afterModify==5">
+                            <img ng-src="images/components/sellerFlagGRAY.png"
+                                 ng-if="log.afterModify==0">
+                        </td>
+                        <td ng-if="log.type==1||log.type==3">
+                            <span ng-show="log.beforeModify">{{log.beforeModify}}/</span>
+                            <span class="text-warning">{{log.afterModify}}</span>
+                        </td>
+                        <td ng-if="log.type==4">
+                            <span ng-if="log.beforeModify" ng-style="{color :log.beforeModify}">
+                                <i class="glyphicon glyphicon-star"></i>
+                            </span>
+                            <span ng-if="!log.beforeModify" >
+                                <i class="glyphicon glyphicon-star"></i>
+                            </span>
+                            /
+                            <span ng-if="log.afterModify" ng-style="{color :log.afterModify}">
+                                <i class="glyphicon glyphicon-star"></i>
+                            </span>
+                            <span ng-if="!log.afterModify" >
+                                <i class="glyphicon glyphicon-star"></i>
+                            </span>
+                        </td>
+                        <td>{{log.operator}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-pane fade " id="address">
+                <table class="table ">
+                    <thead>
+                    <tr>
+                        <th width="142px">订单编号</th>
+                        <th width="150px">时间</th>
+                        <th width="100px">类型</th>
+                        <!--<th>状态</th>-->
+                        <th>修改前/<span class="text-warning">修改后</span></th>
+                        <th>操作人</th>
+                    </tr>
+                    </thead>
+                    <tbody ng-repeat="data in logs">
+                    <tr ng-show="data.commonLogList.length==0">
+                        <td>{{data.tid}}</td>
+                        <td colspan="20">无操作记录</td>
+                    </tr>
+                    <tr ng-repeat="log in data.commonLogList">
+                        <td ng-if="$index==0">{{data.tid}}</td>
+                        <td ng-if="$index!=0" style="border: none;"></td>
+                        <td>{{log.createTime}}</td>
+                        <td>{{log.type|CommonLogType}}</td>
+                       <!-- <td ng-if="log.status">成功</td>
+                        <td ng-if="log.status==0">失败</td>-->
+                        <td>
+                            <span ng-show="log.beforeModify">{{log.beforeModify}}/</span>
+                            <span class="text-warning">{{log.afterModify}}</span>
+                        </td>
+                        <td>{{log.operator}}</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-pane fade " id="item">
+                <table class="table ">
+                    <thead>
+                    <tr>
+                        <th width="142px">订单编号</th>
+                        <th width="150px">时间</th>
+                        <th width="98px">类型</th>
+                        <th>状态</th>
+                        <th>修改前/<span class="text-warning">修改后</span></th>
+                        <th>操作人</th>
+                    </tr>
+                    </thead>
+                    <tbody ng-repeat="data in logs">
+                    <tr ng-show="data.commonLogList.length==0">
+                        <td>{{data.tid}}</td>
+                        <td colspan="20">无操作记录</td>
+                    </tr>
+                    <tr ng-repeat="log in data.commonLogList">
+                        <td ng-if="$index==0">{{data.tid}}</td>
+                        <td ng-if="$index!=0" style="border: none;"></td>
+                        <td>{{log.createTime}}</td>
+                        <td>{{log.type|CommonLogType}}</td>
+                        <td ng-if="log.status">成功</td>
+                        <td ng-if="log.status==0">失败</td>
+                        <td>
+                            <span ng-show="log.beforeModify">{{log.beforeModify}}/</span>
+                            <span class="text-warning">{{log.afterModify}}</span>
+                        </td>
+                        <td>{{log.operator}}</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-pane fade " id="merge">
+                <table class="table ">
+                    <thead>
+                    <tr>
+                        <th width="142">订单编号</th>
+                        <th width="150">时间</th>
+                        <th width="98">类型</th>
+                        <!--<th>状态</th>-->
+                        <th>合并/拆分后订单列表</th>
+                        <th>操作人</th>
+                    </tr>
+                    </thead>
+                    <tbody ng-repeat="data in logs">
+                    <tr ng-show="data.packageLogList.length==0">
+                        <td>{{data.tid}}</td>
+                        <td colspan="20">无操作记录</td>
+                    </tr>
+                    <tr ng-repeat="log in data.packageLogList">
+                        <td ng-if="$index==0">{{data.tid}}</td>
+                        <td ng-if="$index!=0" style="border: none;"></td>
+                        <td>{{log.createTime}}</td>
+                        <td>{{log.operateType|operateType}}</td>
+                        <!--<td ng-if="log.status">成功</td>
+                        <td ng-if="log.status==0">失败</td>-->
+                        <td>
+                            <!--{{log.beforeModify}}<br>
+                            {{log.afterModify}}-->
+                            <div style="word-break: break-all;">
+                                {{log.memo}}
+                            </div>
+                        </td>
+                        <td>{{log.operator}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+</div>

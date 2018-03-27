@@ -1,0 +1,21 @@
+.basicSettings {
+
+  .table {
+
+    .form-control {
+      width: auto;
+      display: inline-block;
+    }
+    .title {
+      text-align: right;
+    }
+    .checkbox {
+      margin-bottom: 0px;
+      margin-top: 0px;
+      label {
+        margin-bottom: 0px !important;
+      }
+    }
+  }
+
+}

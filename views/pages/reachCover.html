@@ -1,0 +1,87 @@
+<div class="modal-header">
+    <button type="button" class="close" aria-label="Close" ng-click="cancel()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h3 class="modal-title">快递派送范围</h3>
+</div>
+<div class="modal-body">
+    <div class=" slogan slogan-help" >
+
+        <div class="slogan-content">
+            <ul>
+                <li>
+                    <strong>温馨提示：</strong>
+                    <span>派送范围判定全部通过淘宝官方接口判定，数据仅供参考。如遇可达或不可运范围不一致时，可通过手工纠错来完善派送范围信息。</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-xs-3">
+                收货地址：
+            </label>
+
+            <div class="controls col-xs-9">
+                <div class="form-text">
+                    {{package.normalPackage.receiverState}}{{package.normalPackage.receiverCity}}
+                    <span class="text-warning">{{package.normalPackage.receiverDistrict}}</span>
+                    {{package.normalPackage.receiverTown}}
+                    {{package.normalPackage.receiverAddress}}
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-xs-3">
+                派送范围：
+                <div style="padding-right: 20px;">
+                    [<a ng-click="editCorrectScope()">纠错</a>]
+                </div>
+
+            </label>
+
+            <div class="controls col-xs-9">
+                <div class="form-text">
+                {{data.coverRemark}}
+                    </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-xs-3">
+                不派送范围：
+            </label>
+
+            <div class="controls col-xs-9">
+                <div class="form-text">{{data.uncoverRemark}}</div>
+            </div>
+        </div>
+        <div class="form-group" >
+            <label class="control-label col-xs-3">
+                派送说明：
+            </label>
+
+            <div class="controls col-xs-9">
+                <div class="form-text" ng-show="data.correctionRange.id">
+                    用户已纠错：通过
+                    <span class="text-warning">{{data.correctionRange.expressName}}</span>
+                    {{data.correctionRange.areaName}}
+                    <span ng-show="!data.correctionRange.isReach">不可达</span>
+                    <span ng-show="data.correctionRange.isReach">可达</span>
+                </div>
+                <div class="form-text" ng-hide="data.correctionRange.id">
+                    <span ng-show="package.normalPackage.isReach==0">不可达</span>
+                    <span ng-show="package.normalPackage.isReach==1">可达</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-xs-3">
+                快递官网：
+            </label>
+            <div class="controls col-xs-9">
+                <div class="form-text"><a ng-href="{{data.homePage}}" target="_blank">{{data.homePage}}</a></div>
+            </div>
+        </div>
+    </div>
+
+</div>

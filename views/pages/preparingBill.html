@@ -1,0 +1,62 @@
+<div class="view view-list express-template print" ng-controller="preparingBillCtrl">
+    <div class="container-fluid">
+
+        <div class="title-bar">
+            <div class="title-bar-inner">
+                <h3 class="title">备货单列表</h3>
+            </div>
+        </div>
+        <div class="bg-warning slogan slogan-help ">
+            <img src="images/pages/reminder.png" alt="" class="slogan-icon">
+
+            <div class="slogan-content">
+                <h5>温馨提示：</h5>
+                <ul>
+                    <div>已生成的备货单列表（注意：已生成的备货单仅保留3天，请及时打印）</div>
+                </ul>
+            </div>
+        </div>
+        <div class="data-table-wrap">
+            <table class="table data-table table-hover" cg-busy="{promise:loading ,message:'加载中。。。'}">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>生成时间</th>
+                    <th>生成条件</th>
+                    <th>操作者</th>
+                    <th width="123px">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-if="PreparingBillDtoList.length" ng-repeat="preparingBill in PreparingBillDtoList">
+                    <td>{{$index+1}}</td>
+                    <td>{{preparingBill.createTime}}</td>
+                    <td style="text-align: left;word-break: break-all;">
+                        <div ng-bind-html="preparingBill.condition|to_trusted"></div>
+                    </td>
+                    <td>{{preparingBill.operator}}</td>
+                    <td>
+                        <ul class="operations">
+                            <li  class="operation"><a ng-click="detail(preparingBill)">详情  </a></li>
+                            <li class="operation"><a ng-click="export(preparingBill)">导出  </a></li>
+                            <li class="operation"><a ng-click="log(preparingBill)">日志</a></li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr ng-if="!PreparingBillDtoList.length">
+                    <td colspan="6">
+                        <div class="none-item-container">
+                            <div class="none-item">
+                                <div class="icon"></div>
+                                暂时没有数据哦~换个筛选条件试试吧~
+                                <a href=""></a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,182 @@
+<div class="view print orderLink" ng-controller="logisticsTradeSettingCtrl">
+	<div class="container-fluid">
+		<div class="title-bar">
+			<div class="title-bar-inner">
+				<h3 class="title">订单全链路设置</h3>
+			</div>
+		</div>
+		<div class="row content">
+			<div class="col-xs-6 ">
+				<div class="order-list">
+					<div class="checkbox">
+						<span>订单全链路显示：</span>
+						<label >
+							<input type="checkbox" ng-click="closed()" format-checkbox ng-model="entity.isOpen">
+							启用
+						</label>
+						<div >
+							开通后可展现商家的订单流转、打包发货等节点时间，避免买家下单后多次询问“什么时候发货？”，极大的提高购物体验！
+						</div>
+					</div>
+					<div class="checkbox">
+						<label >
+							<input type="checkbox" ng-model="entity.isOpen" format-checkbox ng-disabled="entity.isOpen">
+							<span class="text-base">
+								您的订单开始处理（系统已接单）
+							</span>
+							<div class="text-disable">
+								指通过本软件开始查询订单的时间（以首次操作为准）
+							</div>
+						</label>
+						
+					</div>
+					<div class="checkbox">
+						<label >
+							<input type="checkbox" ng-click="switch(entity.xServiceAudited)" format-checkbox ng-model="entity.xServiceAudited">
+							<span >
+								您的订单信息审核通过（已客审）
+							</span>
+							<div class="text-disable">
+								指订单查询完成的时间（以首次操作为准）
+							</div>
+						</label>
+						
+					</div>
+					<div class="checkbox">
+						<label >
+							<input type="checkbox" ng-click="switch(entity.xAllocationNotified)" format-checkbox ng-model="entity.xAllocationNotified">
+							<span >
+								您的订单已通知配货（已通知配货）
+							</span>
+							<div class="text-disable">
+								指订单查询完成的时间后1秒
+							</div>
+						</label>
+						
+					</div>
+					<div class="checkbox">
+						<label >
+							<input type="checkbox" ng-disabled="entity.isOpen" format-checkbox ng-model="entity.isOpen">
+							<span class="text-base">
+								您的订单待配货（仓库已接单）
+							</span>
+							<div class="text-disable">
+								指订单查询完成的时间后2秒
+							</div>
+						</label>
+						
+					</div>
+					<div class="checkbox">
+						<label >
+							<input type="checkbox" ng-click="switch(entity.xSendPrinted)" format-checkbox ng-model="entity.xSendPrinted">
+							<span >
+								您的订单已打发货单（已打发货单）
+							</span>
+							<div class="text-disable">
+								指打印发货单的时间
+							</div>
+						</label>
+					</div>
+					<div class="checkbox">
+						<label >
+							<input type="checkbox" ng-click="switch(entity.xLogisticsPrint)" format-checkbox ng-model="entity.xLogisticsPrint">
+							<span >
+								您的订单已打物流单（已打物流单）
+							</span>
+							<div class="text-disable">
+								指打印物流单的时间
+							</div>
+						</label>
+					</div>
+					<div class="checkbox">
+						<label >
+							<input type="checkbox" ng-click="switch(entity.xPackaged)" format-checkbox ng-model="entity.xPackaged">
+							<span >
+								您的包裹已打包（但未出库）
+							</span>
+							<div class="text-disable">
+								指打包的时间
+							</div>
+						</label>
+					</div>
+					<div class="checkbox">
+						<label >
+							<input type="checkbox" ng-disabled="entity.isOpen" format-checkbox ng-model="entity.isOpen">
+							<span class="text-base">
+								您的包裹已出库（已出库）
+							</span>
+							<div class="text-disable">
+								指发货的时间（非预发货时间，以真正发货为准）
+							</div>
+						</label>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-6 ">
+				<div class="order-box">
+					<div class="title">
+						<span class="tab-btn">物流动态</span>
+						<span class="text-warning text">买家看到的物流信息（示例）</span>
+					</div>
+					<table class="table"> 
+						<tbody>
+							<tr>
+								<td>2014-08-09 19：05：25</td>
+								<td>您的订单信息审核通过</td>
+							</tr>
+							<tr>
+								<td>2014-08-09 19：05：26</td>
+								<td>您的订单已通知配货</td>
+							</tr>
+							<tr>
+								<td>2014-08-09 19：45：15</td>
+								<td>您的订单已打发货单</td>
+							</tr>
+                            <tr>
+                                <td>2014-08-09 19：55：15</td>
+                                <td>您的订单已打物流单</td>
+                            </tr>
+							<tr>
+								<td>2014-08-09 20：15：15</td>
+								<td>您的订单已打包</td>
+							</tr>
+							<tr>
+								<td>2014-08-09 20：16：25</td>
+								<td>【浙江义乌公司】的收件员【周建华】已收件</td>
+							</tr>
+							<tr>
+								<td>2014-08-09 23：05：25</td>
+								<td>【浙江义乌公司】正在进行【袋袋】扫描</td>
+							</tr>
+							<tr>
+								<td>2014-08-09 23：05：25</td>
+								<td>【浙江义乌公司】发往【北京中转站】</td>
+							</tr>
+							<tr>
+								<td>2014-08-11 00：05：25</td>
+								<td>由【北京中转站】发往【北京第三方公司】</td>
+							</tr>
+							<tr>
+								<td>2014-08-11 07：05：25</td>
+								<td>快件已到达【北京第三方公司】扫描员是邱晶晶</td>
+							</tr>
+							<tr>
+								<td class="text-base">2014-08-11 07：41：25</td>
+								<td>
+									<div class="text-base">已签收，签收人：老刘</div>
+									<div>信息来源：申通快递  运单号：888888888888</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>	
+		</div>
+		<div class="row">
+			<div class="col-xs-6 text-center">
+				<button class="btn btn-base w-100" ng-click="save()">保存</button>
+			</div>
+		</div>
+		
+	</div>
+</div>

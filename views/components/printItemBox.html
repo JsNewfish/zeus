@@ -1,0 +1,76 @@
+<div class="item-box" ng-style="boxStyle">
+    <!--style="top: 41px; left: 98px; width: 168px; height: 50px; display: block; cursor: default;"-->
+    <!--
+        <p class="item-box-inner" style="font-family:'SimSun'; font-size: 14px; line-height: 14px; font-weight: inherit; font-style: normal; text-decoration: none; text-align: center;">{{entity.entryContent}}</p>
+    -->
+    <div ng-show="entity.imgUrl">
+        <img class="{{entity.entryCode}}" ng-src="{{entity.imgUrl}}">
+        <i class="close" ng-click="remove()">×</i>
+    </div>
+    <div ng-hide="entity.imgUrl">
+        <p class="item-box-inner" ng-style="fontStyle">{{entity.entryContent}}</p>
+        <i class="close" ng-click="remove()">×</i>
+        <i class="tip top"></i>
+        <i class="tip top-right"></i>
+        <i class="tip right"></i>
+        <i class="tip bottom-right"></i>
+        <i class="tip bottom"></i>
+        <i class="tip bottom-left"></i>
+        <i class="tip left"></i>
+        <i class="tip top-left"></i>
+        <span  class="bg"></span>
+
+        <div class="edit-bar ">
+            <div class="edit-bar-inner">
+                <select ng-model="entity.fontType" ng-click="setFontType()">
+                    <option value="SimSun">宋体</option>
+                    <option value="Microsoft Yahei">微软雅黑</option>
+                    <option value="SimHei">黑体</option>
+                </select>
+                <select ng-model="entity.fontSize" ng-click="setFontSize()">
+                    <option value="10px">10</option>
+                    <option value="11px">11</option>
+                    <option value="12px">12</option>
+                    <option value="13px">13</option>
+                    <option value="14px">14</option>
+                    <option value="16px">16</option>
+                    <option value="18px">18</option>
+                    <option value="20px">20</option>
+                    <option value="22px">22</option>
+                    <option value="24px">24</option>
+                    <option value="26px">26</option>
+                    <option value="28px">28</option>
+                    <option value="32px">32</option>
+                    <option value="36px">36</option>
+                    <option value="40px">40</option>
+                </select>
+
+                <label class="edit-bar-checkbox">
+                    <input type="checkbox" ng-click="setFontBold()">
+                    <span class="inner ico bold" ng-class="{'choose':fontBold}"></span>
+                </label>
+                <label class="edit-bar-checkbox">
+                    <input type="checkbox" ng-click="setFontItalic()">
+                    <span class="inner ico italic" ng-class="{'choose':fontItalic}"></span>
+                </label>
+                <label class="edit-bar-checkbox">
+                    <input type="checkbox" ng-click="setTextUnderline()">
+                    <span class="inner ico underline" ng-class="{'choose':textUnderline}"></span>
+                </label>
+
+                <label class="edit-bar-radio" ng-click="setTextAlign()">
+                    <input type="radio" value="left" name="textAlign" ng-model="entity.textAlign">
+                    <span class="inner ico left" ng-class="{'choose':entity.textAlign=='left'}"></span>
+                </label>
+                <label class="edit-bar-radio" ng-click="setTextAlign()">
+                    <input type="radio" value="center" name="textAlign" ng-model="entity.textAlign">
+                    <span class="inner ico center" ng-class="{'choose':entity.textAlign=='center'}"></span>
+                </label>
+                <label class="edit-bar-radio" ng-click="setTextAlign()">
+                    <input type="radio" value="right" name="textAlign" ng-model="entity.textAlign">
+                    <span class="inner ico right" ng-class="{'choose':entity.textAlign=='right'}"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,63 @@
+<div class="modal-header">
+    <button type="button" class="close" aria-label="Close" ng-click="cancel()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h3 ng-if="type==1" class="modal-title">上传通用格式(极简版)XLS格式订单</h3>
+    <h3 ng-if="type==2" class="modal-title">上传通用XLS格式订单</h3>
+    <h3 ng-if="type==3" class="modal-title">上传京东导出的CSV格式订单</h3>
+</div>
+<div class="modal-body">
+    <div class="fm">
+        <div class="form-horizontal">
+            <div class="simple-table-container">
+                <form id="ajaxForm">
+                <table style="display: table;border-collapse: separate;border-spacing: 2px;border-color: grey;">
+                    <tbody>
+                    <tr style="background-color: #fff; border: 1px solid #ccc;padding: 6px 10px;">
+                        <th style="background-color: #fff; border: 1px solid #ccc;padding: 6px 10px;">
+                            <label ng-if="type==1">① 下载通用格式(极简版)</label>
+                            <label ng-if="type==2">① 下载通用格式</label>
+                            <label ng-if="type==3">① 从京东后台导出待打印的订单</label>
+                        </th>
+                        <td style="background-color: #fff; border: 1px solid #ccc;padding: 6px 10px;">
+                            <a ng-if="type==1" href="../app/views/uploadtemplefile/simple2.xls" target="_blank">通用格式(极简版)下载</a>
+                            <a ng-if="type==2" href="../app/views/uploadtemplefile/simple.xls" target="_blank">通用格式下载</a>
+                            <a ng-if="type==3" href="" target="_blank">导出方法</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th style="background-color: #fff; border: 1px solid #ccc;padding: 6px 10px;">② 选择导入文件格式</th>
+                        <td style="background-color: #fff; border: 1px solid #ccc;padding: 6px 10px;">
+                            <div ng-if="type==1"> 该文件的最后一列是 <select name="of_id"><option value="50">H:备注</option></select> ，如果列表中没有请联系客服旺旺</div>
+                            <div ng-if="type==2"> 该文件的最后一列是 <select name="of_id"><option value="50">Z:保价申明价格</option></select> ，如果列表中没有请联系客服旺旺</div>
+                            <div ng-if="type==3"> 该文件的最后一列是 <select name="of_id"><option value="1">AD:订单渠道</option><option value="2">Z:货号</option></select> ，如果列表中没有请联系客服旺旺</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th style="background-color: #fff; border: 1px solid #ccc;padding: 6px 10px;">③ <label>选择XLS文件</label></th>
+                        <td style="background-color: #fff; border: 1px solid #ccc;padding: 6px 10px;">
+                            <!--<input type="file" ng-file-select="uploadFile($files)" ng-model="upload.uploadFile">-->
+                                <input type="file" name="file" class="fileNameChange" />
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <th style="background-color: #fff; border: 1px solid #ccc;padding: 6px 10px;">④ <label>选择快递模板</label></th>
+                        <td style="background-color: #fff; border: 1px solid #ccc;padding: 6px 10px;">
+                            <select style="width: 90px;" ng-model="tempId" name="tempId" >
+                                <option value="" >-- 请选择--</option>
+                                <option ng-value="x.id" ng-repeat="x in expressTemp"> {{x.name}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th style="background-color: #fff; border: 1px solid #ccc;padding: 6px 10px;">⑤ 点击上传</th>
+                        <td style="background-color: #fff; border: 1px solid #ccc;padding: 6px 10px;"><input type="button" ng-click="uploadFile();" value="上传"></td>
+                    </tr>
+                    </tbody>
+                </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

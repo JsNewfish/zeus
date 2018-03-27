@@ -1,0 +1,87 @@
+<div class="modal-header">
+    <button type="button" class="close" aria-label="Close" ng-click="cancel()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h3 class="modal-title">查询客户 </h3>
+
+</div>
+<div class="modal-body view-list print">
+    <div class="data-table-wrap">
+        <div class="tool-bar ">
+            <div class="right">
+                <input ng-model="freePackageSearchModel.receiverName" placeholder="只能用联系人查询" class="form-control input-sm static">
+                <button class="btn btn-warning btn-sm " ng-click="search(freePackageSearchModel);">查询</button>
+            </div>
+        </div>
+        <table class="table data-table table-hover">
+            <thead>
+            <tr>
+
+                <th>
+                    序号
+                </th>
+                <th>
+                    昵称
+                </th>
+                <th>
+                    联系人
+                </th>
+
+                <th width="400px;">
+                    地址
+                </th>
+                <th>
+                    电话/手机
+                </th>
+                <th >操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-if="freeTradeList.length" ng-repeat="freeTrade in freeTradeList">
+                <td>
+                    <label ng-bind="$index+1"></label>
+                </td>
+                <td style="word-break: break-all;">
+                    {{freeTrade.buyerNick}}
+                </td>
+                <td style="word-break: break-all;">{{freeTrade.receiverName}}</td>
+                <td style="width: 400px;word-break: break-all;">
+                    {{freeTrade.receiverState}}{{freeTrade.receiverCity}}{{freeTrade.receiverDistrict}}{{freeTrade.receiverAddress}}
+                </td>
+                <td><div>{{freeTrade.receiverMobile}}</div>
+
+                    <div> {{freeTrade.receiverPhone}}</div>
+                </td>
+                <td>
+                    <div class="operations">
+                        <a class="btn-operation" ng-click="checkFreeTrade(freeTrade)">选择</a>
+                    </div>
+                </td>
+            </tr>
+            <tr ng-if="!freeTradeList.length">
+                <td colspan="7">
+                    <div class="none-item-container">
+                        <div class="none-item">
+                            <div class="icon"></div>
+                            暂时没有数据哦~换个筛选条件试试吧~
+                            <a href=""></a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="tool-bar">
+            <div class="right">
+
+                <div paging page="pageNo" page-size="pageSize" total="count"
+                     paging-action="defSearch(page,pageSize,total)" show-prev-next="true"
+                     class="pagination">
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+

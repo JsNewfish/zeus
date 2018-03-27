@@ -1,0 +1,1071 @@
+<div class="view view-list print unprinted-express" ng-controller="unprintedExpressCtrl">
+    <div class="container-fluid" cg-busy="{promise:loading ,message:messages}">
+
+
+        <div class="title-bar">
+            <div class="title-bar-inner">
+                <h3 class="title">连打发货</h3>&nbsp;&nbsp;
+                <span style="color: #107FE4;">连打发货操作教程
+                    <a style="color: #107FE4;" ng-href="http://mygod.cuxiao.quannengzhanggui.net/static/common/index.html#/help/helpView?id=130" target="_blank">【点击查看】</a>
+                    <a style="color: #107FE4;" ng-href="http://v.youku.com/v_show/id_XMzM4MDY4Njc3Ng==.html?sharekey=bfd0a0e3ce06e61984c1c33e1d2864d72" target="_blank">【视频教程】</a>
+                </span>
+
+                <div class="pull-right" style="padding-right: 15px;">
+                    <span>新订单最后更新于：</span>
+                    <span>{{searchParam.printSync.syncTime}}</span>
+                    <a ng-click="syncData()">【手工同步】</a>
+                </div>
+            </div>
+        </div>
+        <div class="search-bar collapsed" dp-filter-bar>                <!--筛选栏-->
+            <form name="filterForm" novalidate class="w5c-form form" w5c-form-validate="validateOptions">
+
+                <div class="search-pane ">
+                    <div class="normal-search ">
+                        <div class="form-group col-xs-4">
+                            <div class="control-elem">
+                                <div class="fixed-tooltip alert " role="alert" style="top:-30px;width: auto">
+                                    <button type="button" class="close" aria-label="Close" data-dismiss="alert">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <span ng-show="operateType == 1" class="controls">订单还未显示出来？不用担心，您可以点击右上角【手动同步】</span>
+                                    <span ng-show="operateType == 2" class="controls">使用全能掌柜发货的订单，才能进行筛选噢~</span>
+                                </div>
+                                <select class="form-control " ng-model="operateType">
+                                    <option value="1">已付款未发货</option>
+                                    <option value="2">卖家已发货</option>
+                                </select>
+                            </div>
+                            <div class="controls">
+                                <select class="form-control static input-medium" ng-model="operateStatus">
+                                    <option ng-show="operateType==1" value="1">未打印快递单</option>
+                                    <option ng-show="operateType==1" value="2">已打印快递单</option>
+                                    <option ng-show="operateType==1" value="3">未打印发货单</option>
+                                    <option ng-show="operateType==1" value="4">已打印发货单</option>
+                                    <option ng-show="operateType==1" value="5">已打印快递单+发货单</option>
+                                    <option ng-show="operateType==1" value="6">不限</option>
+                                    <option ng-show="operateType==2" value="7">1天内已发货订单</option>
+                                    <option ng-show="operateType==2" value="8">1天至60天内已发货订单</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="adv-search" id="collapseExample">
+                        <div class="form-group col-xs-4">
+                            <label class="control-label">订单类型：</label>
+
+                            <div class="controls">
+                                <select ng-model="tradeType" ng-class="{'selectValue':tradeType}"
+                                        class="form-control input-medium">
+                                    <option value="">全部类型</option>
+                                    <option value="fixed">一口价</option>
+                                    <option value="cod">货到付款</option>
+                                    <option value="nopaid">试用中心</option>
+                                    <option value="step">万人团</option>
+                                    <option value="eticket">生活汇</option>
+                                    <option value="tmall_i18n">天猫国际</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-xs-4">
+                            <div class="control-elem normalize">
+                                <select class="form-control" ng-model="receiverKey">
+                                    <option value="1">订单编号</option>
+                                    <option value="2">运单号码</option>
+                                    <option value="3">收货人姓名</option>
+                                    <option value="4">收货人城市</option>
+                                    <option value="5">收货人区县</option>
+                                    <option value="6">收货人手机</option>
+                                    <option value="7">收货人固话</option>
+                                    <option value="8">打印流水号</option>
+                                    <option value="9">买家昵称</option>
+                                </select>
+                            </div>
+                            <div class="controls">
+                                <span ng-show="receiverKey==1||receiverKey==2">
+                                <input type="text" ng-class="{'selectValue':receiverValue}"
+                                       class="form-control input-medium" name="tid"
+                                       ng-model="receiverValue">
+                            </span>
+                            <span ng-show="receiverKey==3||receiverKey==4||receiverKey==5">
+                                <input type="text" ng-class="{'selectValue':receiverValue}"
+                                       class="form-control input-medium"
+                                       name="receiverName" ng-model="receiverValue">
+                            </span>
+                            <span ng-show="receiverKey==6">
+                                <input type="text" ng-class="{'selectValue':receiverValue}"
+                                       class="form-control input-medium" name="receiverMobile" ng-model="receiverValue">
+                            </span>
+                            <span ng-show="receiverKey==7">
+                                <input type="text" class="form-control input-medium"
+                                       ng-class="{'selectValue':receiverValue}"
+                                       name="receiverPhone" ng-model="receiverValue">
+                            </span>
+                            <span ng-show="receiverKey==8">
+                                <input type="text" class="form-control input-medium" name="serial"
+                                       ng-class="{'selectValue':receiverValue}" ng-model="receiverValue">
+                            </span>
+                            <span ng-show="receiverKey==9">
+                            <input type="text" class="form-control input-medium" name="buyerNick"
+                                   ng-class="{'selectValue':receiverValue}" ng-model="receiverValue">
+                            </span>
+                            </div>
+                        </div>
+                        <div class="form-group col-xs-4">
+                            <label class="control-label">快捷选单：</label>
+
+                            <div class="controls">
+                                <select class="form-control input-medium" ng-class="{'selectValue':fastChoiceStatus}"
+                                        ng-model="fastChoiceStatus">
+                                    <option value="">快捷选单</option>
+                                    <option value="1">可直接打印订单</option>
+                                    <option value="2">1种SKU属性且1件</option>
+                                    <option value="3">1种SKU属性且多件</option>
+                                    <option value="4">1种商品且多件</option>
+                                    <option value="5">多种SKU属性</option>
+                                    <option value="6">无留言且无卖家备注</option>
+                                    <option value="7">有留言或有卖家备注</option>
+                                    <option value="8">有留言且无卖家备注</option>
+                                    <option value="9">有留言且有卖家备注</option>
+                                    <option value="10">是乡村订单</option>
+                                    <option value="11">不是乡村订单</option>
+                                    <option value="12">是聚划算订单</option>
+                                    <option value="13">不是聚划算订单</option>
+                                    <option value="14">部分发货订单</option>
+                                    <option value="15">需开发票订单</option>
+                                    <option value="16">退款中订单</option>
+                                    <option value="17">不是退款中订单</option>
+                                    <option value="18">合并的订单</option>
+                                    <option value="19">非合并的订单</option>
+                                    <option value="20">提示手工合并的订单</option>
+                                    <option value="21">已录入运单号码</option>
+                                    <option value="22">未录入运单号码</option>
+                                    <option value="23">有运费订单</option>
+                                    <option value="24">无运费订单</option>
+                                    <option value="25">指定发EMS订单</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-xs-4">
+                            <label class="control-label">所属省份：</label>
+
+                            <div class="controls">
+                                <select class="form-control input-medium" ng-class="{'selectValue':customProvince}"
+                                        ng-click="customProvince==-1&&selectArea()"
+                                        ng-model="customProvince">
+                                    <option value="">全部省份</option>
+                                    <option ng-value="Area.areaNames"
+                                            ng-repeat="Area in searchParam.customQueryAreaList">
+                                        {{Area.areaNames}}
+                                    </option>
+                                    <option value="-1">自定义</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group col-xs-4">
+                            <label class="control-label">备注旗帜：</label>
+
+                            <div class="controls">
+                                <select ng-model="sellerFlag" class="form-control input-medium"
+                                        ng-class="{'selectValue':sellerFlag}" >
+                                    <option value="">不限</option>
+                                    <option value="0" style="color:gray;">无旗帜</option>
+                                    <option value="1" style="color:red;">红</option>
+                                    <option value="2" style="color:gold;">黄</option>
+                                    <option value="3" style="color:green;">绿</option>
+                                    <option value="4" style="color:blue;">蓝</option>
+                                    <option value="5" style="color:purple;">紫</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-xs-4">
+
+                            <label class="control-label">自定义分类：</label>
+
+                            <div class="controls">
+                                <select class="form-control input-medium" ng-model="customStarId"
+                                        ng-style="{color :customStarColor}" ng-class="{'selectValue':customStarId}"
+                                        ng-click="updateCustomStar(searchParam.customStarList,customStarId)">
+                                    <option style="color:#000000" value="">不限</option>
+                                    <option style="color:#000000" value="0">有分类</option>
+                                    <option style="color:#000000" value="-1">无分类</option>
+                                    <option ng-repeat="customStar in searchParam.customStarList"
+                                            ng-style="{color :customStar.color}" ng-value="customStar.id">
+                                        ★{{customStar.name}}
+                                    </option>
+                                    <option style="color:#000000" value="-1000">修改分类名</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-xs-4">
+                            <div class="control-elem">
+                                <select class="form-control " ng-model="skuKey">
+                                    <option value="1">销售属性商家编码</option>
+                                    <option value="2">销售属性中包含</option>
+                                    <option value="3">销售属性中不包含</option>
+                                </select>
+                            </div>
+                            <div class="controls">
+                                <span ng-show="skuKey==1">
+                                <input ng-class="{'selectValue':skuValue}" class="form-control input-medium" type="text"
+                                       name="sellerTid" ng-model="skuValue">
+                            </span>
+                            <span ng-show="skuKey==2">
+                                <input ng-class="{'selectValue':skuValue}" class="form-control input-xshort static"
+                                       type="text" name="sellerInclude" ng-model="skuValue">
+                                <input ng-class="{'selectValue':skuValueSize}" class="form-control input-xshort static"
+                                       type="text" name="sellerInclude" ng-model="skuValueSize">
+                            </span>
+                            <span ng-show="skuKey==3">
+                                <input type="text" class="form-control input-medium"
+                                       ng-class="{'selectValue':skuValueSize}" name="sellerExclude"
+                                       ng-model="skuValueSize">
+                            </span>
+                            </div>
+                        </div>
+                        <div class="form-group col-xs-4">
+                            <div class="control-elem normalize">
+                                <select ng-model="messageKey" class="form-control ">
+                                    <option value="1">买家留言</option>
+                                    <option value="2">卖家备注</option>
+                                    <option value="3">软件内备注补充</option>
+                                </select>
+                            </div>
+                            <div class="controls">
+                            <span>
+                                <input type="text" name="buyerMessage" class="form-control input-medium"
+                                       ng-class="{'selectValue':messageValue}" ng-model="messageValue">
+                            </span>
+                            </div>
+                        </div>
+                        <div class="form-group col-xs-4">
+                            <div class="control-elem">
+                                <select ng-model="itemKey" class="form-control ">
+                                    <option value="1">宝贝简称中包含</option>
+                                    <option value="2">宝贝简称中不包含</option>
+                                    <option value="3">宝贝商家编码</option>
+                                    <option value="4">宝贝ID</option>
+                                </select>
+                            </div>
+                            <div class="controls">
+                            <span ng-show="itemKey==4||itemKey==3">
+                                <input type="text" name="itemId" class="form-control input-medium"
+                                       ng-class="{'selectValue':itemValue}" ng-model="itemValue">
+                            </span>
+                            <span ng-show="itemKey==1||itemKey==2">
+                                <input type="text" name="itemTitle" class="form-control input-medium"
+                                       ng-class="{'selectValue':itemValue}" ng-model="itemValue">
+                            </span>
+                            </div>
+                        </div>
+                        <div class="form-group col-xs-4">
+                            <div class="control-elem normalize">
+                                <select ng-model="numKey" class="form-control">
+                                    <option value="1">宝贝数量</option>
+                                    <option value="2">销售属性种类</option>
+                                    <option value="3">订单重量(kg)</option>
+                                </select>
+                            </div>
+                            <div class="controls">
+                                <input type="text" name="itemNumStart" ng-class="{'selectValue':numValueStart}"
+                                       class="form-control input-xshort static"
+                                       ng-model="numValueStart">~
+                                <input type="text" name="itemNumEnd" ng-class="{'selectValue':numValueEnd}"
+                                       class="form-control input-xshort static"
+                                       ng-model="numValueEnd">
+                            </div>
+                        </div>
+
+                        <div class="form-group col-xs-4">
+                            <label class="control-label">使用快递：</label>
+
+                            <div class="controls">
+                                <select class="form-control" ng-model="userExpressId"
+                                        ng-class="{'selectValue':userExpressId}">
+                                    <option value="">不限</option>
+                                    <option ng-repeat="userExpress in searchParam.userExpressList"
+                                            ng-value="userExpress.id">
+                                        {{userExpress.name}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-xs-6 timePick"
+                             ng-class="{'has-error':filterForm.startTime.$invalid||filterForm.endTime.$invalid}">
+                            <div class="control-elem normalize">
+                                <select ng-model="dateKey" class="form-control">
+                                    <option value="1">下单时间</option>
+                                    <option value="2">付款时间</option>
+                                    <option value="3">快递单打印时间</option>
+                                    <option value="4">在我们软件发货的时间</option>
+                                    <option value="5">淘宝发货时间</option>
+                                </select>
+                            </div>
+                            <div class="controls">
+                                <input type="text" ng-model="dateValueStart" name="startTime"
+                                       compare-type="datetime" dp-datepicker dp-datetimepicker="limitTime1"
+                                       class="form-control static input-medium"
+                                       ng-class="{'selectValue':dateValueStart}"
+                                       dp-valid-lower-than="{{dateValueEnd|date:'yyyy-MM-dd HH:mm:ss'}}">
+                                <span>~</span>
+                                <input type="text" ng-model="dateValueEnd" dp-datepicker dp-datetimepicker="limitTime2"
+                                       ng-class="{'selectValue':dateValueEnd}" class="form-control static input-medium"
+                                       name="endTime">
+
+                                <span class="error"
+                                      ng-show="filterForm.startTime.$invalid||filterForm.endTime.$invalid">
+                                    <span class="help-block static"
+                                          ng-show="filterForm.startTime.$error.dpValidLowerThan">
+                                        开始时间必须小于结束时间
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!--操作栏-->
+                <div class="operations ">
+                    <div class="right">
+                        <button class="btn btn-warning btn-sm w-100" w5c-form-submit="search()">筛选</button>
+                        <button class="btn btn-primary btn-sm w-100" ng-click="resetForm()">重置</button>
+                        &nbsp;&nbsp;
+                        <span class="text-base btn-toggle cursor-hand" style="padding-right: 15px;">展开</span>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="tpl-bar-wrap">
+            <div class="tpl-bar " dp-smart-float="{type:'top',distance:'0'}">        <!--快递模板-->
+
+                <div class="tpl-content ">
+                    <label>快递模板：</label>
+                    <label class="radio-inline" ng-repeat="expressTemplate in searchParam.userExpressTemplateList"
+                           ng-class="{'active':expressTemplate.id == obj.userExpressTemp.id}">
+                        <input type="radio" name="userTemplate" ng-value="expressTemplate"
+                               ng-model="obj.userExpressTemp" ng-click="switchTemplate(expressTemplate)">
+                        {{expressTemplate.name}}
+                    </label>
+                        <span class="operation">
+                            <a ng-click="addExpressTemplate()">添加</a>
+                            <a ng-click="addCloudTemplate()">添加菜鸟云模板</a>
+                            <a ng-click="editTemp(obj.userExpressTemp)">修改</a>
+                            <a ng-click="deleteTemp(obj.userExpressTemp)">删除</a>
+                            <a ng-show="waybill" ng-click="remaining(obj.userExpressTemp)">余额</a>
+                            <a class="text-base" target="_blank" style="padding-left: 10px;" href="//mygod.cuxiao.quannengzhanggui.net/static/common/index.html#/help/helpView?id=103">
+                                如何添加电子面单模板？
+                            </a>
+                        </span>
+                    <span ng-show="searchParam.userExpressTemplateList.length ==0">暂时无可用快递模板，请自行添加。</span>
+                </div>
+            </div>
+        </div>
+        <div class=" slogan slogan-help" ng-show="countNoPrint&&countNoPrint!=0&&showSlogan&&searchParam.baseSetting.isShowAfterPrint">
+
+            <div >
+                <ul>
+                    <li>
+                        <strong>温馨提示：</strong>
+                        <span>亲，您有 <strong class="text-danger">{{countNoPrint}}</strong> 笔订单打印了快递单，但是还没有发货，</span>
+                        <a ng-click="checkPrinted()" style="color: #107FE4">点击这里查看这些订单</a>&nbsp;&nbsp;
+                        <a ng-click="closeCountNoPrint()">不再提示</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="data-table-wrap">
+            <div class="tool-bar ">
+                <div class="left">
+                    <div class="dropdown package-num">
+                        <label data-toggle="dropdown">
+                            <strong toolTip="已选订单数" class="total-num">{{packageNum}}</strong>
+                            <span>批量选择订单</span>
+                            <span class="caret"></span>
+                        </label>
+                        <ul class="dropdown-menu">
+                            <li ng-click="selectNormal()">选择正常订单</li>
+                            <li ng-click="selectAllPackage()">选择全部订单</li>
+                            <li ng-click="selectInvert()">反向选择</li>
+                            <li ng-click="selectCancel()">取消选择</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="right">
+                    <div class="checkbox static">
+                        <label>
+                            <input type="checkbox" ng-model="isCollapsed" ng-click="expandAll(isCollapsed)">
+                            展开详细
+                        </label>
+                    </div>
+                    <span title="设置订单排序" style="padding-left:5px;cursor: pointer;padding-right: 15px;" ng-click="setSort()">
+                        订单排序&nbsp;<i class="glyphicon glyphicon-cog"></i>
+                    </span>
+                </div>
+            </div>
+            <table class="table data-table trade-table" ng-class="{'no-data':packages.length==0}">
+                <thead>
+                <tr>
+                    <th width="30"></th>
+                    <th width="33"></th>
+                    <th width="33"></th>
+                    <th width="63">状态区</th>
+                    <th width="52">
+                        <span ng-if="!reachLoding">可达</span>
+                        <img ng-if="reachLoding" style="width: 17px;" ng-src="images/components/loading.gif">
+                    </th>
+                    <th width="130">买家昵称</th>
+                    <th>收货信息/买家留言及备注</th>
+                    <th width="52">件数</th>
+                    <th width="80">金额(元)</th>
+                    <!--<th>快递模板</th>-->
+                    <th width="177">快递信息</th>
+                    <!--<th>买家留言/卖家备注</th>-->
+                    <th width="80">操作</th>
+                </tr>
+                </thead>
+                <tbody ng-repeat="package in packages" class="package-tab" toggle-expand>
+                <tr ng-class="{'selected':package.checked}">
+                    <td>{{$index+1+pageSize*(pageNo-1)}}</td>
+                    <td>
+                        <input type="checkbox" ng-model="package.checked" ng-disabled="package.disabled"
+                               ng-click="selectPackage(package)">
+                    </td>
+                    <td>
+                        <div class="dropdown" title="{{package.normalPackage.customStarName}}">
+                            <label data-toggle="dropdown">
+                                <i style="margin-top:5px;" class="glyphicon glyphicon-star"
+                                   ng-class="{'noClassify':package.normalPackage.customStarColor==undefined}"
+                                   ng-style='{color :package.normalPackage.customStarColor}'></i>
+                            </label>
+                            <ul class="dropdown-menu">
+                                <li ng-click="setCustomStar(package.normalPackage)" class="noClassify">
+                                    <i class="glyphicon glyphicon-star"></i>
+                                    未分类
+                                </li>
+                                <li ng-click="setCustomStar(package.normalPackage,customStar)"
+                                    ng-repeat="customStar in searchParam.customStarList"
+                                    ng-style="{color :customStar.color}">
+                                    <i class="glyphicon glyphicon-star"></i>
+                                    {{customStar.name}}
+                                </li>
+                                <li data-toggle="close-btn"
+                                    ng-click="updateCustomStar(searchParam.customStarList,-1000)">
+                                    修改分类名
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="status-box">
+                            <div ng-show="package.normalPackage.isNeedTipStatusChange==1||package.normalPackage.addressChangeTids"
+                                 class="NeedTipMatching unusual">
+                                <img ng-src="images/pages/forbid-img.png">
+                                <div class="exceptionTip">
+                                    <div>
+                                        <label class="text-danger">此包裹存在以下问题请确认后再进行处理：</label>
+                                    </div>
+                                    <label  style="margin-top:0px;"
+                                            ng-show="package.normalPackage.addressChangeTids&&(package.normalPackage.mergeStatus==3||package.normalPackage.mergeStatus==4)">
+                                        <label>
+                                            <span class="text-warning">
+                                                合并的订单
+                                                <span class="text-primary" style="word-break: break-all;">{{package.normalPackage.addressChangeTids}}</span>
+                                                收货地址发生变更，请拆单后重新处理。<a ng-click="splitSave(package)">【点击拆单】</a>
+                                            </span>
+                                        </label>
+                                    </label>
+                                    <label  style="margin-top:0px;"
+                                            ng-show="package.normalPackage.addressChangeTids&&(package.normalPackage.mergeStatus==1||package.normalPackage.mergeStatus==2)">
+                                        <label>
+                                            <span class="text-warning">
+                                                此笔订单收货地址发生变更，建议单据重新打印。
+                                            </span>
+                                        </label>
+                                    </label>
+                                    <label  style="margin-top:0px;"
+                                            ng-show="package.normalPackage.isNeedTipStatusChange==1">
+                                        <label>
+                                            <span ng-show="package.refundStatus==4" class="text-warning">打印快递单后状态变更为退款成功请勿发货。可至【更多】移除此订单！</span>
+                                            <span ng-show="package.refundStatus!=4" class="text-warning">打印快递单后买家申请了退款且处于处理中，发货请慎重！</span>
+                                        </label>
+                                    </label>
+
+                                    <!--<div class="btn-close" ng-show="package.normalPackage.isNeedTipStatusChange==1||(package.normalPackage.addressChangeTids&&(package.normalPackage.mergeStatus==1||package.normalPackage.mergeStatus==2))">
+                                        <a ng-click='closeTip(package)'>已确认不再对此提示</a>
+                                    </div>-->
+                                </div>
+
+                            </div>
+                            <div ng-if="package.normalPackage.isCod" class="Cod NeedTipMatching">
+                                <span>到</span>
+
+                                <div class="exceptionTip">
+                                    <div>
+                                        <label>买家指定货到付款，请留意！</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-if="package.normalPackage.isEms" class="Ems NeedTipMatching">
+                                <span>E</span>
+
+                                <div class="exceptionTip">
+                                    <div>
+                                        <label>指定EMS快递，请留意！</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-if="package.normalPackage.isPrintExpress" class="PrintExpress NeedTipMatching">
+                                <span>快</span>
+
+                                <div class="exceptionTip">
+                                    <div><label>已打印快递单</label></div>
+                                    <label>
+                                        快递单打印次数： {{package.normalPackage.printExpressNum}} 次
+                                    </label>
+                                    <label>
+                                        最后打印时间：{{package.normalPackage.printExpressTime}}
+                                    </label>
+                                </div>
+                            </div>
+                            <div ng-if="package.normalPackage.isPrintDeliveryBill"
+                                 class="PrintDeliveryBill NeedTipMatching">
+                                <span>发</span>
+
+                                <div class="exceptionTip">
+                                    <div><label>已打印发货单</label></div>
+                                    <div>
+                                        <label>
+                                            发货单打印次数： {{package.normalPackage.printDeliveryBillNum}}次
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label>
+                                            最后打印时间：{{package.normalPackage.printDeliveryBillTime}}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-if="package.refundStatus" class="refundStatus NeedTipMatching ">
+                                <span>退</span>
+
+                                <div class="exceptionTip">
+                                    <div>
+                                        <label>此订单买家有申请退款，请尽快处理！</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-if="package.normalPackage.consignStatus ==1" class="consignStatus NeedTipMatching ">
+                                <span>拆</span>
+
+                                <div class="exceptionTip">
+                                    <div>
+                                        <label>此订单被拆成多个包裹做了部分发货</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-if="package.normalPackage.mergeStatus ==3||package.normalPackage.mergeStatus ==4"
+                                 class="mergeStatus NeedTipMatching ">
+                                <span>合</span>
+
+                                <div class="exceptionTip">
+                                    <div><label>对&nbsp;<span class="text-warning">{{package.normalPackage.mergedTids.split(',').length}}</span>&nbsp;笔订单进行了合单</label>
+                                    </div>
+                                    <div ng-repeat="tid in package.normalPackage.mergedTids.split(',')">
+                                        <label>【{{$index+1}}】{{tid}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div ng-show="package.normalPackage.isReach==undefined">
+                            <img class="tip-icon"
+                                 title="未开始匹配当前物流是否可达" ng-src="images/pages/reachLoading.png">
+                        </div>
+                        <div ng-show="(package.normalPackage.isExpressSame!=2&&package.normalPackage.isExpressSame!=4)&&package.normalPackage.isReach==1"
+                             class="consignInfo">
+                            <img class="tip-icon" ng-src="images/pages/reachable.png" ng-click="reachCover(package)">
+
+                            <div class="exceptionTip">
+                                <div>
+                                    <label>
+                                        <span class="text-primary">【{{obj.userExpressTemp.userExpressName}}】</span>
+                                        可以派送到【{{package.normalPackage.receiverDistrict}}】，
+                                        <a ng-click="reachCover(package)">点击查看详细</a>
+                                    </label>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div ng-show="(package.normalPackage.isExpressSame!=2&&package.normalPackage.isExpressSame!=4)&&package.normalPackage.isReach==0"
+                             class="consignInfo">
+                            <img class="tip-icon" ng-src="images/pages/isExpressSame.png"
+                                 ng-click="reachCover(package)">
+
+                            <div class="exceptionTip">
+                                <div>
+                                    <label>
+                                        <span class="text-primary">【{{obj.userExpressTemp.userExpressName}}】</span>
+                                        <span class="text-warning">不可以派送</span>
+                                        到【{{package.normalPackage.receiverDistrict}}】，
+                                        <a ng-click="reachCover(package)">点击查看详细</a>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-show="package.normalPackage.isExpressSame==2||package.normalPackage.isExpressSame==4"
+                             class="consignInfo">
+                            <img class="tip-icon" ng-src="images/pages/unreachable.png"
+                                 ng-click="reachCover(package)">
+
+                            <div class="exceptionTip">
+                                <div>
+                                    <label class="text-danger">当前所选快递（物流）与
+                                        <span ng-show="package.normalPackage.isExpressSame==4">买家留言</span>
+                                        <span ng-show="package.normalPackage.isExpressSame==2">卖家备注</span>指定不匹配，请查看
+                                        <span ng-show="package.normalPackage.isExpressSame==2">卖家备注</span>
+                                        <span ng-show="package.normalPackage.isExpressSame==4">买家留言</span>！
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td style="position: relative;">
+                        <a target="_blank"
+                           href="https://www.taobao.com/webww/ww.php?ver=3&touid={{package.normalPackage.buyerNick}}&siteid=cntaobao&status=2&charset=utf-8">
+                            <img border="0"
+                                 ng-src="https://amos.alicdn.com/realonline.aw?v=2&uid={{package.normalPackage.buyerNick}}&site=cntaobao&s=2&charset=utf-8"/>
+                        </a>
+                        {{package.normalPackage.buyerNick}}
+                        <div ng-if="package.isCommonBlackMember ==1" class="consignStatus NeedTipMatching ">
+                            <span>黑</span>
+                            <div class="exceptionTip">
+                                <div>
+                                    <label>
+                                        <span class="text-danger" ng-repeat="type in package.blackTypes">
+                                            {{type|blackTypes}}&nbsp;
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+
+                        <div class="fixed-tooltip alert " role="alert"
+                             ng-show="package.normalPackage.mergeStatus ==2||package.normalPackage.mergeStatus ==4">
+                            <button type="button" class="close" aria-label="Close" data-dismiss="alert">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <span>此买家有未合并的订单可合并,<a ng-click="tipMergeForm(package.normalPackage)">手工合单</a></span>
+                        </div>
+                    </td>
+
+                    <td>
+                        <label>
+                            <span>{{package.normalPackage.receiverName}}，{{package.normalPackage.receiverMobile}}，</span>
+                            {{package.normalPackage.receiverState}}{{package.normalPackage.receiverCity}}
+                            {{package.normalPackage.receiverDistrict}}{{package.normalPackage.receiverTown}}
+                            {{package.normalPackage.receiverAddress}}
+                            <span ng-if="package.normalPackage.isRural" class="refundStatus NeedTipMatching ">
+                                <span>乡</span>
+
+                                <div class="exceptionTip">
+                                    <div>
+                                        <label>买家收货地址包含 <span class="text-primary">乡</span> 和 <span
+                                                class="text-primary">村</span> 地址，请确认物流
+                                            最终是否可达！</label>
+                                    </div>
+                                </div>
+                            </span>
+                            <a ng-hide="consignBtn||(package.normalPackage.consignStatus ==1)"
+                               ng-click="updateReceiverAddress(package)">【修改】</a>
+                        </label>
+
+                        <div class="font-size-sm ">
+                            <span class="text-primary" ng-show="package.buyerMessages">
+                                <i class="glyphicon glyphicon-comment"></i> {{package.buyerMessages}}
+                            </span>
+                            <span ng-repeat="packageMemo in package.packageMemoDtoList">
+                                <img ng-src="images/components/sellerFlagRED.png"
+                                     ng-if="packageMemo.sellerFlag==1">
+                                <img ng-src="images/components/sellerFlagYELLOW.png"
+                                     ng-if="packageMemo.sellerFlag==2">
+                                <img ng-src="images/components/sellerFlagGREEN.png"
+                                     ng-if="packageMemo.sellerFlag==3">
+                                <img ng-src="images/components/sellerFlagBLUE.png"
+                                     ng-if="packageMemo.sellerFlag==4">
+                                <img ng-src="images/components/sellerFlagPURPLE.png"
+                                     ng-if="packageMemo.sellerFlag==5">
+                                <span class="text-warning">{{packageMemo.sellerMemo}}</span>
+                            </span>
+                            <span ng-show="package.sysMemos"> <i class="glyphicon glyphicon-comment"></i> {{package.sysMemos}}</span>
+                        </div>
+                        <div ng-repeat="type in package.blackTypes" class="text-danger">
+                            {{type|blackTypeText}}
+                        </div>
+                    </td>
+                    <td>{{package.normalPackage.totalItemNum}}</td>
+                    <td>{{package.normalPackage.totalPrice|centToDollar}}</td>
+                    <!--<td>{{package.normalPackage.userTemplateName}}</td>-->
+                    <td class="double-td">
+                        <div class="text-div">
+                            {{package.normalPackage.userTemplateName}}
+                        </div>
+                        <div class="input-div associate" ng-init="smart=false" toolTip="{{toolMessage}}">
+                            <input type="text" ng-focus="smart =true" onkeyup="value=value.replace(/[\W]/g,'')"
+                                   name="expressNo" on-blur="smart" ng-model="package.normalPackage.expressNo" class="form-control input-sm"
+                                   ng-disabled="waybill" >
+
+                            <i ng-show="smart" ng-click="associateExpressNo(package)"
+                               class="glyphicon glyphicon-arrow-down text-success associate-arrow"
+                               title="以此运单号码为基础，自动联想输入下面所有选中记录的运单号码"></i>
+
+                            <div class="fixed-tooltip alert unprintedTip" role="alert"
+                                 ng-show="package.normalPackage.isPrintExpress ==1">
+                                <button type="button" class="close" aria-label="Close" data-dismiss="alert">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <span>有尚未打印快递单的订单,<a ng-click="showLog(package)">点击查看打印记录</a></span>
+                            </div>
+                        </div>
+
+                    </td>
+                    <td>
+                        <div class="detail">
+                            <a class="dLabel" data-target="#orderInform{{$index}}"
+                               data-toggle="collapse">
+                                详细
+                            </a>
+                        </div>
+                        <div style="width: 51px;margin-top: 4px;" class="operation dropdown menu-right">
+                            <a data-toggle="dropdown">更多<span class="caret"></span></a>
+                            <ul class="dropdown-menu " aria-labelledby="dLabel">
+                                <li ng-show="waybill" ng-click="printMultiWaybill(package)">打印多个电子面单</li>
+                                <li ng-show="waybill" ng-click="applyWaybill(package)">获取新的电子面单</li>
+                                <li ng-show="waybill" ng-click="fetchWaybill(package)">使用之前的电子面单</li>
+                                <li ng-show="!waybill" ng-click="findUsedExpressNo(package)">使用之前的面单号</li>
+                                <li ng-show="waybill" ng-click="recycleWaybill(package)">回收电子面单</li>
+                                <li ng-click="updatePrintState(package.normalPackage)">修改打印状态</li>
+                                <li ng-click="updateReceiverAddress(package)">修改收货地址</li>
+
+                                <li ng-click="splitSave(package)"
+                                    ng-show="package.normalPackage.mergeStatus ==3||package.normalPackage.mergeStatus ==4">
+                                    拆分合在一起的订单
+                                </li>
+                                <li ng-click="syncAgain(package.normalPackage)">从淘宝重新同步此订单</li>
+                                <li ng-click="selectAfter($index)">仅选中本条及以下订单</li>
+                                <li ng-click="selectThis(package)">选中本订单里所有商品</li>
+                                <li ng-click="showLog(package)">查看操作日志</li>
+                                <li ng-show="package.refundStatus==4" ng-click="removePackage(package)">移除订单</li>
+                            </ul>
+                        </div>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="20" class="order-td">
+                        <div class="tableCollapse collapse" id="orderInform{{$index}}">
+                            <!--<div uib-collapse="isCollapsed">-->
+                            <table ng-repeat="normalTrade in package.normalPackage.normalTradeList"
+                                   class="table order-table ">
+                                <tbody>
+                                <tr>
+                                    <td class="left">
+                                        <div>
+                                            <a target="_blank" ng-href="https://trade.taobao.com/trade/detail/trade_order_detail.htm?biz_order_id={{normalTrade.tid}}">{{normalTrade.tid}}</a>
+                                        </div>
+                                        <div ng-show="normalTrade.created" class="text-remind">
+                                            {{normalTrade.created}}
+                                        </div>
+                                        <div ng-show="normalTrade.payTime" class="text-remind">
+                                            {{normalTrade.payTime}}
+                                        </div>
+                                    </td>
+                                    <td class="middle">
+                                        <table class="table table-item"
+                                               ng-repeat="normalOrder in normalTrade.normalOrderList">
+                                            <tbody>
+                                            <tr>
+                                                <td class="consign-status">
+                                                    <div ng-show="normalOrder.refundStatus!='SUCCESS'">
+                                                        <div ng-if="normalOrder.consignStatus==0 && (normalOrder.status != 'WAIT_BUYER_CONFIRM_GOODS' &&
+                                                         normalOrder.status != 'TRADE_BUYER_SIGNED' &&
+                                                         normalOrder.status != 'TRADE_FINISHED')">
+                                                            待发货
+                                                        </div>
+                                                        <div ng-if="normalOrder.consignStatus==2&&normalOrder.status!='TRADE_FINISHED'" class="consignInfo">
+                                                            <span class="text-primary ">已发货</span>
+
+                                                            <div class="exceptionTip">
+                                                                <div><label>发货信息</label></div>
+                                                                <div>
+                                                                    <label>
+                                                                        发货时间： {{normalOrder.sysConsignTime}}
+                                                                    </label>
+                                                                </div>
+                                                                <div>
+                                                                    <label>
+                                                                        快递公司：{{normalOrder.userExpressName}}
+                                                                    </label>
+                                                                </div>
+                                                                <div>
+                                                                    <label>
+                                                                        运单号：{{normalOrder.expressNo}}
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div ng-if="normalOrder.consignStatus==0&&(normalOrder.status == 'WAIT_BUYER_CONFIRM_GOODS' ||
+                                                        normalOrder.status == 'TRADE_BUYER_SIGNED')"
+                                                             class="consignInfo">
+                                                            <span class="text-danger ">已发货</span>
+                                                        </div>
+                                                        <div ng-if="normalOrder.status == 'TRADE_FINISHED'"
+                                                             class="consignInfo">
+                                                            <span class="text-primary">交易成功</span>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-show="normalOrder.refundStatus=='SUCCESS'">
+                                                        <span class="text-danger">已关闭</span>
+                                                    </div>
+                                                    <div ng-if="normalOrder.isPrintExpress"
+                                                         class="PrintExpress NeedTipMatching">
+                                                        <span>快</span>
+
+                                                        <div class="exceptionTip">
+                                                            <div><label>已打印快递单</label></div>
+                                                            <label>
+                                                                快递单打印次数： {{normalOrder.printExpressNum}} 次
+                                                            </label>
+                                                            <label>
+                                                                最后打印时间：{{normalOrder.printExpressTime}}
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="normalOrder.isPrintDelivery"
+                                                         class="PrintDeliveryBill NeedTipMatching">
+                                                        <span>发</span>
+
+                                                        <div class="exceptionTip">
+                                                            <div><label>已打印发货单</label></div>
+                                                            <div>
+                                                                <label>
+                                                                    发货单打印次数： {{normalOrder.printDeliveryNum}}次
+                                                                </label>
+                                                            </div>
+                                                            <div>
+                                                                <label>
+                                                                    最后打印时间：{{normalOrder.printDeliveryTime}}
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="img">
+                                                    <a target="_blank"
+                                                       ng-href="https://item.taobao.com/item.htm?id={{normalOrder.numIid}}">
+                                                        <img ng-src="{{normalOrder.picPath}}">
+                                                    </a>
+                                                </td>
+                                                <td class="order-title">
+                                                    <div>
+                                                        <input type="checkbox" ng-disabled="normalOrder.disabled"
+                                                               ng-model="normalOrder.checked"
+                                                               ng-click="selectOrder(normalOrder,package)">
+                                                        <span ng-show="!normalOrder.abbrevName">{{normalOrder.title}}</span>
+                                                        <span ng-show="normalOrder.abbrevName">{{normalOrder.abbrevName}}</span>
+                                                        <a ng-click="updateItemTitle(normalOrder)">【设置简称】</a>
+                                                    </div>
+                                                    <div ng-show="normalOrder.skuPropertiesName||normalOrder.skuChangeName">
+                                                        <span ng-if="!normalOrder.skuChangeName">{{normalOrder.skuPropertiesName}}</span>
+                                                        <span ng-if="normalOrder.skuChangeName">{{normalOrder.skuChangeName}}</span>
+                                                        <a ng-click="updateSku(normalOrder)">【修改】</a>
+                                                    </div>
+                                                    <div>商家编码：
+                                                        <span ng-if="normalOrder.skuCode">{{normalOrder.skuCode}}</span>
+                                                        <span ng-if="!normalOrder.skuCode">{{normalOrder.itemCode}}</span>
+                                                        <a ng-click="updateItemCode(normalOrder)">【修改】</a>
+                                                    </div>
+                                                </td>
+                                                <td class="order-status">
+                                                    <div>{{normalOrder.price|centToDollar}}×{{normalOrder.num}}
+                                                    </div>
+                                                    <div class="text-danger"
+                                                         ng-hide="normalOrder.refundStatus=='NO_REFUND'">
+                                                        {{normalOrder.refundStatus|refundStatus}}
+                                                    </div>
+
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </td>
+                                    <td class="right">
+                                        <div>
+                                            <ul>
+                                                <li>
+                                                    <strong>
+                                                        {{normalTrade.payment|centToDollar}} =
+                                                        <span title="宝贝总价">{{normalTrade.totalPrice|centToDollar}}</span>+
+                                                        <span title="运费" class="text-danger">{{normalTrade.postFee|centToDollar}}</span>-
+                                                        <span title="手工调整优惠">{{-normalTrade.totalAdjustFee|centToDollar}}</span>
+                                                    </strong>
+                                                </li>
+                                                <li>发票信息：{{normalTrade.invoiceKind}}{{normalTrade.invoiceName}}</li>
+                                                <li ng-repeat="PromotionDetail in normalTrade.promotionDetailList">
+                                                    优惠信息：{{PromotionDetail.promotionDesc}}
+                                                </li>
+                                                <li><strong>买家留言</strong>：
+                                                    <span class="text-primary">
+                                                        {{normalTrade.buyerMessage}}
+                                                    </span>
+                                                </li>
+                                                <li><strong>卖家备注</strong>&nbsp;<a
+                                                        ng-click="updateSellerMemo(normalTrade,package)">[修改]</a>：
+                                                    <label>
+                                                        <img ng-src="images/components/sellerFlagRED.png"
+                                                             ng-if="normalTrade.sellerFlag==1">
+                                                        <img ng-src="images/components/sellerFlagYELLOW.png"
+                                                             ng-if="normalTrade.sellerFlag==2">
+                                                        <img ng-src="images/components/sellerFlagGREEN.png"
+                                                             ng-if="normalTrade.sellerFlag==3">
+                                                        <img ng-src="images/components/sellerFlagBLUE.png"
+                                                             ng-if="normalTrade.sellerFlag==4">
+                                                        <img ng-src="images/components/sellerFlagPURPLE.png"
+                                                             ng-if="normalTrade.sellerFlag==5">
+                                                    </label>
+                                                    <span class="text-warning">
+                                                        {{normalTrade.sellerMemo}}
+                                                    </span>
+                                                </li>
+                                                <li><strong>备注补充</strong>&nbsp;<a
+                                                        ng-click="updateSysMemo(normalTrade,package)">[修改]</a>：
+                                                    {{normalTrade.sysMemo}}
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </td>
+                </tr>
+
+                </tbody>
+                <tbody ng-show="!packages.length">
+
+                <tr>
+                    <td colspan="20">
+                        <div class="none-item-container">
+                            <div class="none-item">
+                                <div class="icon"></div>
+                                暂时没有数据哦~换个筛选条件试试吧~
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="tool-bar-footer">
+
+                <div class="right">
+                    <div paging page="pageNo" page-size="pageSize" total="count"
+                         paging-action="getOrder(page,pageSize,total)" show-prev-next="true" class="pagination">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="operation-bar-wrap clearfix">
+            <div class="operation-bar footer-bar text-center operation-bar-bottom" dp-smart-float="{type:'bottom'}" >
+                <div ng-show="packages" class="dropdown package-num pull-left">
+                    <label data-toggle="dropdown">
+                        <strong toolTip="已选订单数" class="total-num">{{packageNum}}</strong>
+                        <span>批量选择订单</span>
+                        <span class="caret"></span>
+                    </label>
+                    <ul class="dropdown-menu">
+                        <li ng-click="selectNormal()">选择正常订单</li>
+                        <li ng-click="selectAllPackage()">选择全部订单</li>
+                        <li ng-click="selectInvert()">反向选择</li>
+                        <li ng-click="selectCancel()">取消选择</li>
+                    </ul>
+                </div>
+                <span><a ng-href="http://mygod.cuxiao.quannengzhanggui.net/static/common/index.html#/help/helpView?id=138" target="-_blank" style="color:#107FE4;">电子面单打印偏移如何解决？</a></span>
+                <div class="dropdown btn-dropdown-warning" ng-class="{'btn-dropdown-disable':expressProcessing}">
+                    <button ng-class="{'btn-disable':expressProcessing}" ng-disabled="expressProcessing" type="button" ng-click="print(false,1)" class="btn btn-warning">
+                        <span ng-show="!expressProcessing">打印快递单</span>
+                        <span ng-show="expressProcessing">打印中...</span>
+                    </button>
+                    <a ng-class="{'btn-disable':expressProcessing}" class="btn btn-warning " data-toggle="dropdown"><span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <!-- <li>打印偏移设置</li>-->
+                        <li ng-click="print(true,1)">预览快递单</li>
+                    </ul>
+
+                </div>
+                <div class="dropdown btn-dropdown-info " ng-class="{'btn-dropdown-disable':deliveryProcessing}">
+                    <button ng-class="{'btn-disable':deliveryProcessing}" type="button" ng-click="print(false,2)" class="btn btn-info">
+
+                        <span ng-show="!deliveryProcessing">打印发货单</span>
+                        <span ng-show="deliveryProcessing">打印中...</span>
+                    </button>
+                    <a ng-class="{'btn-disable':deliveryProcessing}" class="btn btn-info " data-toggle="dropdown"><span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <!--<li>发货单设置</li>-->
+                        <li ng-click="print(true,2)">预览发货单</li>
+                    </ul>
+
+                </div>
+                <div class="dropdown btn-dropdown-primary" ng-hide="consignBtn||consignBtn2">
+                    <button type="button" ng-click="consign(1)" class="btn btn-primary">
+                        发货
+                    </button>
+
+                    <a class="btn btn-primary " data-toggle="dropdown"><span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li ng-click="consign(3)">虚拟发货</li>
+                        <li ng-click="consign(2)">在线下单发货</li>
+                    </ul>
+
+                </div>
+                <div class="dropdown " ng-show="consignBtn2">
+                    <button type="button" ng-click="consign(1)" class="btn btn-primary">
+                        用新单号重新发货
+                    </button>
+                </div>
+                <div class="dropdown btn-dropdown-success">
+                    <button type="button" data-toggle="dropdown" class="btn btn-success">
+                        更多操作
+                    </button>
+                    <a class="btn btn-success " data-toggle="dropdown"><span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <!--<li ng-click="mergeSave()">手工合单</li>-->
+                        <li ng-show="waybill" ng-click="recycleWaybill()">回收电子面单号</li>
+                        <li ng-click="updateUserExpressTemplate()">保存快递模板</li>
+                        <li ng-hide="waybill" ng-click="saveExpressNo()">保存运单号码</li>
+                        <li ng-hide="waybill" ng-click="deleteExpressNo()">删除运单号码</li>
+                        <li ng-click="batchUpdateSellerMemo()">修改卖家备注</li>
+                        <li ng-click="updateSysMemo()">备注补充</li>
+                        <li ng-hide="operateType==2" ng-click="preparingBillForm()">生成备货单</li>
+                    </ul>
+                </div>
+                <!--<div class="pull-right btn-lg go-top" title="回到顶部">
+                    <a href="javascript:window.scrollTo(0,0);">
+                        <i class="glyphicon glyphicon-arrow-up"></i>
+                    </a>
+                </div>-->
+            </div>
+        </div>
+        <div class="deliveryTemplate" ></div>
+
+    </div>
+</div>

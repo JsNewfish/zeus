@@ -1,0 +1,176 @@
+<form class="w5c-form" w5c-form-validate="" novalidate name="addressForm">
+    <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" ng-click="cancel()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h3 class="modal-title">修改{{normalPackage.buyerNick}}的收货地址</h3>
+    </div>
+    <div class="modal-body" style="padding: 0 10px;">
+        <div class="bg-warning slogan slogan-help ">
+            <img style="margin-top: -6px;" src="images/pages/reminder.png" alt="" class="slogan-icon">
+
+            <div class="slogan-content">
+                <ul>
+                    <li style="margin: 0px;">提醒：1.点击右边的收货信息会自动填写到新地址；<span class="text-warning">2.此操作会同时修改淘宝里订单的收货地址。</span> </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row" style="padding-top: 10px;">
+            <div class="col-xs-8" style="border-right:1px solid #e5e5e5">
+                <div class="form-horizontal">
+                    <div class="form-group text-group">
+                        <label class="col-xs-2 ">原地址：</label>
+
+                        <div class="col-xs-10">
+                            {{normalPackageCopy.receiverName}}，{{normalPackageCopy.receiverMobile}}，
+                            {{normalPackageCopy.receiverState}} {{normalPackageCopy.receiverCity}}
+                            {{normalPackageCopy.receiverDistrict}}
+                            {{normalPackageCopy.receiverAddress}}，{{normalPackageCopy.receiverZip}}
+
+                        </div>
+                    </div>
+                    <div class="form-group text-group">
+                        <label class="col-xs-2 ">买家留言：</label>
+
+                        <div class="col-xs-10">
+
+                            <span class="text-primary" ng-show="package.buyerMessages">
+                                <i class="glyphicon glyphicon-comment"></i>
+                                {{package.buyerMessages}}
+                            </span>
+
+                        </div>
+                    </div>
+                    <div class="form-group text-group">
+                        <label class="col-xs-2 ">卖家备注：</label>
+
+                        <div class="col-xs-10">
+
+                                <span ng-repeat="packageMemo in package.packageMemoDtoList">
+                                <img ng-src="images/components/sellerFlagRED.png"
+                                     ng-if="packageMemo.sellerFlag==1">
+                                <img ng-src="images/components/sellerFlagYELLOW.png"
+                                     ng-if="packageMemo.sellerFlag==2">
+                                <img ng-src="images/components/sellerFlagGREEN.png"
+                                     ng-if="packageMemo.sellerFlag==3">
+                                <img ng-src="images/components/sellerFlagBLUE.png"
+                                     ng-if="packageMemo.sellerFlag==4">
+                                <img ng-src="images/components/sellerFlagPURPLE.png"
+                                     ng-if="packageMemo.sellerFlag==5">
+                                <span class="text-warning">{{packageMemo.sellerMemo}}</span>
+                            </span>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-2 control-label">姓名：</label>
+
+                        <div class="col-xs-10">
+                            <input name="receiverName" required ng-maxlength="5"
+                                   class="form-control input-short " ng-model="normalPackage.receiverName">
+                        </div>
+                    </div>
+
+                    <div class="form-group input-inline">
+                        <label class="col-xs-2 control-label">省市区：</label>
+
+                        <div class="col-xs-10">
+                            <div class="static">
+                                <select name="receiverState" required class="form-control "
+                                        ng-model="normalPackage.receiverState"
+                                        ng-options="x.name as x.name for x in province">
+                                    <option value="">--请选择--</option>
+                                </select>
+                            </div>
+                            <div class="static">
+                                <select name="receiverCity" required class="form-control "
+                                        ng-model="normalPackage.receiverCity"
+                                        ng-options="x.name as x.name for x in city">
+                                    <option value="">--请选择--</option>
+                                </select>
+                            </div>
+                            <div class="static">
+                                <select name="receiverDistrict" class="form-control "
+                                        ng-model="normalPackage.receiverDistrict"
+                                        ng-options="x.name as x.name for x in country">
+                                    <option value="">--请选择--</option>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-2 control-label">乡镇：</label>
+
+                        <div class="col-xs-9">
+                            <input type="text" name="receiverTown" ng-maxlength="10"
+                                   class="form-control input-short  " ng-model="normalPackage.receiverTown">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-2 control-label">详细地址：</label>
+
+                        <div class="col-xs-9">
+                            <input type="text" name="receiverAddress" required ng-maxlength="50"
+                                   class="form-control  " ng-model="normalPackage.receiverAddress">
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <label class="col-xs-2 control-label">联系电话：</label>
+
+                        <div class="col-xs-10">
+                            <input type="text" ng-model="normalPackage.receiverPhone"
+                                   class="form-control-static   form-control input-short">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-2 control-label">手机：</label>
+
+                        <div class="col-xs-10">
+                            <input type="text" name="receiverMobile" ng-maxlength="11"
+                                   class="form-control   input-short" ng-model="normalPackage.receiverMobile">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-2 control-label">邮编：</label>
+
+                        <div class="col-xs-10">
+                            <input type="text" name="zipCode" required ng-maxlength="6"
+                                   class="form-control   input-short" ng-model="normalPackage.receiverZip">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-4" style="padding-left:0 ">
+                <div>
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <td></td>
+                            <td>60天内使用过的地址</td>
+                        </tr>
+                        <tr ng-repeat="receiverAddress in receiverAddressList">
+                            <td><input type="radio" name="syncItem" ng-click="selectAddress(receiverAddress)"></td>
+                            <td>{{receiverAddress.receiverName}}，{{receiverAddress.receiverMobile}}，
+                                {{receiverAddress.receiverState}} {{receiverAddress.receiverCity}}
+                                {{receiverAddress.receiverDistrict}}
+                                {{receiverAddress.receiverAddress}}，{{receiverAddress.receiverZip}}
+                            </td>
+
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+    <div class="modal-footer">
+        <div class="text-center">
+            <button class="btn btn-base w-100" w5c-form-submit="save()">保存</button>
+            <button class="btn btn-default w-100" data-dismisss="modal" ng-click="cancel()">取消</button>
+        </div>
+    </div>
+</form>

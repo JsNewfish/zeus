@@ -1,0 +1,108 @@
+<div class="view view-list express-template print" ng-controller="userExpressCtrl">
+    <div class="container-fluid">
+        <div class="title-bar">
+            <div class="title-bar-inner">
+                <h3 class="title">快递单模板</h3>
+            </div>
+        </div>
+
+        <div class=" slogan slogan-help ">
+            <img style="margin-top: -1px;" src="images/pages/reminder.png" alt="" class="slogan-icon">
+            <div class="slogan-content">
+                <h5>温馨提示：</h5>
+                <ul>
+                    <div>1、您可以通过修改某个模板的排序号，将此模板排在前面。</div>
+                    <div>2、强烈建议您删除不用的模板使打印发货页面的模板列表更清晰，避免点错。以后可以随时点击“添加快递单模板“复制最新的系统模板。</div>
+                </ul>
+            </div>
+        </div>
+
+
+        <div class="data-table-wrap">
+            <div class="tool-bar">
+                <div class="left">
+                    <button class="btn btn-sm btn-warning" ng-click="addExpressTemplate()">
+                        新增普通面单模板
+                    </button>
+                    <button class="btn btn-sm btn-danger" ng-click="addCloudTemplate()">
+                        添加电子面单模板
+                    </button>
+                    <button class="btn btn-sm btn-primary" ng-click="updateCloudTemplate()">
+                        更新电子面单模板
+                    </button>
+                    <a class="text-base" target="_blank" style="padding-left: 10px;" href="//mygod.cuxiao.quannengzhanggui.net/static/common/index.html#/help/helpView?id=103">
+                        如何添加电子面单模板？
+                    </a>
+                </div>
+            </div>
+            <table class="table data-table" ng-class="{'no-data':userExpressTemplateList.length==0}"
+                   cg-busy="{promise:loading ,message:'加载数据中。。'}">
+                <thead>
+                <tr>
+                    <th>排序</th>
+                    <th>模板名称</th>
+                    <th>模板尺寸(毫米)</th>
+                    <th>打印机锁定</th>
+                    <th>热敏设置</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="double-height" ng-repeat="userExpressTemplate in userExpressTemplateList" ng-show="userExpressTemplateList.length">
+                    <td>{{userExpressTemplate.sequence}} <a ng-click="updateSequence(userExpressTemplate)">【修改】</a></td>
+                    <td>{{userExpressTemplate.name}} <a ng-click="updateName(userExpressTemplate)">【修改】</a></td>
+                    <td>
+                        {{userExpressTemplate.width}}*{{userExpressTemplate.height}}<br/>
+                        横向：{{userExpressTemplate.calibrationX}} 纵向：{{userExpressTemplate.calibrationY}}
+                    </td>
+                    <td>{{userExpressTemplate.printerKey}}
+                        <a ng-show="userExpressTemplate.printerKey" ng-click="printerUnLock(userExpressTemplate)">【取消锁定】</a>
+                        <a ng-show="!userExpressTemplate.printerKey"
+                           ng-click="printerLock(userExpressTemplate)">【锁定打印机】</a>
+                    </td>
+                    <td >
+
+                        <div style="text-align: left;" ng-show="userExpressTemplate.interfaceType">
+                            接口方式：淘宝（菜鸟）接口
+                        </div>
+                        <div style="text-align: left;" ng-show="userExpressTemplate.interfaceType">
+                            发货地（仓库）：<span ng-if="userExpressTemplate.userNick">({{userExpressTemplate.userNick}})</span>{{userExpressTemplate.province}}{{userExpressTemplate.city}}{{userExpressTemplate.district}}{{userExpressTemplate.detail}}{{userExpressTemplate.town}}
+                        </div>
+                        <a ng-click="setWaybill(userExpressTemplate)" ng-show="userExpressTemplate.category==2">【热敏设置】</a>
+                    </td>
+                    <td>
+                        <ul class="operations">
+                            <li class="operation" ng-if="userExpressTemplate.isDefault"><a>默认模板</a></li>
+                            <li class="operation" ng-if="!userExpressTemplate.isDefault"
+                                ng-click="default(userExpressTemplate)"><a>设为默认</a>
+                            </li>
+                            <li ng-show="userExpressTemplate.category==1" class="operation" ng-click="previewTemplate(userExpressTemplate)"><a>预览模板</a></li>
+                            <li ng-show="userExpressTemplate.category==2" class="operation" ng-click="previewWaybillTemplate(userExpressTemplate)"><a>预览模板</a></li>
+                            <li class="operation" >
+                                <a ng-click="edit(userExpressTemplate)" ng-if="userExpressTemplate.category==1">编辑模板</a>
+                                <a ng-click="editCloud()" ng-if="userExpressTemplate.category==2">编辑模板</a>
+                            </li>
+                            <li class="operation" ng-show="userExpressTemplate.category==2" ng-if="!userExpressTemplate.isDefault"
+                                ng-click="deleteCloudTemplate()"><a>删除模板</a>
+                            </li>
+                            <li class="operation" ng-hide="userExpressTemplate.category==2" ng-if="!userExpressTemplate.isDefault"
+                                ng-click="deleteTemp(userExpressTemplate)"><a>删除模板</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr ng-show="userExpressTemplateList.length==0">
+                    <td colspan="20">
+                        <div class="none-item-container">
+                            <div class="none-item">
+                                <div class="icon"></div>
+                                暂时没有数据哦~~
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,47 @@
+<div class="view view-list print" ng-controller="cancelWaybillCtrl">
+    <div class="container-fluid" cg-busy="{promise:loading ,message:'数据提交中。。'}">
+        <div class="title-bar">
+            <div class="title-bar-inner">
+                <h3 class="title">回收电子面单
+                </h3>
+            </div>
+        </div>
+        <form class="form-horizontal w5c-form" w5c-form-validate="" name="validateForm" novalidate>
+            <div class=" slogan slogan-help ">
+                <img style="margin-top: -1px;" src="images/pages/reminder.png" alt="" class="slogan-icon">
+                <div class="slogan-content">
+                    <h5>温馨提示：</h5>
+                    <ul>
+                        <div style="color: #107FE4;">1. 此功能只能回收通过全能掌柜生成且未使用的电子面单号；</div>
+                        <div>2. 系统提示回收成功后，请至电子面单记录中查询回收状态。<a target="_blank" href="#/print/waybillReport">查询记录</a>；</div>
+                        <div>3. 不同的快递公司对回收的策略不同，详情请查看官方公司。<a target="_blank" href="https://wuliu.bbs.taobao.com/detail.html?postId=6917031">点此查看</a>；</div>
+                    </ul>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-xs-2" style="width: 134px;">
+                    快递公司：
+                </label>
+                <div class="col-xs-10">
+                    <select name="expressCode" required class="form-control input-medium" ng-model="expressCode" ng-options="x.code as x.name for x in expressCo">
+                        <option value="">-- 请选择快递--</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-xs-2" style="width: 134px;">
+                    电子面单号：
+                </label>
+                <div class="col-xs-10">
+                    <input required ng-maxlength="30" name="waybill" type="text" class="form-control input-medium" ng-model="waybill">
+                    <label class="text-danger" style="position: absolute;left: 205px;top: 8px;">{{errorMes}}</label>
+                </div>
+            </div>
+            <div >
+                <button w5c-form-submit="cancel()" style="margin-left: 134px;" class=" btn btn-sm btn-primary w-100">回收</button>
+               <a class=" btn btn-sm btn-primary w-100" ng-click="showLog()" >查看日志</a>
+            </div>
+        </form>
+
+    </div>
+</div>

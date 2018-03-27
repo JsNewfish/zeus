@@ -1,0 +1,47 @@
+<div class="modal-header">
+    <button type="button" class="close" aria-label="Close" ng-click="cancel()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h3 class="modal-title">发货提醒</h3>
+</div>
+<div class="modal-body">
+    <div class="bg-warning slogan slogan-help ">
+        <img style="margin-top: -6px;" src="images/pages/reminder.png" class="slogan-icon">
+
+        <div class="slogan-content">
+            <p style="margin: 0px;" >
+                您对<span class="text-warning">[{{totalNum}}]</span>笔订单进行发货，其中<span class="text-success">[{{successNum}}]</span>笔发货成功，<span class="text-danger">[{{errorNum}}]</span>笔发货失败.
+                <a data-target="#packList"
+                   data-toggle="collapse">
+                    显示详细
+                </a>
+            </p>
+        </div>
+    </div>
+    <div class="area-list collapse" id="packList">
+        <table class="table table-bordered" >
+            <tbody>
+            <tr ng-repeat="normalPackage in data.detailNormalTradeList">
+                <td>{{$index+1}}</td>
+                <td style="white-space: nowrap;">
+                    {{normalPackage.buyerNick}}
+                </td>
+                <td >{{normalPackage.tid}}</td>
+                <td style="white-space: nowrap;">{{normalPackage.userExpressName}}</td>
+                <td>
+                    <i ng-show="normalPackage.isSuccess==1" class="glyphicon glyphicon-ok"></i>
+                    <span ng-show="normalPackage.isSuccess==0">
+                        {{normalPackage.errorMsg}}
+                    </span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal-footer">
+    <div class="text-center">
+        <button class="btn btn-base" ng-hide="againConsign" ng-click="save()">重新发货</button>
+        <button class="btn btn-default w-100" data-dismisss="modal" ng-click="cancel()">关闭</button>
+    </div>
+</div>

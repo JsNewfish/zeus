@@ -1,0 +1,54 @@
+<div class="modal-header">
+    <button type="button" class="close" aria-label="Close" ng-click="cancel()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h3 class="modal-title">快递单打印</h3>
+</div>
+<div class="modal-body">
+    <div class="bg-warning slogan slogan-help ">
+        <img style="margin-top: -6px;" src="images/pages/reminder.png" class="slogan-icon">
+
+        <div class="slogan-content">
+            <p style="margin: 0px;" >打印{{totalNum}}张快递单，成功{{successNum}}张，失败{{errorNum}}张，
+                请确认打印机是否出纸{{successNum}}张。
+                <a data-target="#packList"
+                   data-toggle="collapse">
+                    显示详细
+                </a>
+            </p>
+        </div>
+    </div>
+    <div class="area-list collapse" id="packList">
+        <table class="table " >
+            <tbody>
+            <tr ng-class="{'text-danger':normalPackage.isSuccess==0}" ng-repeat="normalPackage in data.detailNormalPackageList">
+                <td>{{$index+1}}</td>
+                <td>
+                    {{normalPackage.normalTradeList[0].buyerNick}}
+                </td>
+                <td style="word-break: keep-all;white-space: nowrap;">
+                    {{normalPackage.normalTradeList[0].receiverName}}
+                </td>
+                <td style="max-width: 172px;word-wrap: break-word;">{{normalPackage.printTids}}</td>
+                <td style="word-break: keep-all;white-space: nowrap;">{{normalPackage.userExpressName}}</td>
+                <td style="min-width: 88px;">{{normalPackage.expressNo}}</td>
+                <td>
+                    <i ng-show="normalPackage.isSuccess==1" class="glyphicon glyphicon-ok"></i>
+                    <span ng-show="normalPackage.isSuccess==0">
+                        {{normalPackage.errorMessage}}
+                    </span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal-footer">
+    <div class="text-center">
+        <button ng-show="operateType==1" class="btn btn-base" ng-class="{'w-100':allExistExpressNo}" ng-click="save()">
+            <span ng-show="!allExistExpressNo">联想输入运单号码</span>
+            <span ng-show="allExistExpressNo">发货</span>
+        </button>
+        <button class="btn btn-default w-100" data-dismisss="modal" ng-click="cancel()">关闭</button>
+    </div>
+</div>

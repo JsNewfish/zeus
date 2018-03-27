@@ -1,0 +1,103 @@
+<div class="view view-list express-template print" ng-controller="scopeOfDeliveryCorrectCtrl">
+    <div class="container-fluid">
+        <div class="title-bar">
+            <div class="title-bar-inner">
+                <h3 class="title">派送范围纠错</h3>
+            </div>
+        </div>
+        <div class="search-bar collapsed" dp-filter-bar>
+            <form class="form">
+                <div class="search-pane">
+                    <div class="normal-search">
+                        <div class="form-group">
+                            <label class="control-label">快递公司：</label>
+                            <div class="controls">
+                                <select class="form-control" ng-model="express"
+                                        ng-options="x as x.name for x in expressCo"></select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">派送状态：</label>
+
+                            <div class="controls">
+                                <select class="form-control" ng-model="isReach">
+                                    <option value="">不限</option>
+                                    <option value="0">不可派送</option>
+                                    <option value="1">可以派送</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="operations">
+                    <div class="left">
+                        <button class="btn btn-warning btn-sm w-100" ng-click="search()">查询</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="data-table-wrap">
+            <div class="tool-bar">
+                <div class="left">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="checkAll" ng-click="selectAll()">全选
+                        </label>
+                        <a ng-click="deleteBatch()">批量删除</a>
+                    </div>
+                </div>
+                <div class="right">
+                    <button ng-click="addCorrectScope()" class="btn btn-sm w-100 btn-warning">添加纠错数据</button>
+                </div>
+            </div>
+            <table class="table data-table" ng-class="{'no-data':noData}" cg-busy="{promise:loading ,message:'加载中。。。'}">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>序号</th>
+                    <th>快递公司</th>
+                    <th>省</th>
+                    <th>市</th>
+                    <th>市</th>
+                    <th>派送状态</th>
+                    <th>操作</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="range in rangeList" ng-show="!noData" ng-class="{'selected': range.selected}">
+                    <td><input type="checkbox" ng-click="selectItem(range)" ng-model="range.selected"></td>
+                    <td>{{$index+1}}</td>
+                    <td>
+                        {{expressName}}
+                    </td>
+                    <td>{{range.province}}</td>
+                    <td> {{range.city}}</td>
+                    <td> {{range.district}}</td>
+                    <td ng-if="range.isReach">可以派送</td>
+                    <td ng-if="!range.isReach">不可派送</td>
+                    <td>
+
+                            <a ng-click="addCorrectScope(range)">编辑</a>
+                            <a ng-click="delete(range)">删除</a>
+
+                    </td>
+                </tr>
+                <tr ng-show="noData">
+                    <td colspan="20">
+                        <div class="none-item-container">
+                            <div class="none-item">
+                                <div class="icon"></div>
+                                暂时没有数据哦~换个筛选条件试试吧~
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+
+    </div>
+</div>

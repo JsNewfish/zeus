@@ -1,0 +1,64 @@
+<div>
+    <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" ng-click="cancel()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h3 class="modal-title">自由打印操作日志</h3>
+    </div>
+    <div class="modal-body print" style="max-height: 500px;overflow-y: auto;">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th width="180px">时间</th>
+                <th width="150px;">操作</th>
+                <th>修改前/<span class="text-warning">修改后</span></th>
+                <th >打印流水号</th>
+                <th width="80px">操作人</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-if="freeLogList.length" ng-repeat="freeLog in freeLogList">
+                <td>
+                    {{freeLog.createTime}}
+                </td>
+                <td>
+                    <span ng-if="freeLog.operationType==1">创建订单</span>
+                    <span ng-if="freeLog.operationType==2">修改订单</span>
+                    <span ng-if="freeLog.operationType==3">复制保存</span>
+                    <span ng-if="freeLog.operationType==4">修改快递模板</span>
+                    <span ng-if="freeLog.operationType==5">修改运单号</span>
+                    <span ng-if="freeLog.operationType==6">打印快递单</span>
+                    <span ng-if="freeLog.operationType==7">打印发货单</span>
+                    <span ng-if="freeLog.operationType==8">删除</span>
+                    <span ng-if="freeLog.operationType==9">通用格式导入</span>
+                    <span ng-if="freeLog.operationType==10">京东导入</span>
+                    <span ng-if="freeLog.operationType==11">删除运单号</span>
+                    <span ng-if="freeLog.operationType==12">发货地址变更</span>
+                </td>
+                <td>
+                    <span class="ng-binding">{{freeLog.beforeModify}}/</span>
+                    <span class="text-warning ng-binding">{{freeLog.afterModify}}</span>
+                </td>
+                <td>
+                    <span ng-if="freeLog.serial">{{freeLog.serial}}</span>
+                    <span ng-if="!freeLog.serial">--</span>
+                </td>
+                <td>
+                    {{freeLog.operator}}
+                </td>
+            </tr>
+            <tr ng-if="!freeLogList.length">
+                <td colspan="4">
+                    <div class="none-item-container">
+                        <div class="none-item">
+                            <div class="icon"></div>
+                            暂时无数据
+                            <a href=""></a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

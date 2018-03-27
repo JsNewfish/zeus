@@ -1,0 +1,186 @@
+<div class="view view-preparingBillForm print" ng-controller="preparingBillFormCtrl">
+    <div class="container-fluid">
+        <div class="head row">
+            <div class="head col-xs-12">
+                <div class="title-bar">
+                    <div class="title-bar-inner">
+                        <h3 class="title">生成备货单
+                        </h3>&nbsp;&nbsp;
+                        <span style="color: #107FE4;">生成备货单操作教程
+                            <a style="color: #107FE4;" ng-href="http://mygod.cuxiao.quannengzhanggui.net/static/common/index.html#/help/helpView?id=132" target="_blank">【点击查看】</a>
+                            <a style="color: #107FE4;" ng-href="http://v.youku.com/v_show/id_XMzM4MDY4Njc3Ng==.html?sharekey=bfd0a0e3ce06e61984c1c33e1d2864d72" target="_blank">【视频教程】</a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="body" cg-busy="{promise:loading ,message:'数据加载中。。。'}">
+            <div class="bg-warning slogan slogan-help ">
+                <img src="images/pages/reminder.png" alt="" class="slogan-icon">
+
+                <div class="slogan-content">
+                    <h5>温馨提示：</h5>
+                    <ul>
+                        <div>1、本功能目前只能为已经同步到全能掌柜里的“等待发货”的淘宝/天猫订单生成备货单</div>
+                        <div>2、若订单中含有已退款成功或已发货的宝贝系统会自动过滤此宝贝</div>
+                    </ul>
+                </div>
+            </div>
+            <form class="form-horizontal clearfix" role="form" w5c-form-validate="" name="validateForm" novalidate>
+                <div class="form-group timePick"
+                     ng-class="{'has-error':validateForm.payStartTime.$invalid||validateForm.payEndTime.$invalid}" ng-if="!preparingBillFormDto.preparingBillSearchModel.tids">
+                    <label class="col-xs-2 control-label">订单付款时间：</label>
+
+                    <div class="col-xs-10">
+                        <input type="text" class="form-control form-control-static input-sm input-medium cursor-hand"
+                               ng-model="preparingBillFormDto.preparingBillSearchModel.payStartTime"
+                               name="payStartTime" compare-type="datetime"
+                               dp-valid-lower-than="{{preparingBillFormDto.preparingBillSearchModel.payEndTime|date:'yyyy-MM-dd HH:mm:ss'}}"
+                               dp-datepicker dp-datetimepicker="limitTime" />
+                        <i>~</i>
+                        <input type="text" class="form-control form-control-static input-sm input-medium cursor-hand"
+                               ng-model="preparingBillFormDto.preparingBillSearchModel.payEndTime"
+                               name="payEndTime" dp-datepicker dp-datetimepicker="limitTime2" />
+                        <div class="form-text text-remind">对于货到付款订单，则按拍下时间生成。注：只能获取到店铺近60天的数据</div>
+                        <div class="error" ng-show="validateForm.payStartTime.$invalid||validateForm.payEndTime.$invalid">
+                            <span class="help-block" ng-show="validateForm.payStartTime.$error.dpValidLowerThan">开始时间必须小于结束时间</span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="form-group" ng-if="preparingBillFormDto.preparingBillSearchModel.tids">
+                    <label class="col-xs-2 control-label">订单编号：</label>
+
+                    <div class="col-xs-10">
+                        <textarea cols="50" rows="5" name="tids" ng-maxlength="1500"
+                                  ng-model="preparingBillFormDto.preparingBillSearchModel.tids"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-2 control-label">宝贝ID：</label>
+
+                    <div class="col-xs-9">
+                        <input type="text" name="itemId" ng-maxlength="30" onkeyup="value=value.replace(/[^\d]/g,'')"
+                               class="form-control form-control-static input-sm"
+                               ng-model="preparingBillFormDto.preparingBillSearchModel.itemId">
+                        <div class="form-text text-remind">一次只能搜索一个宝贝，不支持批量搜索</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-2 control-label">商家编码：</label>
+
+                    <div class="col-xs-9">
+                        <input type="text" name="itemCode" ng-maxlength="30" placeholder="支持模糊搜索"
+                               class="form-control form-control-static input-sm"
+                               ng-model="preparingBillFormDto.preparingBillSearchModel.itemCode">
+                        <div class="form-text text-remind">注意：是宝贝的商家编码，不是单品(SKU)的商家编码</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-2 control-label">宝贝标题（简称）：</label>
+
+                    <div class="col-xs-9">
+                        <input type="text" name="title" ng-maxlength="50" placeholder="支持模糊搜索"
+                               class="form-control form-control-static input-sm"
+                               ng-model="preparingBillFormDto.preparingBillSearchModel.title">
+                        <div class="form-text text-remind">按打印列表中每个宝贝当前所显示的名称进行匹配</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-2 control-label">宝贝销售属性：</label>
+
+                    <div class="col-xs-9">
+                        <input type="text" name="skuPropertiesName" ng-maxlength="30" placeholder="支持模糊搜索"
+                               class="form-control form-control-static input-sm"
+                               ng-model="preparingBillFormDto.preparingBillSearchModel.skuPropertiesName">
+                        <div class="form-text text-remind">同一宝贝多个属性之间请用分号分隔如：红色;M码</div>
+
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-2 control-label">买家昵称：</label>
+
+                    <div class="col-xs-9">
+                        <input type="text" name="skuPropertiesName" ng-maxlength="1000"
+                               class="form-control form-control-static input-sm"
+                               ng-model="preparingBillFormDto.preparingBillSearchModel.buyerNicks">
+                        <div class="form-text text-remind">支持批量搜索，多个买家昵称之间请用逗号分隔</div>
+
+                    </div>
+                </div>
+                <div class="form-group input-inline">
+                    <label class="col-xs-2 control-label">自定义分类：</label>
+
+                    <div class="col-xs-10">
+                        <select class="form-control form-control-static" ng-style="{color :customStarColor}"
+                                ng-model="preparingBillFormDto.preparingBillSearchModel.customStarId"
+                                ng-click="updateCustomStar(preparingBillFormDto.customStarList,preparingBillFormDto.preparingBillSearchModel.customStarId)">
+                            <option style="color:#000000" value="">不限</option>
+                            <option style="color:#000000" value="-1">无分类</option>
+                            <option style="color:#000000" value="0">有分类</option>
+                            <option ng-value="customStar.id" ng-style="{color :customStar.color}"
+                                    ng-repeat="customStar in preparingBillFormDto.customStarList">★{{customStar.name}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-2 control-label">订单备注旗帜：</label>
+
+                    <div class="col-xs-10">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" value="0" ng-click="select(0)">
+                            <img src="images/components/sellerFlagGRAY.png">
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" value="1" ng-click="select(1)">
+                            <img src="images/components/sellerFlagRED.png">
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" value="2" ng-click="select(2)">
+                            <img src="images/components/sellerFlagYELLOW.png">
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" value="3" ng-click="select(3)">
+                            <img src="images/components/sellerFlagGREEN.png">
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" value="4" ng-click="select(4)">
+                            <img src="images/components/sellerFlagBLUE.png">
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" value="5" ng-click="select(5)">
+                            <img src="images/components/sellerFlagPURPLE.png">
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-2 control-label">排除：</label>
+
+                    <div class="col-xs-10">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" format-checkbox
+                                   ng-model="preparingBillFormDto.preparingBillSearchModel.isExcludePrintExpress">排除已打印过快递单的订单
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" format-checkbox
+                                   ng-model="preparingBillFormDto.preparingBillSearchModel.isExcludePrintDelivery">排除已打印过发货单的订单
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" format-checkbox
+                                   ng-model="preparingBillFormDto.preparingBillSearchModel.isExcludeRefund">排除退款中的子订单
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-2 control-label"></label>
+
+                    <div class="col-xs-10">
+                        <button class="btn btn-base w-100" w5c-form-submit="save()">生成备货单</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

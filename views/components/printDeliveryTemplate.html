@@ -1,0 +1,344 @@
+<div class="delivery-wrap" id="delivery">
+    <style>
+        ul, ol, dl {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .ng-hide {
+            display: none !important;
+        }
+
+        .delivery-template {
+            color: #000;
+            padding: 0;
+        }
+
+        .delivery-template ul li {
+            margin-bottom: 5px;
+            padding: 0 10px;
+            font-size: 12px;
+            line-height: inherit;
+        }
+
+        .delivery-template ul li span {
+            margin-right: 10px;
+            display: inline-block;
+            min-width: 200px;
+        }
+
+        .delivery-template img {
+            width: 50px;
+            height: 50px;
+        }
+
+        .delivery-template .dt-hd {
+            font-weight: bold;
+            font-size: 15px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .delivery-template table {
+            margin-bottom: 0px;
+            border-top: 1px solid #000;
+            border-bottom: 1px solid #000;
+            width: 100%;
+            max-width: 100%;
+            border-spacing: 0;
+            border-collapse: collapse;
+        }
+
+        .delivery-template table thead th {
+            font-weight: bold;
+            border-bottom: 1px solid #000;
+            white-space: nowrap;
+            font-size: 13px;
+            word-break: keep-all;
+        }
+
+        .delivery-template table td {
+            padding: 0px;
+            border-top: 1px solid #000;
+            word-break: break-all;
+            font-size: 12px;
+            line-height: inherit;
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .delivery-template .dt-ft {
+            padding: 0;
+            border-bottom: 1px solid #000;
+        }
+
+        .pull-left {
+            white-space: nowrap;
+            float: left;
+            text-align: left;
+        }
+
+        .pull-right {
+            white-space: nowrap;
+            float: right;
+            text-align: right;
+            /*margin-right: 20px;*/
+        }
+
+        .clearfixed:before, .clearfixed:after {
+            content: "";
+            display: table;
+        }
+
+        .clearfixed:after {
+            clear: both;
+        }
+
+        .clearfixed {
+            zoom: 1;
+        }
+
+        .delivery-template .dt-ft span {
+            margin-left: 10px;
+            display: inline-block;
+            font-size: 13px;
+            text-align: left;
+        }
+
+        .delivery-template .dt-ft span em {
+            display: inline-block;
+            min-width: 80px;
+            overflow: hidden;
+            font-style: normal;
+            vertical-align: top;
+            text-align: right;
+        }
+
+        .inscribe {
+            font-size: 13px;
+        }
+
+        .wrapper {
+            min-height: 37px;
+            line-height: 37px;
+            text-align: left;
+        }
+
+    </style>
+    <div ng-hide="noData" class="delivery-template" ng-style="tableStyle">
+        <div class="dt-hd">
+            {{entity.userDeliveryTemplate.name}}
+            <div class="pull-right" ng-show="cellList.serial.isShow">
+                NO：{{cellList.serial.entryContent}}
+            </div>
+        </div>
+        <ul>
+            <li>
+                <span style="width: 30%;" ng-show="cellList.shop_title.isShow" class="d-title">
+                    店铺名称：<span>{{cellList.shop_title.entryContent}}</span>
+                </span>
+                <span style="width: 30%;" ng-show="cellList.buyer_nick.isShow" class="d-nick">
+                    买家昵称：<span>{{cellList.buyer_nick.entryContent}}</span>
+                </span>
+                <span ng-show="cellList.tid.isShow" class="d-tid">
+                    订单号：<span ng-show="cellList.tid.entryContent!='undefined'">{{cellList.tid.entryContent}}</span>
+                </span>
+
+            </li>
+            <li>
+                <span style="min-width: 30%;display: inline-block;" class="d-time" ng-show="cellList.created.isShow">
+                成交时间：<span ng-show="cellList.created.entryContent!='undefined'">
+                            {{cellList.created.entryContent}}
+                        </span>
+                </span>
+                <span class="d-time" ng-show="cellList.pay_time.isShow">
+                付款时间：<span ng-show="cellList.pay_time.entryContent!='undefined'">
+                            {{cellList.pay_time.entryContent}}
+                        </span>
+                </span>
+            </li>
+            <li ng-show="cellList.receiver_info.isShow">收货人：{{cellList.receiver_info.entryContent}}</li>
+            <li ng-show="cellList.buyer_message.isShow ">
+                买家留言：<span ng-show="cellList.buyer_message.entryContent!='undefined'">{{cellList.buyer_message.entryContent}}</span>
+            </li>
+            <li ng-show="cellList.seller_memo.isShow ">
+                卖家备注：<span ng-show="cellList.seller_memo.entryContent!='undefined'">{{cellList.seller_memo.entryContent}}</span>
+            </li>
+
+        </ul>
+        <table class="table dt-tab" ng-style="tableStyle">
+            <thead>
+            <tr>
+                <th ng-show="cellList.serial_number.isShow">序号</th>
+                <th ng-show="cellList.item_pic.isShow">商品图片</th>
+                <th ng-show="cellList.item_title.isShow">商品名称</th>
+                <th ng-show="cellList.outer_id_num.isShow">商家编码</th>
+                <th ng-show="cellList.sku.isShow">规格</th>
+                <th ng-show="cellList.item_num.isShow">数量</th>
+                <th ng-show="cellList.item_price.isShow" width="65px">单价</th>
+                <th ng-show="cellList.sub_total.isShow" width="65px">小计</th>
+                <th ng-show="cellList.custom_text.isShow">{{cellList.custom_text.entryContent}}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="normalOrder in cellList.normalOrderList">
+                <td ng-show="cellList.serial_number.isShow">
+                    {{$index+1}}
+                </td>
+                <td style="padding: 0;" ng-show="cellList.item_pic.isShow">
+                    <img ng-show="normalOrder.picPath" ng-src="{{normalOrder.picPath}}"/>
+
+                    <div ng-show="!normalOrder.picPath" style="width: 60px;height: 20px;"></div>
+                </td>
+                <td ng-show="cellList.item_title.isShow">
+                    <div class="wrapper">
+                        <span ng-show="!normalOrder.abbrevName">{{normalOrder.title}}</span>
+                        <span ng-show="normalOrder.abbrevName">{{normalOrder.abbrevName}}</span>
+                    </div>
+                </td>
+                <td ng-show="cellList.outer_id_num.isShow">
+                    <span ng-if="normalOrder.skuCode">{{normalOrder.skuCode}}</span>
+                    <span ng-if="!normalOrder.skuCode">{{normalOrder.itemCode}}</span>
+                </td>
+                <td ng-show="cellList.sku.isShow">
+                    {{normalOrder.skuPropertiesName}}
+                </td>
+                <td ng-show="cellList.item_num.isShow">{{normalOrder.num}}</td>
+                <td style="white-space: nowrap;word-break: keep-all;" ng-show="cellList.item_price.isShow">
+                    {{normalOrder.price|centToDollar}}
+                </td>
+                <td style="white-space: nowrap;word-break: keep-all;" ng-show="cellList.sub_total.isShow">
+                    <span ng-show="normalOrder.price">
+                        {{normalOrder.num*normalOrder.price|centToDollar}}
+                    </span>
+                </td>
+                <td ng-show="cellList.custom_text.isShow"></td>
+            </tr>
+
+            </tbody>
+        </table>
+        <div class="dt-ft clearfixed">
+            <div class="pull-right" ng-show="cellList.total_amount.isShow">
+                <p>
+                    <span>数量合计：{{cellList.totalInfo.num}}</span>
+                    <span>
+                          订单金额： {{cellList.totalInfo.totalPrice|centToDollar}}
+                    </span>
+                    <span>
+                          运费： {{cellList.totalInfo.postFee|centToDollar}}
+                    </span>
+                </p>
+
+                <p>
+                    <span>
+                          卖家优惠： {{cellList.totalInfo.totalFee|centToDollar}}
+                    </span>
+                    <span class="total-price">
+                          合计： {{cellList.totalInfo.payment|centToDollar}}
+                    </span>
+                </p>
+            </div>
+        </div>
+        <div class="inscribe">
+            {{cellList.inscribe.entryContent}}
+        </div>
+        <div class="pull-right" ng-show="cellList.activity_qrcode.isShow" id="code"></div>
+    </div>
+
+    <div ng-show="noData" class="delivery-template" ng-style="tableStyle">
+        <div class="dt-hd">
+            {{entity.userDeliveryTemplate.name}}
+            <div class="pull-right" ng-show="cellList.serial.isShow">
+                NO：{{cellList.serial.entryContent}}
+            </div>
+        </div>
+        <ul>
+            <li>
+                <span style="width: 30%;" class="d-title"
+                      ng-if="cellList.shop_title.isShow">店铺名称：{{cellList.shop_title.entryContent}}</span>
+                <span style="width: 30%;" class="d-nick" ng-if="cellList.buyer_nick.isShow">买家昵称：全能掌柜</span>
+                <span class="d-tid" ng-if="cellList.tid.isShow">订单号：813856677204503</span>
+            </li>
+            <li>
+                <span style="width: 30%;" class="d-time" ng-if="cellList.created.isShow">成交时间：2014-09-26 23:10:45</span>
+                <span class="d-time" ng-if="cellList.pay_time.isShow">付款时间：2014-11-06 15:52:20</span>
+
+            </li>
+            <li ng-if="cellList.receiver_info.isShow">收货人：全能掌柜，12345678901/0577-8888888，浙江省
+                杭州市 西湖区
+                同仁精华大厦，325600
+            </li>
+            <li ng-if="cellList.buyer_message.isShow">
+                买家留言：请尽快发货
+            </li>
+            <li ng-if="cellList.seller_memo.isShow">
+                卖家备注：好买家
+            </li>
+
+        </ul>
+        <table class="table dt-tab" ng-style="tableStyle">
+            <thead>
+            <tr>
+                <th ng-if="cellList.serial_number.isShow">序号</th>
+                <th ng-if="cellList.item_pic.isShow">商品图片</th>
+                <th ng-if="cellList.item_title.isShow">商品名称</th>
+                <th ng-if="cellList.outer_id_num.isShow">商家编码</th>
+                <th ng-if="cellList.sku.isShow">规格</th>
+                <th ng-if="cellList.item_num.isShow">数量</th>
+                <th ng-if="cellList.item_price.isShow">单价</th>
+                <th ng-if="cellList.sub_total.isShow">小计</th>
+                <th ng-if="cellList.custom_text.isShow">
+                    {{cellList.custom_text.entryContent}}
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td ng-if="cellList.serial_number.isShow">1</td>
+                <td style="padding: 0;" ng-if="cellList.item_pic.isShow">
+                    <img ng-src="images/components/0-item_pic.jpg"/>
+                </td>
+                <td ng-if="cellList.item_title.isShow">商品简称1</td>
+                <td ng-if="cellList.outer_id_num.isShow">R540489</td>
+                <td ng-if="cellList.sku.isShow">
+                    颜色分:白色<br>
+                    尺码:均码
+                </td>
+                <td ng-if="cellList.item_num.isShow">1</td>
+                <td ng-if="cellList.item_price.isShow">1436.00</td>
+                <td ng-if="cellList.sub_total.isShow">1436.00</td>
+                <td ng-if="cellList.custom_text.isShow"></td>
+            </tr>
+
+            </tbody>
+        </table>
+        <div class="dt-ft clearfixed">
+            <div class="pull-right" ng-if="cellList.total_amount.isShow">
+                <p>
+                    <span>数量合计：3</span>
+                    <span>
+                        订单金额： 4308.00
+                    </span>
+                    <span>
+                        运费： 1.00
+                    </span>
+                </p>
+
+                <p>
+                    <span>
+                        卖家优惠： 4307.97
+                    </span>
+                    <span class="total-price">
+                        合计： 1.03
+                    </span>
+                </p>
+            </div>
+        </div>
+        <div class="inscribe">
+            {{cellList.inscribe.entryContent}}
+        </div>
+        <div class="pull-right" ng-show="cellList.activity_qrcode.isShow" id="code"></div>
+    </div>
+
+</div>

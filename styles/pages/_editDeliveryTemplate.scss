@@ -1,0 +1,21 @@
+.editDeliveryTemplate{
+
+  .delivery-template table td {
+    padding: 0px;
+    border-top: 1px solid #000;
+    word-break: break-all;
+    font-size: inherit;
+    line-height: inherit;
+    vertical-align: middle;
+
+  }
+  .control-label{
+    width: 180px;
+  }
+  .delivery-wrap{
+    width: 900px;
+  }
+  .inscribe{
+    line-height: 24px;
+  }
+}

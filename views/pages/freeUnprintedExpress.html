@@ -1,0 +1,336 @@
+<div class="view view-list print" ng-controller="freeUnprintedExpressCtrl">
+    <div class="container-fluid">
+
+        <div class="title-bar">
+            <div class="title-bar-inner">
+                <h3 class="title">待打印【快递单】
+                </h3>&nbsp;&nbsp;
+                <span style="color: #107FE4;">自由打印操作教程
+                    <a style="color: #107FE4;" ng-href="http://v.youku.com/v_show/id_XMzM4MDY4Njc3Ng==.html?sharekey=bfd0a0e3ce06e61984c1c33e1d2864d72" target="_blank">【视频教程】</a>
+                </span>
+            </div>
+        </div>
+
+
+        <div class="search-bar " dp-filter-bar>
+            <form name="filterForm" novalidate class="w5c-form form" w5c-form-validate="validateOptions">
+
+                <div class="search-pane clearfix">
+                    <div class="adv-search" id="collapseExample">
+
+
+                        <div class="form-group col-xs-4">
+                            <label class="control-label">收货人：</label>
+
+                            <div class="controls">
+                                <input type="text" class="form-control input-medium" placeholder="支持模糊查询"
+                                       ng-model="freePackageSearchModel.receiverName">
+                            </div>
+                        </div>
+
+                        <div class="form-group col-xs-4">
+                            <label class="control-label">物流公司：</label>
+
+                            <div class="controls">
+                                <select class="form-control input-medium"
+                                        ng-model="freePackageSearchModel.expressId"
+                                        ng-options="x.userExpress.expressId as x.userExpress.name for x in userExpress">
+                                    <option value="">-- 请选择--</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-xs-4">
+                            <label class="control-label">收货人手机/电话：</label>
+
+                            <div class="controls">
+                                <input type="text" class="form-control input-medium" placeholder="支持模糊查询"
+                                       ng-model="freePackageSearchModel.receiverMobile">
+                            </div>
+                        </div>
+                        <div class="form-group col-xs-4">
+                            <label class="control-label">运单号码：</label>
+
+                            <div class="controls">
+                                <input type="text" class="form-control input-medium"
+                                       ng-model="freePackageSearchModel.expressNo">
+                            </div>
+                        </div>
+                        <div class="form-group col-xs-4">
+                            <label class="control-label">订单号：</label>
+
+                            <div class="controls">
+                                <input type="text" class="form-control input-medium"
+                                       ng-model="freePackageSearchModel.tid">
+                            </div>
+                        </div>
+                        <div class="form-group col-xs-4">
+                            <label class="control-label">只查询已删除订单：</label>
+
+                            <div class="controls">
+                                <div class="form-text">
+                                    <input type="checkbox" format-checkbox ng-model="isDelete">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-xs-9 timePick" ng-class="{'has-error':filterForm.createStartTime.$invalid||filterForm.createEndTime.$invalid}">
+                            <label class="control-label">订单录入时间：</label>
+
+                            <div class="controls">
+                                <input type="text" ng-model="createStartTime"
+                                       dp-valid-lower-than="{{createEndTime|date:'yyyy-MM-dd HH:mm:ss'}}"
+                                       name="createStartTime" compare-type="datetime" dp-datepicker
+                                       class="form-control static input-medium readonly" readonly>
+                                <span>~</span>
+                                <input type="text" ng-model="createEndTime" name="createEndTime"
+                                       dp-datepicker class="form-control static input-medium readonly" readonly>
+
+                                <span class="error" ng-show="filterForm.createStartTime.$invalid||filterForm.createEndTime.$invalid">
+                                    <span class="help-block static"
+                                          ng-show="filterForm.createStartTime.$error.dpValidLowerThan">开始时间必须小于结束时间</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="operations clearfix" style="padding-right:22px;">
+                    <div class="right">
+                        <button class="btn btn-sm btn-warning w-100" w5c-form-submit="search()">筛选
+                        </button>
+                        <button class="btn btn-sm btn-primary w-100" ng-click="resetData()">重置</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+        <div class="data-table-wrap" cg-busy="{promise:loading ,message:message}">
+            <div class="tool-bar ">
+                <div class="left">
+                    <div class="checkbox">
+                        <label>
+                            <input ng-change="selectAll()" type="checkbox" ng-model="checkAll">
+                            全选
+                        </label>
+                    </div>
+                </div>
+                <div class="right">
+                    <div class="checkbox static">
+                        <label>
+                            <input type="checkbox" ng-model="isCollapsed" ng-click="expandAll(isCollapsed)">
+                            展开详细
+                        </label>
+                    </div>
+                    <span title="设置订单排序" style="padding-left:5px;cursor: pointer;padding-right:15px;" ng-click="setSort()">
+                        订单排序&nbsp;<i class="glyphicon glyphicon-cog"></i>
+                    </span>
+                </div>
+            </div>
+            <table class="table data-table " ng-class="{'no-data':freePackageList.length==0}" >
+                <thead>
+                <tr>
+                    <th width="33"></th>
+                    <th width="160">
+                        买家昵称
+                    </th>
+                    <th>
+                        <span class="text-primary">收件人</span>/寄件人/<span class="text-warning">备注信息</span>
+                    </th>
+                    <th width="178">
+                        快递信息
+                    </th>
+                    <th width="210">
+                        <span class="text-primary">发货单</span>/快递单打印时间
+                    </th>
+                    <th width="159">操作</th>
+                </tr>
+                </thead>
+                <tbody ng-repeat="freePackage in freePackageList" ng-show="freePackageList.length">
+                <tr class="triple-height" ng-class="{'selected':freePackage.selected}">
+                    <td>
+                        <input ng-change="selectItem(freePackage)" type="checkbox" ng-model="freePackage.selected">
+                    </td>
+                    <td>
+                        {{freePackage.freePackage.buyerNick}}
+                    </td>
+                    <td>
+                        <label>
+                            <div class="text-primary">
+                                <span ng-show="freePackage.freePackage.receiverName">{{freePackage.freePackage.receiverName}}，</span>
+                                <span ng-show="freePackage.freePackage.receiverMobile">{{freePackage.freePackage.receiverMobile}}，</span>
+                                <span ng-show="freePackage.freePackage.receiverPhone">{{freePackage.freePackage.receiverPhone}}，</span>
+                                {{freePackage.freePackage.receiverState}}{{freePackage.freePackage.receiverCity}}
+                                {{freePackage.freePackage.receiverDistrict}}{{freePackage.freePackage.receiverTown}}
+                                {{freePackage.freePackage.receiverAddress}}
+                            </div>
+                            <div>
+                                {{freePackage.freePackage.contactName}}，
+                                {{freePackage.freePackage.mobilePhone}}，
+                                {{freePackage.freePackage.province}}{{freePackage.freePackage.city}}
+                                {{freePackage.freePackage.country}}{{freePackage.freePackage.addr}}
+                            </div>
+
+                        </label>
+                        <div class="font-size-sm text-warning">
+                            {{freePackage.freePackage.sellerMemo}}
+                        </div>
+                    </td>
+                    <td class="double-td">
+                        <div class="text-div">
+                            {{freePackage.freePackage.userTemplateName}}
+                        </div>
+                        <div class="input-div associate" ng-init="smart=false"  ng-show="freePackage.freePackage.userExpressTemplateCategory==2" toolTip="电子面单单号为系统自动获取不支持手工录入">
+                            <input type="text" ng-focus="smart =true" onkeyup="value=value.replace(/[\W]/g,'')"
+                                   ng-disabled="true" name="expressNo" on-blur="smart" ng-model="freePackage.freePackage.expressNo" class="form-control input-sm">
+                            <i ng-show="smart"
+                               ng-click="associateExpressNo(freePackage)"
+                               class="glyphicon glyphicon-arrow-down text-success associate-arrow"
+                               title="以此运单号码为基础，自动联想输入下面所有选中记录的运单号码"></i>
+                        </div>
+
+                        <div class="input-div associate" ng-init="smart=false"  ng-hide="freePackage.freePackage.userExpressTemplateCategory==2" >
+                            <input type="text" ng-focus="smart =true" onkeyup="value=value.replace(/[\W]/g,'')"
+                                   name="expressNo" on-blur="smart" ng-model="freePackage.freePackage.expressNo" class="form-control input-sm">
+                            <i ng-show="smart"
+                               ng-click="associateExpressNo(freePackage)"
+                               class="glyphicon glyphicon-arrow-down text-success associate-arrow"
+                               title="以此运单号码为基础，自动联想输入下面所有选中记录的运单号码"></i>
+                        </div>
+
+                    </td>
+                    <td>
+                        <div class="text-primary">{{freePackage.freePackage.printDeliveryBillTime}}</div>
+                        <div>{{freePackage.freePackage.printExpressTime}}</div>
+                    </td>
+                    <td>
+                        <ul class="operations">
+                            <li class="operation">
+                                <a  id="detail" data-target="#orderList{{$index}}" data-toggle="collapse">详细</a>
+                            </li>
+                            <li class="operation" ng-click="edit(freePackage.freePackage)"><a>编辑</a></li>
+
+                            <li class="operation" ng-click="viewLog(freePackage.freePackage)"><a>日志</a></li>
+
+                            <li class="operation" ng-click="copyTrade(freePackage.freePackage)"><a>复制</a></li>
+
+                        </ul>
+                    </td>
+                </tr>
+                <tr class="detail-tr">
+                    <td colspan="20" class="order-td">
+                        <div class="collapse" id="orderList{{$index}}">
+                            <table class="table data-table">
+                                <tbody>
+                                    <tr ng-show="freePackage.freePackage.freeTradeList[0].freeOrderList.length!=0" ng-repeat="freeOrder in freePackage.freePackage.freeTradeList[0].freeOrderList">
+                                        <td width="50%">
+                                            <span>
+                                                <span ng-show="!freeOrder.abbrevName">{{freeOrder.title}}</span>
+                                                <span ng-show="freeOrder.abbrevName">{{freeOrder.abbrevName}}</span>
+                                            </span>
+                                        </td>
+                                        <td width="250px">
+                                            <span ng-show="freeOrder.num">
+                                                {{freeOrder.price|centToDollar}}×{{freeOrder.num}}<span ng-if="freeOrder.discountFee>0">-{{freeOrder.discountFee}}</span><span ng-if="freeOrder.discountFee<0">+{{-freeOrder.discountFee}}</span> ={{(freeOrder.price*freeOrder.num/100-freeOrder.discountFee)*100|centToDollar}}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            {{freeOrder.skuPropertiesName}}
+                                        </td>
+                                    </tr>
+                                    <tr ng-show="freePackage.freePackage.freeTradeList[0].freeOrderList.length!=0">
+                                        <td colspan="20">
+                                        订单总额：{{freePackage.freePackage.freeTradeList[0].payment|centToDollar}}，<span ng-if="freePackage.freePackage.freeTradeList[0].discountFee">满减优惠：{{freePackage.freePackage.freeTradeList[0].discountFee}}，</span>邮费：{{freePackage.freePackage.freeTradeList[0].postFee|centToDollar}}
+                                        </td>
+                                    </tr>
+                                    <tr ng-show="freePackage.freePackage.freeTradeList[0].freeOrderList.length==0">
+                                        <td colspan="20">
+                                            该订单没有添加商品~~
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+                <tbody ng-show="freePackageList.length==0">
+                    <tr >
+                        <td colspan="20">
+                            <div class="none-item-container">
+                                <div class="none-item">
+                                    <div class="icon"></div>
+                                    暂时没有数据哦~换个筛选条件试试吧~
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="tool-bar-footer">
+                <div class="right">
+                    <div paging page="pageNo" page-size="pageSize" total="count"
+                         paging-action="search(page,pageSize,total)" show-prev-next="true"
+                         class="pagination">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="operation-bar-wrap clearfix">
+            <div class="operation-bar footer-bar text-center operation-bar-bottom" dp-smart-float="{type:'bottom'}">
+                <div class="pull-left" style="margin-top: 8px;padding-left: 10px;line-height: normal;">
+                    <div class="checkbox">
+                        <label>
+                            <input ng-change="selectAll()" type="checkbox" ng-model="checkAll">
+                            全选
+                        </label>
+                    </div>
+                </div>
+                <div class="dropdown btn-dropdown-warning">
+                    <button type="button" ng-click="batchPrint(false,1)" class="btn btn-warning">
+                        打印快递单
+                    </button>
+                    <a class="btn btn-warning" data-toggle="dropdown"><span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <!-- <li>打印偏移设置</li>-->
+                        <li ng-click="batchPrint(true,1)">预览快递单</li>
+                    </ul>
+
+                </div>
+                <div class="dropdown btn-dropdown-info">
+                    <button type="button" ng-click="batchPrint(false,2)" class="btn btn-info">
+                        打印发货单
+                    </button>
+                    <a class="btn btn-info" data-toggle="dropdown"><span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <!--<li>发货单设置</li>-->
+                        <li ng-click="batchPrint(true,2)">预览发货单</li>
+                    </ul>
+
+                </div>
+
+                <div class="dropdown btn-dropdown-success">
+                    <button type="button" data-toggle="dropdown" class="btn btn-success">
+                        更多操作
+                    </button>
+                    <a class="btn btn-success " data-toggle="dropdown"><span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li ng-click="uTemplate()">批量更换模板</li>
+                        <li ng-click="recycleWaybill()">批量回收电子面单号</li>
+                        <li ng-click="updateSender()">批量更换寄件人信息</li>
+                        <li ng-click="updateTemplateNo(true)">批量保存运单号</li>
+                        <li ng-click="deleteExpressNo()">批量删除运单号</li>
+                        <li ng-click="setPrinted()">批量设置成已打印</li>
+                        <li ng-click="batchRemove()" ng-hide="freePackageSearchModel.isDelete">批量删除订单</li>
+                    </ul>
+                </div>
+                <!--<div class="pull-right btn-lg go-top" title="回到顶部" style="margin-top: 8px;">
+                    <a href="javascript:window.scrollTo(0,0);">
+                        <i class="glyphicon glyphicon-arrow-up"></i>
+                    </a>
+                </div>-->
+            </div>
+        </div>
+        <div class="deliveryTemplate"></div>
+    </div>
+
+</div>

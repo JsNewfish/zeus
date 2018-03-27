@@ -1,0 +1,176 @@
+<div class="view view-list print view-bindShop" ng-controller="bindShopCtrl">
+    <div class="container-fluid " cg-busy="{promise:loading ,message:'加载数据中。。'}">
+
+        <div class="title-bar">
+            <div class="title-bar-inner">
+                <h3 class="title">多店铺关联
+                </h3>
+                &nbsp;&nbsp;
+                <span style="color: #999">多店铺关联教程 <a style="color: #107FE4;" ng-href="http://mygod.cuxiao.quannengzhanggui.net/static/common/index.html#/help/helpView?id=137" target="_blank">【点击查看】</a></span>
+            </div>
+        </div>
+        <div ng-show="!notAllow">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>本店信息</h4>
+                </div>
+                <div class="panel-body">
+                    <form class="form-horizontal" class="w5c-form" w5c-form-validate="{blurTrig:false}" novalidate
+                          name="formValidate">
+                        <div class="form-group">
+                            <label class="control-label col-xs-1">当前店铺ID：</label>
+
+                            <div class="controls col-xs-10">
+                                <span class="form-text">{{bindData.shopNick}}</span>
+                                <span class="text-warning">(店铺代码：{{bindData.shopCode}})</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-xs-1">本店绑定手机：</label>
+
+                            <div class="controls col-xs-10">
+                                <span ng-show="!changeMobile">
+                                    <span class="form-text">{{bindData.bindPhoneNum}}</span>
+                                    <a class="text-base" ng-click="changeToggle()">修改</a>
+                                </span>
+                                <span ng-show="changeMobile">
+                                    <input w5c-customizer="customizer()"
+                                           class="form-control form-control-static input-short" name="phoneNum"
+                                           type="text"
+                                           required placeholder="手机号" ng-model="mobile">
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-hide="!changeMobile">
+                            <label class="control-label col-xs-1">短信验证码：</label>
+
+                            <div class="col-xs-10">
+                                <input class="form-control form-control-static input-short" ng-model="mobileCheckCode"
+                                       name="checkCode" type="text"
+                                       required placeholder="验证码">
+                                <a class="text-base" ng-disabled="enableSave">
+                                    <span ng-show="!enableSave" ng-click="getModifyNumCode()">获取验证码</span>
+                                    <span ng-show="enableSave">{{seconds}}秒后重新获取</span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-hide="!changeMobile">
+                            <label class="control-label col-xs-1"></label>
+
+                            <div class="col-xs-10">
+                                <button class="btn btn-base" ng-click="modifyMobile()">保存</button>
+                                <button class="btn " ng-click="changeToggle()">取消</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>关联店铺</h4>
+                </div>
+                <div class="panel-body">
+                    <form class="form-horizontal" class="w5c-form" w5c-form-validate="{blurTrig:false}" novalidate
+                          name="formValidate2">
+                        <div class="form-group">
+                            <label class="control-label col-xs-1">关联店铺代码：</label>
+
+                            <div class=" col-xs-10">
+                                <input class="form-control input-long form-control-static" name="shopId" type="text"
+                                       placeholder="店铺代码" ng-model="shopCode" required>
+                                <span class="form-text">请输入要关联的店铺代码，非本店</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-xs-1">短信验证码：</label>
+
+                            <div class=" col-xs-10">
+                                <input required class="form-control form-control-static input-short" name="authCode"
+                                       type="text" ng-model="bindShopCode"
+                                       placeholder="验证码">
+                                <a class="text-base" ng-disabled="enableSave2">
+                                    <span ng-click="getCheckCode()" ng-show="!enableSave2">获取验证码</span>
+                                    <span ng-show="enableSave2">{{seconds2}}秒后重新获取</span>
+                                </a>
+                                <div ng-show="enableSave2" style="padding-top: 10px;">
+                                    已向手机号<span class="text-warning">{{checkMobile}}</span>发送验证码，号码不正确？<a target="_blank" href="http://mygod.cuxiao.quannengzhanggui.net/static/common/index.html#/help/helpView?id=134">点击查看如何修改</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-xs-1"></label>
+
+                            <div class=" col-xs-10">
+                                <button class="btn btn-base" ng-click="bindShop()" ng-disabled="formValidate2.$invalid">
+                                    添加关联
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>已关联店铺</h4>
+                </div>
+                <div class="panel-body" style="padding: 0;">
+                    <table class="table data-table">
+                        <thead>
+                        <tr>
+                            <th>店铺ID</th>
+                            <th>关联时间</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody ng-show="bindShopList">
+                        <tr ng-repeat="bindShop in bindShopList" ng-show="bindShop.status==1">
+                            <td>{{bindShop.shopNick}}</td>
+                            <td>{{bindShop.bindDate}}</td>
+                            <td>
+                                <span>关联中</span>
+
+                            </td>
+                            <td>
+                                <button class="btn btn-danger" ng-click="relieveBind(bindShop)" >
+                                    解除绑定
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tbody ng-hide="bindShopList">
+                        <tr>
+                            <td colspan="9">
+                                <div class="none-item-container">
+                                    <div class="none-item">
+                                        <div class="icon"></div>
+                                        暂时没有数据哦~
+                                        <a href=""></a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div ng-show="notAllow">
+            <table class="table data-table">
+                <tbody>
+                <tr>
+                    <td colspan="9">
+                        <div class="none-item-container">
+                            <div class="none-item " style="color:#999;">
+                                <div class="icon"></div>
+                                {{errorMes}}
+                                <a href=""></a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

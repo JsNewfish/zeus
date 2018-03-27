@@ -1,0 +1,129 @@
+<form id="ajaxForm" class="w5c-form" cg-busy="{promise:loading,message:message}" w5c-form-validate="" name="validateForm" novalidate>
+    <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" ng-click="cancel()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <label>上传（{{importTypeMeau[importType].name}}）导出的CSV格式订单</label>
+    </div>
+    <div class="modal-body" >
+        <div class="slogan slogan-help slogan-warning">
+            <img src="images/pages/reminder.png" alt="" class="slogan-icon"/>
+
+            <div class="slogan-content">
+                <h5>注意事项：</h5>
+                <ul class="">
+                    <li>一次导入的订单如果完全满足以下条件将自动合并：买家昵称相同，收货人姓名相同，收货省份相同，收货城市相同，收货地区相同，收货地址相同</li>
+                </ul>
+            </div>
+        </div>
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="control-label col-xs-2" style="width: 193px;">
+                    从{{importTypeMeau[importType].name}}导出待打印订单：
+                </label>
+                <div class="col-xs-7">
+                    <div class="form-text">
+                        <a ng-show="type=='jingdong'" target="_blank" ng-href="//mygod.cuxiao.quannengzhanggui.net/static/common/index.html#/help/helpView?id=98" >
+                            导出方法
+                        </a>
+                        <a ng-show="type=='jianhuaban'" ng-click="exportTemplate()">下载模板</a>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-xs-2" style="width: 193px;">
+                    选择导入文件格式：
+                </label>
+                <div class="col-xs-7">
+                    该文件的最后一列是，
+                    <select required name="importType" class="form-control form-control-static input-sm"
+                            ng-model="userTemplate"
+                            ng-options="item.key as item.value for item in importTypeMeau[importType].format">
+                        <option value="">请选择类型</option>
+                    </select>
+                    如果列表中没有请联系客服旺旺:<a target="_blank" class="wangwang" style="display: inline-block;margin-top: 9px;" href="http://www.taobao.com/webww/ww.php?ver=3&touid=%E5%85%A8%E8%83%BD%E5%B0%8F%E7%A7%98&siteid=cntaobao&status=1&charset=utf-8"><img border="0" src="https://amos.alicdn.com/realonline.aw?v=2&amp;uid=%E6%B7%98%E5%AE%9D%E5%A4%A9%E4%B8%8B%E5%8D%96%E5%AE%B6%E5%88%8A&#10;&amp;site=cntaobao&amp;s=1&amp;charset=utf-8" alt="点这里给我发消息"></a>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-xs-2" style="width: 193px;">
+                    选择XLS文件：
+                </label>
+                <div class="col-xs-7">
+                    <div class="form-text">
+                        <input required type="file" id="files" name="file" name="选择文件">
+                    </div>
+                    <div class="text-danger" ng-show="errorMessage">
+                        {{errorMessage}}
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-xs-2" style="width: 193px;">
+                    选择快递模板：
+                </label>
+                <div class="col-xs-7">
+                    <select required ng-model="tempId" class="form-control static input-sm" name="tempId">
+                        <option value="">-- 请选择--</option>
+                        <option ng-value="x.id" ng-repeat="x in expressTemp"> {{x.name}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-xs-2" style="width: 193px;">
+                    发货地址：
+                </label>
+                <div class="col-xs-7">
+                    <select required ng-model="contactId" class="form-control static input-sm" name="contactId">
+                        <option value="">-- 请选择--</option>
+                        <option ng-value="address.contactId" ng-repeat="address in addressList">{{address.province}}-{{address.contactName}}</option>
+                    </select>
+                    <div>{{address}}</div>
+                </div>
+            </div>
+        </div>
+        <!--<div>
+            <table class="table table-bordered">
+                <tr>
+                    <td class="col-xs-4">从{数据渠道}导出待打印订单</td>
+                    <td class="col-xs-8">导出方法</td>
+                </tr>
+                <tr>
+                    <td class="col-xs-4">选择导师入文件格式</td>
+                    <td class="col-xs-8">
+                        该文件的最后一列是，
+                        <select class="form-control form-control-static input-sm"
+                                ng-model="userTemplate"
+                                ng-options="item.key as item.value for item in importTypeMeau[importType].format">
+                        </select>
+                        如果列表中没有请联系客服旺旺:
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-xs-4">选择XLS文件</td>
+                    <td class="col-xs-8"><input type="file" id="files" name="file" name="选择文件"></td>
+                </tr>
+                <tr>
+                    <td class="col-xs-4">选择快递模板</td>
+                    <td class="col-xs-8">
+                        <select ng-model="tempId" name="tempId">
+                            <option value="">&#45;&#45; 请选择&#45;&#45;</option>
+                            <option ng-value="x.id" ng-repeat="x in expressTemp"> {{x.name}}</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-xs-4">点击上传</td>
+                    <td class="col-xs-8">
+                        <button class="btn btn-base btn-sm" ng-click="uploadFile();">上传</button>
+                    </td>
+                </tr>
+            </table>
+        </div>-->
+    </div>
+    <div class="modal-footer">
+        <div class="text-center">
+            <button class="btn btn-base w-100" w5c-form-submit="uploadFile()">上传</button>
+            <button class="btn btn-default w-100" data-dismiss="modal" ng-click="cancel()">取消</button>
+        </div>
+    </div>
+</form>

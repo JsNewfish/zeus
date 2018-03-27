@@ -1,0 +1,22 @@
+<form class="w5c-form" w5c-form-validate="" name="validateForm" novalidate>
+    <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" ng-click="cancel()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">修改备注补充</h4>
+    </div>
+    <div class="modal-body">
+            <div class="col-xs-12">
+                <textarea placeholder="此备注内容仅保存在全能掌柜中，不会同步至淘宝。最大长度限制500字" name="sysMemos" ng-maxlength="500"
+                          class="form-control" ng-model="sysMemos" cols="30" rows="5">
+                </textarea>
+            </div>
+
+    </div>
+    <div class="modal-footer">
+        <div class="text-center">
+            <button class="btn btn-base w-100" w5c-form-submit="save()">保存</button>
+            <button class="btn btn-default w-100" data-dismisss="modal" ng-click="cancel()">取消</button>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,454 @@
+<div class="view print view-list view-freeprint" ng-controller="freeprintCtrl"
+     cg-busy="{promise:loading ,message:message}">
+    <div class="container-fluid">
+        <form class="w5c-form" w5c-form-validate="{blurTrig:true}" novalidate name="formValidate">
+            <div class="title-bar">
+                <div class="title-bar-inner">
+                    <h5 class="title">录入/打印
+                    </h5>&nbsp;&nbsp;
+                    <span style="color: #107FE4;">自由打印操作教程
+                        <a style="color: #107FE4;" ng-href="http://v.youku.com/v_show/id_XMzM4MDY4Njc3Ng==.html?sharekey=bfd0a0e3ce06e61984c1c33e1d2864d72" target="_blank">【视频教程】</a>
+                    </span>
+                </div>
+            </div>
+
+            <div class="source-bar">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label col-xs-2">选择订单来源：</label>
+
+                        <div class="controls">
+                            <div class="radio radio-inline">
+                                <label>
+                                    <input type="radio" name="st" ng-model="freePackage.fromType"
+                                           ng-click="clickFromType(1)"
+                                           value="1">
+                                    手工录入
+                                </label>
+                            </div>
+                            <div class="radio radio-inline">
+                                <label>
+                                    <input type="radio" name="st" ng-model="freePackage.fromType"
+                                           ng-click="clickFromType(2)"
+                                           value="2">
+                                    淘宝/天猫
+                                </label>
+                            </div>
+                            <div class="radio radio-inline">
+                                <label>
+                                    <input type="radio" name="st" ng-model="freePackage.fromType"
+                                           ng-click="clickFromType(3)"
+                                           value="3">
+                                    供销/分销
+                                </label>
+                            </div>
+                            <div class="radio radio-inline">
+                                <label>
+                                    <input type="radio" name="st" ng-model="freePackage.fromType" value="4">
+                                    批量导入订单
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div ng-hide="freePackage.fromType==4">
+                <div class="info-container row">
+                    <div class="col-xs-7 ">
+                        <div class="panel panel-default consignee-info">
+                            <div class="panel-heading">
+                                <h5>① 选择快递模板：</h5>
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-horizontal">
+                                    <div class="form-group">
+                                        <div class="controls col-xs-12">
+                                            <select id="exp_tmp" class="form-control form-control-static input-sm"
+                                                    name="exp_tmp" ng-model="userTemplate"
+                                                    ng-options="x as x.name for x in expressTemp">
+                                            </select>
+                                            <span>运单号：</span>
+                                            <input type="text" onkeyup="value=value.replace(/[\W]/g,'')"
+                                                   ng-maxlength="30" ng-disabled="userTemplate.category == 2"
+                                                   class="input-text big_font form-control form-control-static input-sm"
+                                                   ng-model="freePackage.expressNo" style="width:190px;" name="out_sid"
+                                                   id="out_sid" title="输入运单号码">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default recipient-info">
+                            <div class="panel-heading">
+                                <h5> ② 收件人信息：</h5>
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-horizontal">
+                                    <div class="form-group">
+
+                                        <label class="control-label pull-left">
+                                            <span class="text-danger">*&nbsp;</span>
+                                            收件人：
+                                        </label>
+
+                                        <div class=" controls pull-left">
+                                            <div class="static">
+                                                <input required ng-blur="addressPaste($event)"
+                                                       class="form-control static input-sm input-medium" type="text"
+                                                       ng-model="freePackage.receiverName" id="receiver_name"
+                                                       ng-maxlength="50"
+                                                       placeholder="名字"
+                                                       name="receiver_name">
+                                            </div>
+                                            <div style="vertical-align: top;padding-top: 4px;" class="static">
+                                                <a id="client_list" ng-click="openSearchTrade()" style="color: #107FE4;">选择客户</a>
+                                                <a target="_blank"
+                                                   href="//mygod.cuxiao.quannengzhanggui.net/static/common/index.html#/help/helpView?id=97"
+                                                   class="ml20" style="color: #107FE4;">拷贝淘宝订单中的地址？</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label pull-left">昵称：</label>
+
+                                        <div class=" controls pull-left">
+                                            <input class="form-control input-sm input-medium" type="text"
+                                                   ng-model="freePackage.buyerNick" id="buyer_nick" ng-maxlength="30"
+                                                   placeholder="昵称"
+                                                   name="buyer_nick">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label pull-left">
+                                            <span class="text-danger">*&nbsp;</span>
+                                            收件地址：
+                                        </label>
+
+                                        <div class="controls pull-left">
+                                            <div class="static" style="vertical-align: top;">
+                                                <input required type="text"
+                                                       class="form-control form-control-static input-short input-sm"
+                                                       id="receiver_state" ng-maxlength="30"
+                                                       ng-model="freePackage.receiverState" name="receiver_state"
+                                                       placeholder="省份">
+                                            </div>
+                                            <div class="static" style="vertical-align: top;">
+                                                <input required type="text"
+                                                       class="form-control form-control-static input-short input-sm"
+                                                       id="receiver_city" ng-maxlength="30"
+                                                       ng-model="freePackage.receiverCity" name="receiver_city" value=""
+                                                       placeholder="城市">
+                                            </div>
+                                            <div class="static" style="vertical-align: top;">
+                                                <input required type="text"
+                                                       class="form-control form-control-static input-short input-sm"
+                                                       id="receiver_district" ng-maxlength="30"
+                                                       ng-model="freePackage.receiverDistrict" name="receiver_district"
+                                                       placeholder="区县">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label pull-left"></label>
+
+                                        <div class="controls pull-left" style="margin-bottom: 5px;">
+                                            <input type="text" class="form-control input-sm" style="width:400px;"
+                                                   ng-model="freePackage.receiverAddress" ng-maxlength="100"
+                                                   id="receiver_address" name="receiver_address" placeholder="详细地址">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label pull-left">目的地(大字)：</label>
+
+                                        <div class="controls pull-left">
+                                            <input class="form-control input-sm input-medium" type="text"
+                                                   id="destination_name" ng-maxlength="30" placeholder="目的地大字"
+                                                   name="destination_name" ng-model="freePackage.terminiBigChar">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                            <div class="form-group">
+                                                <label class="control-label pull-left">手机：</label>
+
+                                                <div class="controls pull-left">
+                                                    <input type="text"
+                                                           class="form-control input-sm input-medium"
+                                                           ng-model="freePackage.receiverMobile" name="receiver_mobile"
+                                                           ng-maxlength="15" placeholder="手机号"
+                                                           id="receiver_mobile">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label pull-left">电话：</label>
+
+                                                <div class="controls pull-left">
+                                                    <input type="text"
+                                                           class="form-control input-sm input-medium"
+                                                           ng-model="freePackage.receiverPhone" name="receiver_phone"
+                                                           ng-maxlength="30" placeholder="电话"
+                                                           id="receiver_phone">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <div class="form-group">
+                                                <label class="control-label pull-left">邮编：</label>
+
+                                                <div class="controls pull-left">
+                                                    <input type="text"
+                                                           class="form-control form-control-static input-sm input-medium"
+                                                           ng-model="freePackage.receiverZip" name="receiver_zip"
+                                                           id="receiver_zip"
+                                                           ng-maxlength="6" placeholder="邮政编码">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label pull-left">运费：</label>
+
+                                                <div class="controls pull-left">
+                                                    <input type="number"
+                                                           class="form-control input-sm input-medium"
+                                                           ng-maxlength="10" placeholder="运费"
+                                                           ng-model="freePackage.freight" name="post_fee" id="post_fee">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-5">
+                        <div class="panel panel-default shipper-info">
+                            <div class="panel-heading">
+                                <h5> ④ 寄件人信息：
+                                    <a ng-click="changeAddress()">更换寄件人信息</a>
+                                    <a ng-hide="hasId" ng-click="handleShipAddress(address)">修改寄件人信息</a>
+                                    <a ng-click="handleShipAddress()">新增寄件人信息</a>
+                                </h5>
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-horizontal">
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-3">寄件人：</label>
+
+                                        <div class="controls col-xs-9">
+                                            <span class="form-text">{{address.contactName}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-3">寄件公司：</label>
+
+                                        <div class="controls col-xs-9">
+                                            <span class="form-text">{{address.sellerCompany}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-3">寄件地址：</label>
+
+                                        <div class="controls col-xs-9">
+                                            <span ng-show="userTemplate.category == 2" class="form-text">{{userTemplate.province}}{{userTemplate.city}}{{userTemplate.district}}{{userTemplate.detail}}</span>
+                                            <span ng-show="userTemplate.category != 2"  class="form-text">{{address.province}}{{address.city}}{{address.country}}{{address.addr}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-3">手机：</label>
+
+                                        <div class="controls col-xs-9">
+                                            <span class="form-text">{{address.mobilePhone}}&nbsp;电话：{{address.phone}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default memo">
+                            <div class="panel-heading"><h5> ⑤ 备注：</h5></div>
+                            <div class="panel-body">
+                            <textarea rows="3" id="note" name="note" style="width:400px;"
+                                      ng-maxlength="300" placeholder="备注"
+                                      ng-model="freePackage.sellerMemo" class="input-text form-control">
+
+                            </textarea>
+                            </div>
+                        </div>
+                        <!--<div class="panel panel-default service">
+                            <div class="panel-heading"><h5> ⑥ 增值服务： (目前仅支持顺丰电子面单)</h5></div>
+                            <div class="panel-body">
+                                <div class="form-horizontal">
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-3" style="width:125px;">代收货款金额：</label>
+
+                                        <div class="controls col-xs-8">
+                                            <input type="text" class="form-control form-control-static input-sm" name="cod"
+                                                   id="cod" value="">元
+                                            <div style="color:red;">&nbsp;运单号获取了就不能修改代收货款</div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-3" style="width:125px;">保价声明价值：</label>
+
+                                        <div class="controls col-xs-8">
+                                            <input type="text" class="form-control form-control-static input-sm"
+                                                   name="insure" id="insure" value="">
+                                            元
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>-->
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h5>③ 寄送物品清单：</h5>
+                    </div>
+
+                        <div class="data-table-wrap" ng-show="freePackage.fromType!=4">
+                        <div class="tool-bar">
+                            <button class="btn btn-base" ng-click="addFreeOrder()">新增物品</button>
+                            <div class="pull-right" style="padding-right: 22px;">
+                                <div>实付金额：{{freePackage.freeTradeList[0].payment|centToDollar}} = {{orderPrice|centToDollar}} + {{freight|centToDollar}} - {{tradeDiscountFee|centToDollar}}</div>
+                                <div class="text-remind">实付金额 = 宝贝优惠后金额+运费-订单满减优惠</div>
+                            </div>
+                        </div>
+                        <table class="table data-table">
+                            <thead>
+                            <tr>
+                                <th width="250">物品名称</th>
+                                <th width="200">销售属性</th>
+                                <th width="150">商家编码</th>
+                                <th width="75">单价</th>
+                                <th width="75">数量</th>
+                                <th width="75">金额</th>
+                                <th width="75">优惠</th>
+                                <th width="75">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody ng-show="freePackage.freeTradeList[0].freeOrderList.length!=0">
+                            <tr ng-repeat="freeOrder in freePackage.freeTradeList[0].freeOrderList">
+                                <td>
+                                    <span>
+                                        <span ng-show="!freeOrder.abbrevName">{{freeOrder.title}}</span>
+                                        <span ng-show="freeOrder.abbrevName">{{freeOrder.abbrevName}}</span>
+                                    </span>
+
+                                </td>
+                                <td>
+                                    {{freeOrder.skuPropertiesName}}
+                                </td>
+                                <td>
+                                    {{freeOrder.itemCode}}
+
+                                </td>
+                                <td>
+                                    {{freeOrder.price}}
+                                </td>
+                                <td>
+                                    {{freeOrder.num}}
+
+                                </td>
+                                <td>
+
+                                    {{freeOrder.payment}}
+                                </td>
+                                <td>
+                                    {{freeOrder.discountFee}}
+                                </td>
+                                <td>
+                                    <div class="operations">
+                                        <a ng-click="addFreeOrder(freeOrder)" ng-show="!freeOrder.edit">编辑</a>
+                                        <a ng-click="deleteFreeOrder(freeOrder)">删除</a>
+
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                            <tbody ng-show="!freePackage.freeTradeList[0].freeOrderList.length">
+                            <tr>
+                                <td colspan="9">
+                                    <div class="none-item-container">
+                                        <div class="none-item">
+                                            <div class="icon"></div>
+                                            暂时没有数据哦~
+                                            <a href=""></a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
+            <div ng-show="freePackage.fromType==4">
+                <div class="slogan slogan-help bg-warning">
+                    <img src="images/pages/reminder.png" alt="" class="slogan-icon"/>
+
+                    <div class="slogan-content">
+                        <h5>注意事项：</h5>
+                        <ul class="">
+                            <li>一次导入的订单如果完全满足以下条件将自动合并：买家昵称相同，收货人姓名相同，收货省份相同，收货城市相同，收货地区相同，收货地址相同</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="export-logos clearfix">
+                    <div class="import">
+                        <div class="logo">
+                            <span class="text-logo" ng-click="clickFromType(4,'jianhuaban')">通用格式（简化版）</span>
+                        </div>
+                    </div>
+                    <!--<div class="import">
+                        <div class="logo">
+                            <span class="text-logo" ng-click="clickFromType(4,'laoban')">通用格式（老版）</span>
+                        </div>
+                    </div>-->
+                    <div class="import">
+                        <div class="logo">
+                            <img ng-click="clickFromType(4,'jingdong')" class="img-logo"
+                                 src="../app/images/common/jingdong.png">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div ng-show="freePackage.fromType!=4" class="operation-bar-wrap clearfix">
+                <div class="operation-bar footer-bar text-center operation-bar-bottom" dp-smart-float="{type:'bottom'}">
+                    <div class="dropdown btn-dropdown-warning">
+                        <button type="button" w5c-form-submit="printExpress(false)" class="btn btn-warning">
+                            打印快递单
+                        </button>
+                        <a class="btn btn-warning" data-toggle="dropdown"><span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li w5c-form-submit="printExpress(true)">预览快递单</li>
+                        </ul>
+                    </div>
+                    <div class="dropdown btn-dropdown-info">
+                        <button type="button" class="btn btn-info" w5c-form-submit="printDelivery(false)">
+                            打印发货单
+                        </button>
+                        <a class="btn btn-info" data-toggle="dropdown"><span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li w5c-form-submit="printDelivery(true)">预览发货单</li>
+                        </ul>
+                    </div>
+                    <div class="dropdown btn-dropdown-success">
+                        <button type="button" w5c-form-submit="save()" class="btn btn-success">
+                            保存
+                        </button>
+                        <a class="btn btn-success " data-toggle="dropdown"><span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li ng-click="resetData()">清空</li>
+                        </ul>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="deliveryTemplate"></div>
+        </form>
+    </div>
+</div>

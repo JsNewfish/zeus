@@ -1,0 +1,53 @@
+<div class="modal-header" >
+    <button type="button" class="close" aria-label="Close" ng-click="cancel()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h3 class="modal-title">更换发货地址</h3>
+</div>
+<div class="modal-body" cg-busy="{promise:loading ,message:'加载数据中。。'}">
+    <table class="table data-table" ng-class="{'no-data':entity.length==0}">
+        <thead>
+        <tr>
+            <th></th>
+            <th>联系人</th>
+            <th>地区/街道地址</th>
+            <th>联系电话</th>
+            <th>邮编</th>
+            <th>公司</th>
+            <th>备注</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="address in entity" ng-show="entity.length">
+            <th><input type="radio" name="address" ng-value="address" ng-model="$parent.sellerAddress"></th>
+            <td>{{address.contactName}}</td>
+            <td>
+                {{address.province}}
+                {{address.city}}
+                {{address.country}}
+                {{address.addr}}
+            </td>
+            <td>{{address.mobilePhone}}</td>
+            <td>{{address.zipCode}}</td>
+            <td>{{address.sellerCompany}}</td>
+            <td>{{address.memo}}</td>
+        </tr>
+        <tr ng-show="entity.length==0">
+            <td colspan="20">
+                <div class="none-item-container">
+                    <div class="none-item">
+                        <div class="icon"></div>
+                        暂时没有数据哦~~
+                    </div>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div class="modal-footer">
+    <div class="text-center">
+        <button class="btn btn-base w-100" ng-click="save()">确定</button>
+        <button class="btn btn-default w-100" data-dismisss="modal" ng-click="cancel()">取消</button>
+    </div>
+</div>

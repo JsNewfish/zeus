@@ -1,0 +1,391 @@
+<div class="view view-list view-tradeData" data-ng-controller="tradeDataCtrl">
+    <div class="container-fluid font-color-gray-light">
+        <div class=" row">
+            <div class=" col-xs-12">
+                <div class="title-bar">
+                    <div class="title-bar-inner">
+                        <h3 class="title">订单列表</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="search-bar" dp-filter-bar>
+            <form class=" form" name="baseForm">
+                <div class="search-pane clearfix">
+                    <div class="adv-search" id="collapseExample">
+                        <div class="form-group col-xs-4">
+                            <label class="control-label">订单号：</label>
+
+                            <div class="controls">
+                                <input class="form-control form-control-static input-sm" type="text" ng-model="condition.tid"/>
+                            </div>
+                        </div>
+                        <div class="form-group col-xs-4">
+                            <label class="control-label">订单类型：</label>
+
+                            <div class="controls">
+                                <select class="form-control form-control-static input-sm" data-ng-model="condition.type">
+                                    <option value="">不限</option>
+                                    <option value="fixed">一口价</option>
+                                    <option value="cod">货到付款</option>
+                                    <option value="nopaid">试用中心</option>
+                                    <option value="step">万人团</option>
+                                    <option value="eticket">生活汇</option>
+                                    <option value="tmall_i18n">天猫国际</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-xs-4">
+                            <label class="control-label">订单状态：</label>
+
+                            <div class="controls">
+                                <select class="form-control form-control-static input-sm" data-ng-model="condition.status">
+                                    <option value="TRADE_NO_CREATE_PAY">未创建支付宝订单</option>
+                                    <option value="WAIT_BUYER_PAY">等待买家付款</option>
+                                    <option value="FRONT_NOPAID_FINAL_NOPAID">定金未付尾款未付</option>
+                                    <option value="FRONT_PAID_FINAL_NOPAID">定金已付尾款未付</option>
+                                    <option value="FRONT_PAID_FINAL_PAID">定金和尾款都付</option>
+                                    <option value="SELLER_CONSIGNED_PART">部分已发货</option>
+                                    <option value="WAIT_SELLER_SEND_GOODS">已付款待发货</option>
+                                    <option value="WAIT_BUYER_CONFIRM_GOODS">卖家已发货</option>
+                                    <option value="TRADE_FINISHED">交易成功</option>
+                                    <option value="TRADE_BUYER_SIGNED">买家已签收(货到付款)</option>
+                                    <option value="TRADE_CLOSED_BY_TAOBAO">付款前交易关闭</option>
+                                    <option value="TRADE_CLOSED">付款后交易关闭</option>
+                                    <option value="ALL_CLOSED">所有关闭的交易</option>
+                                    <option value="NO_CLOSED">全部未关闭订单</option>
+                                    <option value="" selected>不限(全部订单)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!--<div class="form-group col-xs-4">-->
+                            <!--<label class="control-label">旺旺昵称：</label>-->
+
+                            <!--<div class="controls">-->
+                                <!--<input class="form-control form-control-static input-sm" type="text" ng-model="condition.buyerNick"/>-->
+                            <!--</div>-->
+                        <!--</div>-->
+
+                        <!--<div class="form-group col-xs-4">-->
+                            <!--<label class="control-label">手机号：</label>-->
+
+                            <!--<div class="controls">-->
+                                <!--<input class="form-control form-control-static input-sm" type="text" ng-model="condition.receiverMobile"/>-->
+                            <!--</div>-->
+                        <!--</div>-->
+
+                        <div class="form-group col-xs-4">
+                            <label class="control-label">备注旗帜：</label>
+                            <div class="controls">
+                                <select ng-model="condition.sellerFlag" class="form-control input-medium"
+                                        ng-class="{'selectValue':sellerFlag}" >
+                                    <option value="">不限</option>
+                                    <option value="0" style="color:gray;">无旗帜</option>
+                                    <option value="1" style="color:red;">红</option>
+                                    <option value="2" style="color:gold;">黄</option>
+                                    <option value="3" style="color:green;">绿</option>
+                                    <option value="4" style="color:blue;">蓝</option>
+                                    <option value="5" style="color:purple;">紫</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-xs-4">
+                            <div class="control-elem normalize">
+                                <select ng-model="condition.messageKey" class="form-control">
+                                    <option value="1">买家留言</option>
+                                    <option value="2">卖家备注</option>
+                                </select>
+                            </div>
+                            <div class="controls">
+                                <span>
+                                    <input type="text" class="form-control input-medium"
+                                           ng-class="{'selectValue':messageValue}" ng-model="condition.messageValue">
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-xs-4">
+                            <label class="control-label">所属省份：</label>
+
+                            <div class="controls">
+                                <select class="form-control input-medium" ng-class="{'selectValue':customProvince}"
+                                        ng-click="condition.customProvince==-1&&selectArea()"
+                                        ng-model="condition.customProvince">
+                                    <option value="">全部省份</option>
+                                    <option ng-value="Area.areaNames"
+                                            ng-repeat="Area in customQueryAreaList">
+                                        {{Area.areaNames}}
+                                    </option>
+                                    <option value="-1">自定义</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-xs-4">
+                            <div class="control-elem normalize">
+                                <select ng-model="condition.receiverKey" class="form-control">
+                                    <option value="1">买家昵称</option>
+                                    <option value="2">收货人手机</option>
+                                    <option value="3">收货人姓名</option>
+                                    <option value="4">收货人城市</option>
+                                    <option value="5">收货人区县</option>
+                                    <option value="6">收货人街道</option>
+                                </select>
+                            </div>
+                            <div class="controls">
+                                <span>
+                                    <input type="text" class="form-control input-medium"
+                                           ng-class="{'selectValue':receiverValue}" ng-model="condition.receiverValue">
+                                </span>
+                            </div>
+                        </div>
+
+                        <!--<div class="form-group col-xs-4">
+                            <div class="control-elem normalize">
+                                <select ng-model="condition.orderParamKey" class="form-control">
+                                    <option value="1">运单号</option>
+                                    <option value="2">物流公司</option>
+                                    <option value="3">商品编号</option>
+                                </select>
+                            </div>
+                            <div class="controls">
+                                <span>
+                                    <input type="text" class="form-control input-medium"
+                                           ng-class="{'selectValue':orderParamValue}" ng-model="condition.orderParamValue">
+                                </span>
+                            </div>
+                        </div>-->
+
+                        <div class="form-group col-xs-6" ng-class="{'has-error':baseForm.startTime.$invalid||baseForm.endTime.$invalid}">
+                            <select class="form-control form-control-static input-sm" name="option" ng-model="condition.timeType"
+                                    style="float: left; margin-right: 10px;">
+                                <option value="0">下单时间</option>
+                                <option value="1">付款时间</option>
+                                <option value="2">发货时间</option>
+                                <option value="3">完成时间</option>
+                                <option value="5">订金付款时间</option>
+                                <!--<option value="" selected>不限</option>-->
+                            </select>
+
+                            <div class="controls">
+                                <input type="text" class="form-control form-control-static input-sm cursor-hand input-date" ng-model="condition.startTime"
+                                       name="startTime" dp-datepicker readonly compare-type="datetime"
+                                       dp-valid-lower-than="{{condition.endTime}}"/>
+                                <i>~</i>
+                                <input type="text" class="form-control form-control-static input-sm cursor-hand input-date" ng-model="condition.endTime"
+                                       name="endTime" dp-datepicker readonly/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="operations clearfix">
+                <div class="right">
+                    <button class="btn btn-sm btn-warning w-100" ng-click="filtrate()">筛选</button>
+                </div>
+            </div>
+        </div>
+
+        <div ng-if="list.length" class="list" cg-busy="{promise:loading ,message:'加载中。。。'}" id="zeroClipContainer">
+            <div class="head clearfix">
+                <!--  <div>
+                      <span ng-click="allAddData()"
+                            ng-class="{'glyphicon glyphicon-unchecked':!isCheckAll,'glyphicon glyphicon-check':isCheckAll}">
+                              </span>
+                      <span>全选</span>
+                  </div>
+                  <div>
+                      <span class="font-color-light-blue cursor-hand">批量免邮</span>
+                  </div>
+                  <div>
+                      <span class="font-color-light-blue cursor-hand">批量备注</span>
+                  </div>-->
+                <!-- <div class="pull-right">
+                     <input type="checkbox" ng-model="isNotClose" ng-change="filtrate()"/>不显示已关闭订单
+                 </div>-->
+            </div>
+            <div class="content" ng-repeat="item in list"
+                 ng-if="!item.isOff || !isNotClose">
+                <div class="top clearfix">
+                    <!--<div>
+                        <input type="checkbox" ng-model="item.checkbox" data-ng-click="addDelete(item)"/>
+                    </div>-->
+                    <div>
+                        <span class="font-color-light-blue cursor-hand {{item.status}}">{{status[item.status]}}</span>
+                    </div>
+                    <div>
+                        <span class="font-color-gray-lighter">订单&nbsp</span>
+                        <span class="clipboardTradeId">{{item.tid}}&nbsp</span>
+                        <img class="tradeIdBtn" id="tradeId{{item.tid}}" ng-click="clipboardTradeId(item)" src="../app/images/pages/copy.png"/>
+                    </div>
+                    <div>
+                        <span class="font-color-gray-lighter">下单&nbsp</span>
+                        <span>{{item.created}}&nbsp</span>
+                    </div>
+                    <div ng-if="item.payTime">
+                        <span class="font-color-gray-lighter">付款&nbsp</span>
+                        <span>{{item.payTime}}&nbsp</span>
+                    </div>
+                    <div ng-if="item.logisticsCompanyName">
+                        <span class="font-color-gray-lighter">快递&nbsp</span>
+                        <span>{{item.logisticsCompanyName}}&nbsp</span>
+                        <span class="font-color-gray-lighter">单号&nbsp</span>
+                        <span>{{item.logisticsOutSid}}</span>
+                    </div>
+                    <div class="pull-right cursor-hand"
+                         data-toggle="tooltip" data-placement="left"
+                         title="{{item.sellerMemo}}">
+                        <img ng-if="item.sellerFlag == 0" ng-src="../app/images/components/sellerFlagGRAY.png"/>
+                        <img ng-if="item.sellerFlag == 1" ng-src="../app/images/components/sellerFlagRED.png"/>
+                        <img ng-if="item.sellerFlag == 2" ng-src="../app/images/components/sellerFlagYELLOW.png"/>
+                        <img ng-if="item.sellerFlag == 3" ng-src="../app/images/components/sellerFlagGREEN.png"/>
+                        <img ng-if="item.sellerFlag == 4" ng-src="../app/images/components/sellerFlagBLUE.png"/>
+                        <img ng-if="item.sellerFlag == 5" ng-src="../app/images/components/sellerFlagPURPLE.png"/>
+                    </div>
+                    <div class="pull-right" ng-if="item.buyerMessage"
+                         data-toggle="tooltip" data-placement="left"
+                         title="买家留言:{{item.buyerMessage}}">
+                        <img ng-src="../app/images/pages/buyer-message.png"/>
+                    </div>
+                    <div class="pull-right cursor-hand" ng-if="item.invoiceName"
+                         data-toggle="tooltip" data-placement="left"
+                         title="抬头：{{item.invoiceName}}  类型：{{item.invoiceType}}">
+                        <img ng-src="../app/images/pages/invoice.png"/>
+                    </div>
+                </div>
+                <div class="middle clearfix">
+                    <table class="table table-bordered">
+                        <tr data-ng-repeat="ele in item.orders" ng-if="$index >= 2 && item.isListMore || $index < 2">
+                            <td class="td-1" ng-if="$index >= 2 && item.isListMore || $index < 2">
+                                <div class="img">
+                                    <img ng-src="{{ele.picPath+'_60x60.jpg'}}"/>
+                                </div>
+                                <div class="text font-color-gray-lighter">
+                                    <a target="_blank" href="https://item.taobao.com/item.htm?id={{ele.numIid}}">
+                                        <span class="font-color-light-blue">{{ele.title}}</span>
+                                    </a>
+                                    <!--<span>{{ele.title}}</span>-->
+                                    <br>
+                                    <span>商家编码：{{ele.outerIid}}</span>
+                                    <span class="pull-right">{{ele.price | floatTransition:'2'}}x{{ele.num}}件</span>
+                                    <br>
+                                    <span>{{ele.skuPropertiesName}}</span>
+                                    <br>
+                                    <div ng-if="!item.logisticsOutSid && ele.invoiceNo">
+                                        <span class="font-color-gray-lighter">快递 : </span>
+                                        <span>{{ele.logisticsCompany}}&nbsp</span>
+                                        <span class="font-color-gray-lighter">单号 : </span>
+                                        <span>{{ele.invoiceNo}}</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="td-2" ng-if="$index >= 2 && item.isListMore || $index < 2">
+                                <img ng-if="ele.adjustFee" src="../app/images/pages/change.png"/>
+                                <span>{{ele.totalFee | floatTransition:'2'}}</span>
+                                <img ng-if="ele.orderFrom == 'jhs'" src="../app/images/pages/jhs.png"/>
+                                <br/>
+
+                                <div style="color: #A4A3A3;">{{ele.promotionDesc}}</div>
+                                <div style="color: #A4A3A3;" >手工调价：{{ele.adjustFee | floatTransition:'2'}}元</div>
+                            </td>
+                            <td class="td-3" ng-if="$index >= 2 && item.isListMore || $index < 2">
+                                <span ng-if="!refundStatus[ele.refundStatus]">{{status[ele.status]}}</span>
+                                <span ng-if="refundStatus[ele.refundStatus]">{{refundStatus[ele.refundStatus]}}</span>
+                            </td>
+                            <td class="td-4" ng-if="$index==0" rowspan="{{item.trNum}}">
+                                <a target="_blank" href="https://www.taobao.com/webww/ww.php?ver=3&touid={{item.buyerNick}}&siteid=cntaobao&status=2&charset=utf-8">
+                                    <img border="0" src="https://amos.alicdn.com/realonline.aw?v=2&uid={{item.buyerNick}}&site=cntaobao&s=2&charset=utf-8"/>
+                                    {{item.buyerNick}}
+                                </a>
+                                <img class="cursor-hand" ng-click="singleMember(item.buyerNick)" src="../app/images/pages/filtro.png"/>
+                                <br>
+                                <img ng-if="item.tradeFrom == 'WAP' || item.tradeFrom == 'WAP,WAP' " src="../app/images/pages/wap.png"/>
+                            </td>
+                            <td class="td-5" ng-if="$index==0" rowspan="{{item.trNum}}">
+                                {{item.payment | floatTransition:'2'}}元
+                                <br>
+                                <span ng-if="item.postFee">(含快递：{{item.postFee | floatTransition:'2'}}元)</span>
+                                <span ng-if="!item.postFee">(含快递：0.00元)</span>
+                                <br>
+                                <img ng-if="item.creditCardFee" src="../app/images/pages/credit-card.png"/>
+                                <div style="color: #A4A3A3;" ng-repeat="itemPro in item.promotionDesc">{{itemPro}}</div>
+                            </td>
+                            <td class="td-6 font-color-light-blue text-center" ng-if="$index==0" rowspan="{{item.trNum}}">
+                                <!--<div>
+                                    <span class="cursor-hand">查看详情</span>
+                                </div>-->
+                                <div class="packUp" ng-if="item.orderNum > 2">
+                                    <span class="cursor-hand" ng-if="item.isListMore" ng-click="listMore(item)">收起</span>
+                                    <span class="cursor-hand" ng-if="!item.isListMore" ng-click="listMore(item)">更多</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="bottom">
+                    <div class="consignee">
+                        <span class="font-color-gray-lighter">收货信息：</span>
+                        <span class="clipboard clipboardAddress"
+                              data-toggle="tooltip" data-placement="bottom"
+                              title="{{item.receiverName+item.receiverMobile+item.receiverState+item.receiverCity+
+                              item.receiverDistrict+item.receiverTown+item.receiverAddress}}">
+                              {{item.receiverName+item.receiverMobile+item.receiverState+item.receiverCity+
+                            item.receiverDistrict+item.receiverTown+item.receiverAddress}}
+                        </span>
+                    </div>
+                    <div>
+                        <span class="text-primary link addressBtn" id="clipboardAddress{{item.alipayNo}}" ng-click="clipboardAddress(item)">复制</span>
+                    </div>
+                    <!--<div>
+                        <span class="text-base cursor-hand">修改地址</span>
+                    </div>
+                    <div class="pull-right">
+                        <img src="../app/images/pages/dispatch-green.png" />
+                        <span class="font-color-red cursor-hand">发货</span>
+                    </div>
+                    <div class="pull-right">
+                        <img src="../app/images/pages/electronic-bill-purple.png" />
+                        <span class="text-base cursor-hand">电子面单</span>
+                    </div>
+                    <div class="pull-right">
+                        <img src="../app/images/pages/express-bill-green.png" />
+                        <span class="font-color-light-blue cursor-hand">快递单</span>
+                    </div>
+                    <div class="pull-right">
+                        <img src="../app/images/pages/dispatch-bill-yellow.png" />
+                        <span class="font-color-gray-lighter cursor-hand">发货单</span>
+                    </div>-->
+                </div>
+            </div>
+        </div>
+        <table ng-if="!list.length" class="table table-hover" cg-busy="{promise:loading ,message:'加载中。。。'}"  style="margin: 10px auto;background: #fff">
+            <thead>
+
+            </thead>
+            <tbody>
+            <tr>
+                <td colspan="20">
+                    <div class="none-item-container">
+                        <div class="none-item">
+                            <div class="icon">
+                            </div>
+                            没有数据哦~换个条件试试吧~ <a href=""></a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div style="float: right;">
+            <div class="row ">
+                <div class="col-xs-12">
+                    <paging page="pageNo" page-size="pageSize" total="count" show-prev-next="true"
+                            paging-action="getResultsPage(page,pageSize,total)"></paging>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

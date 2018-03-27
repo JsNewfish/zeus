@@ -1,0 +1,198 @@
+<div class="modal-header">
+    <button type="button" class="close" aria-label="Close" ng-click="cancel()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title"> 选择将要合并在一起的订单</h4>
+</div>
+<div class="modal-body print">
+    <table class="table trade-table data-table " cg-busy="{promise:loading ,message:'加载中。。。'}">
+        <thead>
+        <tr>
+            <th>
+                <input type="checkbox" ng-model="allChecked" ng-click="checkAll()">
+            </th>
+            <th>订单数</th>
+            <th>收货信息/买家留言及备注</th>
+            <th>件数</th>
+            <th>金额</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody ng-repeat="package in packages">
+        <tr>
+            <td>
+                <input type="checkbox" ng-model="package.checked" ng-click="selectPackage(package)">
+            </td>
+
+            <td>
+                {{package.normalPackage.normalTradeList.length}}
+            </td>
+            <td>
+                <label>
+                    <span>{{package.normalPackage.receiverName}}，{{package.normalPackage.receiverMobile}}，</span>
+                    {{package.normalPackage.receiverState}}{{package.normalPackage.receiverCity}}
+                    {{package.normalPackage.receiverDistrict}}{{package.normalPackage.receiverTown}}
+                    {{package.normalPackage.receiverAddress}}
+                </label>
+
+                <div class="font-size-sm ">
+                    <span class="text-primary" ng-show="package.buyerMessages">
+                        <i class="glyphicon glyphicon-comment"></i>{{package.buyerMessages}} </span>
+                    <span ng-repeat="packageMemo in package.packageMemoDtoList">
+                        <img ng-src="images/components/sellerFlagRED.png"
+                             ng-if="packageMemo.sellerFlag==1">
+                        <img ng-src="images/components/sellerFlagYELLOW.png"
+                             ng-if="packageMemo.sellerFlag==2">
+                        <img ng-src="images/components/sellerFlagGREEN.png"
+                             ng-if="packageMemo.sellerFlag==3">
+                        <img ng-src="images/components/sellerFlagBLUE.png"
+                             ng-if="packageMemo.sellerFlag==4">
+                        <img ng-src="images/components/sellerFlagPURPLE.png"
+                             ng-if="packageMemo.sellerFlag==5">
+                        <span class="text-warning">{{packageMemo.sellerMemo}}</span>
+                    </span>
+                    <span ng-show="package.sysMemos"> | {{package.sysMemos}}</span>
+                </div>
+            </td>
+            <td>{{package.normalPackage.totalItemNum}}</td>
+            <td>{{package.normalPackage.totalPrice|centToDollar}}</td>
+            <td>
+                <div class="detail">
+                <span data-target="#packageIndex{{$index}}" data-toggle="collapse">
+                    <a>详细</a>
+                </span>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="20" class="order-td">
+                <div class="collapse " id="packageIndex{{$index}}">
+                    <table ng-repeat="normalTrade in package.normalPackage.normalTradeList"
+                           class="table order-table " style="background-color: #dff0d8;">
+                        <tbody>
+                        <tr>
+                            <td class="left">
+                                <div>
+                                    <a target="_blank"
+                                       ng-href="https://trade.taobao.com/trade/detail/trade_order_detail.htm?biz_order_id={{normalTrade.tid}}">{{normalTrade.tid}}</a>
+                                </div>
+                                <div ng-show="normalTrade.created" class="text-remind">
+                                    {{normalTrade.created}}
+                                </div>
+                                <div ng-show="normalTrade.payTime" class="text-remind">
+                                    {{normalTrade.payTime}}
+                                </div>
+                            </td>
+                            <td class="middle" style="vertical-align: top;">
+                                <table class="table table-item" style="background-color: #dff0d8;"
+                                       ng-repeat="normalOrder in normalTrade.normalOrderList">
+                                    <tbody>
+                                    <tr>
+                                        <td style="width: 70px;vertical-align: middle;">
+                                            <div ng-if="normalOrder.consignStatus==0 && (normalOrder.status != 'WAIT_BUYER_CONFIRM_GOODS' &&
+                                                         normalOrder.status != 'TRADE_BUYER_SIGNED' &&
+                                                         normalOrder.status != 'TRADE_FINISHED')">待发货
+                                            </div>
+                                            <div ng-if="normalOrder.consignStatus==2 || (normalOrder.status == 'WAIT_BUYER_CONFIRM_GOODS' ||
+                                                         normalOrder.status == 'TRADE_BUYER_SIGNED' ||
+                                                         normalOrder.status == 'TRADE_FINISHED')">已发货
+                                            </div>
+                                        </td>
+                                        <td class="img" style="width: 65px;vertical-align: middle;">
+                                            <a target="_blank"
+                                               ng-href="https://item.taobao.com/item.htm?id={{normalOrder.numIid}}">
+                                                <img ng-src="{{normalOrder.picPath}}">
+                                            </a>
+                                        </td>
+                                        <td class="order-title">
+                                            <div>
+                                                <span ng-show="!normalOrder.addrevName">{{normalOrder.title}}</span>
+                                                <span ng-show="normalOrder.addrevName">{{normalOrder.addrevName}}</span>
+                                            </div>
+                                            <div ng-show="normalOrder.skuPropertiesName||normalOrder.skuChangeName">
+                                                <span ng-if="!normalOrder.skuChangeName">{{normalOrder.skuPropertiesName}}</span>
+                                                <span ng-if="normalOrder.skuChangeName">{{normalOrder.skuChangeName}}</span>
+                                            </div>
+                                            <div>商家编码：
+                                                <span ng-if="normalOrder.skuCode">{{normalOrder.skuCode}}</span>
+                                                <span ng-if="!normalOrder.skuCode">{{normalOrder.itemCode}}</span>
+                                            </div>
+                                        </td>
+                                        <td class="order-status" style="width: 87px;">
+                                            <div>{{normalOrder.price|centToDollar}}×{{normalOrder.num}}
+                                            </div>
+                                            <div class="text-warning" ng-hide="normalOrder.refundStatus=='NO_REFUND'||
+                                                        normalOrder.refundStatus=='CLOSED'">
+                                                {{normalOrder.refundStatus|refundStatus}}
+                                            </div>
+                                            <div class="text-warning" ng-show="normalOrder.status=='ALL_CLOSED'||
+                                                        normalOrder.status=='TRADE_CLOSED_BY_TAOBAO'||
+                                                        normalOrder.status=='WAIT_BUYER_PAY'||
+                                                        normalOrder.status=='TRADE_FINISHED'
+                                                        ">{{normalOrder.status|orderStatus}}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td class="right">
+                                <div>
+                                    <ul>
+                                        <li>
+                                            <strong>
+                                                {{normalTrade.payment|centToDollar}} =
+                                                <span title="宝贝总价">{{normalTrade.totalPrice|centToDollar}}</span>+
+                                                <span title="运费" class="text-danger">{{normalTrade.postFee|centToDollar}}</span>
+                                                <span title="手工调整优惠">{{normalTrade.totalAdjustFee|centToDollar}}</span>
+                                            </strong>
+                                        </li>
+                                        <li>发票信息：{{normalTrade.invoiceKind}}{{normalTrade.invoiceName}}</li>
+                                        <li ng-repeat="PromotionDetail in normalTrade.promotionDetailList">
+                                            优惠信息：{{PromotionDetail.promotionDesc}}
+                                        </li>
+                                        <li><strong>买家留言：</strong>
+                                            <span class="text-primary">
+                                            {{normalTrade.buyerMessage}}
+                                            </span>
+                                        </li>
+                                        <li><strong>卖家备注：</strong>
+                                            <label>
+                                                <img ng-src="images/components/sellerFlagRED.png"
+                                                     ng-if="normalTrade.sellerFlag==1">
+                                                <img ng-src="images/components/sellerFlagYELLOW.png"
+                                                     ng-if="normalTrade.sellerFlag==2">
+                                                <img ng-src="images/components/sellerFlagGREEN.png"
+                                                     ng-if="normalTrade.sellerFlag==3">
+                                                <img ng-src="images/components/sellerFlagBLUE.png"
+                                                     ng-if="normalTrade.sellerFlag==4">
+                                                <img ng-src="images/components/sellerFlagPURPLE.png"
+                                                     ng-if="normalTrade.sellerFlag==5">
+                                            </label>
+                                            <span ng-show="normalTrade.sellerMemo" class="text-warning">
+                                                {{normalTrade.sellerMemo}}
+                                            </span>
+                                        </li>
+                                        <li><strong>备注补充：</strong>
+                                            {{normalTrade.sysMemo}}
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </td>
+        </tr>
+    </table>
+
+</div>
+</div>
+<div class="modal-footer">
+    <div class="text-center">
+        <button class="btn btn-base w-100" ng-click="save()">下一步</button>
+        <button class="btn btn-default w-100" data-dismisss="modal" ng-click="cancel()">取消</button>
+    </div>
+</div>

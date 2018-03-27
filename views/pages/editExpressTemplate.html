@@ -1,0 +1,131 @@
+<div class="view print editExpressTemplate" ng-controller="editExpressTemplateCtrl">
+    <div class="container-fluid">
+        <div class="title-bar">
+            <div class="title-bar-inner">
+                <h3 class="title">快递单模板设计器</h3>
+            </div>
+        </div>
+        <form name="expressTempForm" class="w5c-from" w5c-form-validate="{'blurTrig':true}">
+            <div class="workspace" cg-busy="{promise:loading ,message:messages}">
+            <div class="edit-btns">
+
+                <button type="button" ng-click="save()" class="btn btn-sm btn-info">保存模板</button>
+                <button type="button" ng-click="saveAs()" class="btn btn-sm btn-danger">另存为模板</button>
+                <button type="button" ng-click="modifyBgImg(userExpress)" class="btn btn-sm btn-default">更换快递单背景图片
+                </button>
+                <button type="button" ng-click="useDefaultTemplate(userExpress)" class="btn btn-sm btn-default">使用默认布局
+                </button>
+                <button type="button" ng-click="getBack()" class="btn btn-sm btn-default">返回</button>
+                <div class="pull-right">
+                    <span class="text-remind">亲，如果要更新或添加快递单图片，请联系在线客服:
+                        <a target="_blank" href="http://www.taobao.com/webww/ww.php?ver=3&touid=%E5%85%A8%E8%83%BD%E5%B0%8F%E7%A7%98%E6%9C%8D%E5%8A%A1%E4%B8%AD%E5%BF%83
+&siteid=cntaobao&status=1&charset=utf-8"><img border="0" src="http://amos.alicdn.com/online.aw?v=2&uid=%E5%85%A8%E8%83%BD%E5%B0%8F%E7%A7%98%E6%9C%8D%E5%8A%A1%E4%B8%AD%E5%BF%83
+&site=cntaobao&s=1&charset=utf-8" alt="点这里给我发消息" /></a>
+                    </span>
+                </div>
+                <div class="entry-box">
+                        <div class="title draggable" style="cursor: move;" dp-collapse>
+                            添加打印项目(可拖动)
+                            <span class="pull-right btn-toggle" style="cursor: pointer;padding: 0 6px;">
+                                <i class='glyphicon glyphicon-minus'></i> 收起
+                            </span>
+                        </div>
+                        <div class="search-bar">
+                            <label>过滤：</label>
+                            <input type="text" placeholder="请输入打印项目名称" ng-model="q">
+                        </div>
+                        <div class="entry-list ">
+                            <ul>
+                                <li ng-repeat="entry in templateEntryList|filter:q" ng-class="{'division-line':$index==0||$index==15||$index==27||$index==44||$index==69}">
+                                    <span>{{entry.name}}</span>
+                                    <span class="add">
+                                        <a ng-click="add(entry)">添加</a>
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                </div>
+
+
+            </div>
+            <div class="layout-toolbar">
+                <div class="form-horizontal">
+                    <div class="form-control-static">
+                        <label>模板名称：</label>
+                        <input type="text" ng-model="data.userExpressTemplate.name"
+                               class="form-control static input-short">
+                    </div>
+
+                    <div class="form-control-static form-group" style="padding-left: 20px;">
+                        <label >
+                            模板宽高(毫米):
+                        </label>
+                        <label style="position: relative;">
+                            <div class="static templateWidth">
+                            宽 <input type="number" class="form-control static short-input"
+                                     max="250" name="userExpressTemplateWidth" ng-model="data.userExpressTemplate.width">
+                            </div>
+                                ×
+                            <div class="static">
+                            高 <input type="number" class="form-control static short-input"
+                                     max="500"  name="userExpressTemplateHeight" ng-model="data.userExpressTemplate.height">
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="form-control-static" style="padding-left: 20px;">
+                        <label>快递公司：</label>
+                        <label>{{data.userExpress.name}}</label>
+                    </div>
+                    <div class=" form-group ">
+                        <label class="control-label col-xs-3" style="width: 190px;">将打印内容整体偏移(毫米):</label>
+
+                        <div class="col-xs-4">
+                            <div class="static">
+                                <div class="input-group ">
+                            <span class="input-group-addon" ng-click="decreaseY()">
+                                <i class="glyphicon glyphicon-arrow-up" ></i>
+                            </span>
+                                    <input type="text" class="form-control short-input"
+                                           ng-model="data.userExpressTemplate.calibrationY">
+                            <span class="input-group-addon" ng-click="increaseY()">
+                                <i class="glyphicon glyphicon-arrow-down" ></i>
+                            </span>
+                                </div>
+                            </div>
+                            <div class="static">
+                                <div class="input-group">
+                                    <div class="input-group-addon" ng-click="decreaseX()">
+                                        <i class="glyphicon glyphicon-arrow-left" ></i>
+                                    </div>
+                                    <input type="text" class="form-control short-input"
+                                           ng-model="data.userExpressTemplate.calibrationX">
+
+                                    <div class="input-group-addon" ng-click="increaseX()">
+                                        <i class="glyphicon glyphicon-arrow-right"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div class="designer-container" ng-style="conStyle">
+                <img ng-src="{{data.userExpressTemplate.bgImg}}"
+                     style="width: 100%;height:100% ;">
+
+                <div class="field">
+                    <div print-item-box entity="cell" remove="delete(cell)"
+                         ng-repeat="cell in data.userTemplateCell"></div>
+                    <!--<div print-item-box></div>-->
+                    <div class="shade"></div>
+                </div>
+            </div>
+
+        </div>
+        </form>
+    </div>
+</div>

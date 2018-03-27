@@ -1,0 +1,80 @@
+/* utilities */
+.pos-r {
+  position: relative;
+}
+
+.pos-a {
+  position: absolute;
+}
+
+.pos-f {
+  position: fixed;
+}
+
+.w-100 {
+  width: 100px;
+}
+
+.long {
+  width: 340px;
+}
+
+//font-color
+.text-base {
+  color: $color-base;
+}
+
+.text-primary {
+}
+
+.text-warning {
+  color: $orange;
+}
+
+.text-info {
+  color: #5BC0DE;
+}
+
+.text-danger {
+}
+
+.text-success {
+  color: #4BCA4D;
+}
+
+.text-disable {
+  color: #d5d5d5;
+}
+
+.text-remind {
+  color: #999;
+}
+
+//cursor
+.cursor-hand {
+  cursor: pointer;
+}
+
+.link {
+  cursor: pointer;
+  &:hover, &:focus {
+    text-decoration: underline;
+  }
+}
+
+//table center  middle
+.text-center {
+  text-align: center;
+}
+
+.text-overflow {
+  @include text-overflow;
+}
+
+.font-size-sm {
+  font-size: 12px !important;
+}
+
+.m-b-10{
+  margin-bottom:10px;
+}

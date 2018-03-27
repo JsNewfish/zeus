@@ -1,0 +1,71 @@
+<div class="modal-header">
+    <button type="button" class="close" aria-label="Close" ng-click="cancel()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h3 class="modal-title">修改销售属性</h3>
+</div>
+
+<div class="modal-body form-horizontal">
+    <div class="form-group " style="padding-left: 15px;">
+        <div class="radio radio-inline">
+            <input type="radio" name="isSku" ng-value="1" ng-model="isSku">修改销售属性
+        </div>
+        <div class="radio radio-inline">
+            <input type="radio" name="isSku" ng-value="0" ng-model="isSku">添加/管理过滤词
+        </div>
+    </div>
+    <div class=" slogan slogan-help ">
+        <img style="margin-top: -1px;" src="images/pages/reminder.png" alt="" class="slogan-icon">
+
+        <div class="slogan-content">
+            <ul>
+                <li style="margin: 0px;" ng-if="isSku">
+                    <div>1、此操作仅仅在全能掌柜中修改，并不会修改淘宝里的销售属性</div>
+                    <div>2、修改此订单的销售属性后，请尽快打印，否则在重新查询或同步此订单后，销售属性可能会恢复为修改前的内容</div>
+                </li>
+                <li style="margin: 0px;" ng-if="isSku==0">请输入需要在销售属性中过滤掉的文字，被过滤的文本在列表不会被显示，每行一条(过滤词)手工修改过的不会过滤</li>
+            </ul>
+        </div>
+    </div>
+
+    <div ng-show="isSku" class="w5c-form" name="skuForm" novalidate>
+
+        <div class="form-group">
+            <label class="control-label col-xs-2" style="width: 145px;">
+                商品名称：
+            </label>
+            <div class="col-xs-9">
+                <div class="form-text">
+                    <a target="_blank" ng-href="https://item.taobao.com/item.htm?id={{normalOrder.numIid}}">
+                        {{normalOrder.title}}
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="form-group" ng-repeat="skuProperties in skuPropertiesName">
+            <label class="control-label col-xs-2" style="width: 145px;">
+                {{skuProperties.key}}：
+            </label>
+            <div class="col-xs-9" ng-class="{'has-error':skuProperties.value==''}">
+                <input type="text" name="sku{{$index}}" class="form-control static input-sm"
+                       ng-model="skuProperties.value">
+                <span ng-show="skuProperties.value==''" class="w5c-error">该选项不能为空</span>
+            </div>
+        </div>
+    </div>
+
+
+    <div ng-show="!isSku" >
+        <textarea class="form-control" ng-model="itemSkuFilter" name="username" cols="30"
+                          rows="6"></textarea>
+
+    </div>
+
+
+</div>
+<div class="modal-footer">
+    <div class="text-center">
+        <button class="btn btn-base w-100" ng-click="save()">保存</button>
+        <button class="btn btn-default w-100" data-dismisss="modal" ng-click="cancel()">取消</button>
+    </div>
+</div>

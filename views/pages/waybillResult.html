@@ -1,0 +1,52 @@
+<div class="modal-header">
+    <button type="button" class="close" aria-label="Close" ng-click="cancel()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h3 class="modal-title">电子面单打印结果</h3>
+</div>
+<div class="modal-body">
+    <div class="bg-warning slogan slogan-help ">
+        <img style="margin-top: -6px;" src="images/pages/reminder.png" class="slogan-icon">
+
+        <div class="slogan-content">
+            <p style="margin: 0px;" >
+                您对<span class="text-warning">[{{printStatus.length}}]</span>笔订单进行了打印，其中<span class="text-success">[{{successNum}}]</span>笔打印成功，<span class="text-danger">[{{failedNum}}]</span>笔打印失败.
+                <a data-target="#packList"
+                   data-toggle="collapse">
+                    显示详细
+                </a>
+            </p>
+        </div>
+    </div>
+    <div class="area-list collapse" id="packList">
+        <table class="table " >
+            <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>电子面单号</th>
+                    <th>打印结果</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="rsp in printStatus">
+                    <td>{{$index+1}}</td>
+                    <td style="white-space: nowrap;">
+                        {{rsp.documentID}}
+                    </td>
+                    <td>
+                        <i ng-show="rsp.status=='success'" class="glyphicon glyphicon-ok"></i>
+                        <span ng-hide="rsp.status=='success'">
+                            {{rsp.msg}}<span ng-show="rsp.detail">补充：{{rsp.detail}}</span>
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal-footer">
+    <div class="text-center">
+        <button class="btn btn-base" ng-click="save()">发货</button>
+        <button class="btn btn-default w-100" data-dismisss="modal" ng-click="cancel()">关闭</button>
+    </div>
+</div>

@@ -1,0 +1,317 @@
+<div class="view view-list print basicSettings" ng-controller="baseSettingCtrl"
+     cg-busy="{promise:loading ,message:'加载中。。。'}">
+    <div class="container-fluid">
+
+        <div class="title-bar">
+            <div class="title-bar-inner">
+                <h3 class="title">基本设置</h3>
+            </div>
+        </div>
+
+        <div class="data-table-wrap">
+            <table class="table data-table" >
+                <tbody>
+                <tr class="double-height">
+                    <td style="width:210px;" class="title">合并订单设置：</td>
+                    <td style="width:350px;">
+                        <div ng-hide="condition.isAutoMerge.edit">
+                            <span>{{condition.isAutoMerge.text[condition.isAutoMerge.value]}}</span>
+                            <a ng-click="edit(condition.isAutoMerge)">【修改】</a>
+                        </div>
+                        <div ng-show="condition.isAutoMerge.edit" class="checkbox ">
+                            <label>
+                                <input type="checkbox" format-checkbox ng-model="condition.isAutoMerge.value">开启
+                                <a ng-click="save(condition.isAutoMerge)">【保存】 |</a>
+                                <a ng-click="cancel(condition.isAutoMerge)">【取消】</a>
+                            </label>
+                        </div>
+                    </td>
+                    <td class="text-remind">
+                        合单规则：多笔订单的<span class="text-warning">买家昵称+收货人姓名+收货人详细地址</span> 完全相同时且未打印过的订单，系统会自动合并订单
+                    </td>
+                </tr>
+                <tr class="double-height">
+
+                    <td class="title">多次打印验证：</td>
+                    <td>
+                        <div ng-hide="condition.isCheckMorePrint.edit">
+                            <span>{{condition.isCheckMorePrint.text[condition.isCheckMorePrint.value]}}</span>
+                            <a ng-click="edit(condition.isCheckMorePrint)">【修改】</a>
+                        </div>
+                        <div class="checkbox " ng-show="condition.isCheckMorePrint.edit">
+                            <label>
+                                <input type="checkbox" format-checkbox ng-model="condition.isCheckMorePrint.value">开启
+                                <a ng-click="save(condition.isCheckMorePrint)">【保存】 |</a>
+                                <a ng-click="cancel(condition.isCheckMorePrint)">【取消】</a>
+                            </label>
+
+                        </div>
+                    </td>
+                    <td class="text-remind">
+                        启用多次打印验证后，已打印的订单再次打印发货单及快递单时，需要输入一个随机的验证码，输入正确后才能继续打印。
+                    </td>
+                </tr>
+                <!--<tr class="triple-height">
+
+                    <td class="title">单张纸(如A4)打印单据个数：</td>
+                    <td>
+                        <div ng-hide="condition.paperPrintNum.edit">
+                            <span>{{condition.paperPrintNum.value}}</span>
+                            <a ng-click="edit(condition.paperPrintNum)">【修改】</a>
+                        </div>
+                        <div ng-show="condition.paperPrintNum.edit">
+                            <select class="form-control" ng-model="condition.paperPrintNum.value">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                            <a ng-click="save(condition.paperPrintNum)">【保存】 |</a>
+                            <a ng-click="cancel(condition.paperPrintNum)">【取消】</a>
+                        </div>
+                    </td>
+                    <td class="text-remind">
+                        如果您使用激光或者喷墨打印机在 A4 纸打印发货单，则此参数就是单张 A4 纸可打印的发货单数量。 如果您不是使用 A4 纸打印发货单，则保留默认值即可，毋须修改。
+                        请参考《单张A4纸打印多个发货单的详细设置方法》
+                        一般用户无需修改。注意：如果打印不下，可能会打印重叠。
+
+                    </td>
+                </tr>-->
+                <!--<tr class="double-height">
+
+                    <td class="title">快递单打印方向：</td>
+                    <td>
+                        <div ng-hide="condition.expressBillDirection.edit">
+                            <span>{{condition.expressBillDirection.text[condition.expressBillDirection.value]}}</span>
+                            <a ng-click="edit(condition.expressBillDirection)">【修改】</a>
+                        </div>
+                        <div class="edit" style="top: 8px;position: relative;"
+                             ng-show="condition.expressBillDirection.edit">
+                            <select class="form-control" ng-model="condition.expressBillDirection.value">
+                                <option value="0">自动（打印机默认）</option>
+                                <option value="1">纵向（高度和宽度都固定）</option>
+                                <option value="2">横向（高度和宽度都固定）</option>
+                                <option value="3">纵向（高度自适应）</option>
+                            </select>
+
+                            <div>
+                                <a ng-click="save(condition.expressBillDirection)">【保存】 |</a>
+                                <a ng-click="cancel(condition.expressBillDirection)">【取消】</a>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="text-remind">
+                        控制快递单打印内容的方向，默认是纵向。一般用户无需修改。
+                    </td>
+                </tr>
+                <tr class="double-height">
+
+                    <td class="title">发货单打印方向：</td>
+                    <td>
+                        <div ng-hide="condition.deliveryBillDirection.edit">
+                            <span>{{condition.deliveryBillDirection.text[condition.deliveryBillDirection.value]}}</span>
+                            <a ng-click="edit(condition.deliveryBillDirection)">【修改】</a>
+                        </div>
+                        <div style="top: 8px;position: relative;" ng-show="condition.deliveryBillDirection.edit">
+                            <select class="form-control" ng-model="condition.deliveryBillDirection.value">
+                                <option value="0">自动（打印机默认）</option>
+                                <option value="1">纵向（高度和宽度都固定）</option>
+                                <option value="2">横向（高度和宽度都固定）</option>
+                                <option value="3">纵向（高度自适应）</option>
+                            </select>
+
+                            <div>
+                                <a ng-click="save(condition.deliveryBillDirection)">【保存】 |</a>
+                                <a ng-click="cancel(condition.deliveryBillDirection)">【取消】</a>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="text-remind">
+                        控制发货单打印内容的方向，默认是纵向。一般用户无需修改。
+                    </td>
+                </tr>-->
+               <!-- <tr class="triple-height">
+
+                    <td class="title">打单发货模式：</td>
+                    <td>
+                        <div ng-hide="condition.printType.edit">
+                            <span>{{condition.printType.text[condition.printType.value]}}</span>
+                            <a ng-click="edit(condition.printType)">【修改】</a>
+                        </div>
+                        <div ng-show="condition.printType.edit">
+                            <select class="form-control" ng-model="condition.printType.value">
+                                <option value="0">单打模式</option>
+                                <option value="1">连打模式</option>
+                                <option value="2">流程模式</option>
+                            </select>
+
+                            <a ng-click="save(condition.printType)">【保存】 |</a>
+                            <a ng-click="cancel(condition.printType)">【取消】</a>
+
+                        </div>
+                    </td>
+                    <td class="text-remind">
+                        <div>单打方式：适应每天订单量较少（日均订单50单以内）的商家，每单逐笔打印；</div>
+                        <div>连打模式：适应每天订单量较大（日均订单50单以上）的商家，处理打单动作只有一人，所有操作都可以批量进行。整体流程灵活性高；</div>
+                        <div>流程模式： 适应每天订单量较大（日均订单50单以上）的商家，操作流程较规范，专人专职。整个操作流程需按流程一步一步进行；如：审单-》打印发货单-》打印快递单-》发货，
+                            在上一流程未完成前，订单不会流到下一流程；
+                        </div>
+                    </td>
+                </tr>-->
+                <tr class="double-height">
+                    <td class="title">宝贝的排列方式：</td>
+                    <td>
+                        <div ng-hide="condition.itemSequence.edit">
+                            <span>{{condition.itemSequence.text[condition.itemSequence.value]}}</span>
+                            <a ng-click="edit(condition.itemSequence)">【修改】</a>
+                        </div>
+                        <div ng-show="condition.itemSequence.edit">
+                            <select class="form-control" ng-model="condition.itemSequence.value">
+                                <option value="0">与淘宝一致</option>
+                                <option value="1">按商家编码排序</option>
+                            </select>
+                            <a ng-click="save(condition.itemSequence)">【保存】 |</a>
+                            <a ng-click="cancel(condition.itemSequence)">【取消】</a>
+                        </div>
+                    </td>
+                    <td class="text-remind">
+                        打单发货时，订单中的宝贝将按所选的方式进行排列，对于饰品类目客单件较多的商家建议使用按商家编码排序 ，可提升发货时的核对效率；
+                    </td>
+                </tr>
+                <!--<tr class="double-height">
+                    <td class="title">
+                        包装材料设置：
+                    </td>
+                    <td>
+                        <div ng-hide="condition.packingWeightType.edit">
+                            <span>{{condition.packingWeightType.text[condition.packingWeightType.value]}}</span>
+                            <a ng-click="edit(condition.packingWeightType)">【修改】</a>
+                        </div>
+                        <div ng-show="condition.packingWeightType.edit">
+                            <select class="form-control" ng-model="condition.packingWeightType.value">
+                                <option value="0">按比例包装重量</option>
+                                <option value="1">固定包装重量</option>
+                            </select>
+                            <a ng-click="save(condition.packingWeightType)">【保存】 |</a>
+                            <a ng-click="cancel(condition.packingWeightType)">【取消】</a>
+                        </div>
+                    </td>
+                    <td class="text-remind">
+                        比例包装重量”是宝贝总重量乘以固定比例
+                    </td>
+                </tr>-->
+                <tr class="double-height"
+                    ng-if="condition.packingWeightType.value==0&&condition.packingWeightType.edit">
+                    <td class="title">包装重量比例：</td>
+                    <td>
+                        <div class="edit">
+                            <input type="text" style="width:60px;" ng-model="condition.packingWeightRatio.value"
+                                   class="form-control "> %
+                        </div>
+                    </td>
+                    <td class="text-remind">
+                        设置包装重量占宝贝重量的百分比。例如：商品重量=0.5kg，包装重量比例=10% 总重=0.5*0.1+0.5=0.55kg
+                    </td>
+                </tr>
+                <tr class="double-height"
+                    ng-if="condition.packingWeightType.value==1&&condition.packingWeightType.edit">
+                    <td class="title">包装固定重量：</td>
+                    <td>
+                        <div class="edit">
+                            <input type="text" style="width:60px;" ng-model="condition.packingWeightFixed.value"
+                                   class="form-control "> KG
+                        </div>
+                    </td>
+                    <td class="text-remind">
+                        设置包装重量占宝贝重量的百分比。例如：商品重量=0.5kg，包装重量比例=10% 总重=0.5*0.1+0.5=0.55kg
+                    </td>
+                </tr>
+                <tr class="double-height">
+                    <td class="title">
+                        打印流水号生成规则：
+                    </td>
+                    <td>
+                        <div ng-hide="condition.printSerial.edit">
+                            <span>{{condition.printSerial.text[condition.printSerial.value]}}</span>
+                            <a ng-click="edit(condition.printSerial)">【修改】</a>
+                        </div>
+                        <div ng-show="condition.printSerial.edit" style="top: 8px;position: relative;">
+                            <select class="form-control" ng-model="condition.printSerial.value">
+                                <option value="0">日流水-每日零点重新计算流水号</option>
+                                <option value="1">月流水-每月1日零点重新计算流水号</option>
+                                <option value="2">年流水-每年1月1日零点重新计算流水号</option>
+                            </select>
+
+                            <div>
+                                <a ng-click="save(condition.printSerial)">【保存】 |</a>
+                                <a ng-click="cancel(condition.printSerial)">【取消】</a>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="text-remind">
+                        打印流水号与发货单流水号相同，只有在打印发货界面才会生成打印流水号。同一笔订单多次打印流水号不变；
+                    </td>
+                </tr>
+                <tr class="double-height">
+                    <td class="title" style="border-top:none">
+                        <span>流水号中用户代码：</span>
+
+                    </td>
+                    <td style="border-top:none">
+                        <a ng-click="edit(condition.serialCode)">
+                           <span ng-hide="condition.serialCode.edit">【查看】</span>
+                            <span ng-show="condition.serialCode.edit">【收起】</span>
+                        </a>
+
+                        <div ng-show="condition.serialCode.edit" ng-repeat="serialCode in userSerialCode">
+                            <div>【{{serialCode.userCode}}】{{serialCode.userName}}</div>
+                        </div>
+                    </td>
+                    <td class="text-remind" style="border-top:none">
+                        主账号与每个子账号会自动被分配一个字母代码，该字母会被包含在流水号中。（只有使用过打印的子账号才会被分配字母代码）
+                    </td>
+                </tr>
+                <!--<tr class="double-height">
+                    <td style="width:210px;" class="title">快递分区设置：</td>
+                    <td style="width:350px;">
+                        <div ng-hide="condition.isExpressPartition.edit">
+                            <span>{{condition.isExpressPartition.text[condition.isExpressPartition.value]}}</span>
+                            <a ng-click="edit(condition.isExpressPartition)">【修改】</a>
+                        </div>
+                        <div ng-show="condition.isExpressPartition.edit" class="checkbox ">
+                            <label>
+                                <input type="checkbox" format-checkbox ng-model="condition.isExpressPartition.value">开启
+                                <a>【保存】 |</a>
+                                <a ng-click="edit(condition.isExpressPartition)">【取消】</a>
+                            </label>
+                        </div>
+                    </td>
+                    <td class="text-remind">
+                        1、建议每个地区都指定默认快递，否则该地区的订单无法在打印发货页面根据快递分区进行筛选
+                        2、点击“保存”按钮后，新的设置只对新订单有效。如果想对当前订单有效，请点击“更新订单“按钮
+                    </td>
+                </tr>-->
+                <tr class="double-height">
+                    <td style="width:210px;" class="title">已打印未发货提醒设置：</td>
+                    <td style="width:350px;">
+                        <div ng-hide="condition.isShowAfterPrint.edit">
+                            <span>{{condition.isShowAfterPrint.text[condition.isShowAfterPrint.value]}}</span>
+                            <a ng-click="edit(condition.isShowAfterPrint)">【修改】</a>
+                        </div>
+                        <div ng-show="condition.isShowAfterPrint.edit" class="checkbox ">
+                            <label>
+                                <input type="checkbox" format-checkbox ng-model="condition.isShowAfterPrint.value">开启
+                                <a ng-click="save(condition.isShowAfterPrint)">【保存】 |</a>
+                                <a ng-click="cancel(condition.isShowAfterPrint)">【取消】</a>
+                            </label>
+                        </div>
+                    </td>
+                    <td class="text-remind">
+                        开启后，在连打发货页面显示<span class="text-warning">打印了几笔订单还未发货</span>，防止漏单
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

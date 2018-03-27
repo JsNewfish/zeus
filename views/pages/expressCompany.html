@@ -1,0 +1,66 @@
+<div class="view view-list express-template print" ng-controller="expressCompanyCtrl">
+    <div class="container-fluid">
+
+        <div class="title-bar">
+            <div class="title-bar-inner">
+                <h3 class="title">合作物流</h3>
+            </div>
+        </div>
+
+        <div class="bg-warning slogan slogan-help ">
+            <img src="images/pages/reminder.png" alt="" class="slogan-icon">
+            <div class="slogan-content">
+                <h5>温馨提示：</h5>
+                <ul>
+                    <div>在设置快递公司模板时，系统会自动生成合作物流列表，无需手工单独添加合作物流公司。</div>
+                </ul>
+            </div>
+        </div>
+
+        <div class="data-table-wrap">
+            <table class="table data-table" ng-class="{'no-data':userExpressDtoList.length==0}"
+                   cg-busy="{promise:loading ,message:'加载数据中。。'}">
+                <thead>
+                <tr>
+                    <th>物流公司名称</th>
+                    <th>面单费用(元)</th>
+                    <th>首重(Kg)/金额(元)</th>
+                    <th>续重(Kg)/金额(元)</th>
+                    <th>快递识别词</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="double-height" ng-show="userExpressDtoList.length" ng-repeat="userExpressDto in userExpressDtoList">
+                    <td>{{userExpressDto.userExpress.name}}</td>
+                    <td>{{userExpressDto.userExpress.faceCost/100}}</td>
+                    <td>
+                        {{userExpressDto.defaultExpressRate.firstWeight/100}}/{{userExpressDto.defaultExpressRate.firstMoney/100}}
+                    </td>
+                    <td>
+                        {{userExpressDto.defaultExpressRate.nextWeight/100}}/{{userExpressDto.defaultExpressRate.nextMoney/100}}
+                    </td>
+                    <td>{{userExpressDto.userExpress.memoKey}}</td>
+                    <td>
+                        <ul class="operations">
+                            <li class="operation" ng-click="setRate(userExpressDto.userExpress)"><a>设置费率</a>  </li>
+                            <li class="operation" ng-click="setKeyword(userExpressDto.userExpress)"><a>设置识别词</a> </li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr ng-show="userExpressDtoList.length==0">
+                    <td colspan="20">
+                        <div class="none-item-container">
+                            <div class="none-item">
+                                <div class="icon"></div>
+                                暂时没有数据哦~~
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>

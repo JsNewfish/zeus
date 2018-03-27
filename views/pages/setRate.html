@@ -1,0 +1,158 @@
+<div class="modal-header">
+    <button type="button" class="close" aria-label="Close" ng-click="cancel()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h3 class="modal-title">修改费率</h3>
+</div>
+<div class="modal-body view-list">
+
+    <div class="form-horizontal">
+        <form class="w5c-form" w5c-form-validate name="validateForm1" novalidate>
+            <div class="form-group">
+                <label class="control-label col-xs-2">快递面单费：</label>
+
+                <div class="col-xs-10 ">
+                    <div class="static">
+                        <input type="number" name="faceCost" placeholder="输入金额"
+                               ng-model="express.faceCost" class="input-short form-control static" min="0" max="9999">
+
+                    </div>元
+                    <button style="vertical-align: top;" class="btn btn-base " w5c-form-submit="save()">保存</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    <div class="bg-warning slogan slogan-help ">
+        <img src="images/pages/reminder.png" alt="" class="slogan-icon">
+        <div class="slogan-content">
+            <h5>注意：</h5>
+            <ul>
+                <div>1、快递费率设置：未设置的省份快递费率使用“默认”费率；</div>
+                <div>2、首重为0是无效的费率设置；</div>
+            </ul>
+        </div>
+    </div>
+
+    <div class="data-table-wrap">
+        <form class="w5c-form" w5c-form-validate name="validateForm" novalidate>
+            <div class="tool-bar">
+                <div class="left">
+                    <button ng-click="addC()" class="btn btn-base">
+                        添加新的省份
+                    </button>
+                </div>
+            </div>
+            <table class="table data-table">
+                <thead>
+                <tr>
+                    <th>省份</th>
+                    <th>首重（kg）</th>
+                    <th>首重费率（元）</th>
+                    <th>续重（kg）</th>
+                    <th>续重费率（元）</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        {{defaultExpressRate.province}}
+                    </td>
+                    <td>
+                        <span ng-show="!defaultExpressRate.edit">{{defaultExpressRate.firstWeight}}</span>
+
+                        <div ng-show="defaultExpressRate.edit">
+                            <input class="form-control input-xshort" min="0" max="9999"
+                                   name="firstWeight"
+                                   type="number" ng-model="defaultExpressRate.firstWeight">
+                        </div>
+                    </td>
+                    <td>
+                        <span ng-show="!defaultExpressRate.edit">{{defaultExpressRate.firstMoney}}</span>
+
+                        <div ng-show="defaultExpressRate.edit">
+                            <input type="number" min="0" max="9999" class="form-control input-xshort"
+                                   name="firstMoney" ng-model="defaultExpressRate.firstMoney">
+                        </div>
+                    </td>
+                    <td>
+                        <span ng-show="!defaultExpressRate.edit">{{defaultExpressRate.nextWeight}}</span>
+
+                        <div ng-show="defaultExpressRate.edit">
+                            <input type="number" min="0" max="9999" class="form-control input-xshort"
+                                   name="nextWeight" ng-model="defaultExpressRate.nextWeight">
+                        </div>
+                    </td>
+                    <td>
+                        <span ng-show="!defaultExpressRate.edit">{{defaultExpressRate.nextMoney}}</span>
+
+                        <div ng-show="defaultExpressRate.edit">
+                            <input type="number" min="0" max="9999" class="form-control input-xshort"
+                                   name="nextMoney" ng-model="defaultExpressRate.nextMoney">
+                        </div>
+                    </td>
+                    <td>
+                        <a><span ng-show="defaultExpressRate.edit"
+                                 w5c-form-submit="saveExpressRate(defaultExpressRate);">保存</span></a>
+                        <a><span ng-show="!defaultExpressRate.edit"
+                                 ng-click="selectEdit(defaultExpressRate)">编辑</span></a>
+                    </td>
+                </tr>
+                <tr ng-repeat="expressRate in expressRateList">
+                    <td>
+                        <span ng-show="!expressRate.edit">{{expressRate.province}}</span>
+
+                        <div ng-show="expressRate.edit">
+                            <select class="form-control static" required ng-model="expressRate.areaId"
+                                    ng-options="x.areaId as x.province for x in provices">
+                                <option value="">请选择</option>
+                            </select>
+                        </div>
+                    </td>
+                    <td>
+                        <span ng-show="!expressRate.edit">{{expressRate.firstWeight}}</span>
+
+                        <div ng-show="expressRate.edit">
+                            <input type="number" min="0" max="9999" name="firstWeight2"
+                                   class="form-control input-xshort" ng-model="expressRate.firstWeight">
+                        </div>
+                    </td>
+                    <td>
+                        <span ng-show="!expressRate.edit">{{expressRate.firstMoney}}</span>
+
+                        <div ng-show="expressRate.edit">
+                            <input type="number" min="0" max="9999" name="firstMoney2"
+                                   class="form-control input-xshort" ng-model="expressRate.firstMoney">
+                        </div>
+                    </td>
+                    <td>
+                        <span ng-show="!expressRate.edit">{{expressRate.nextWeight}}</span>
+
+                        <div ng-show="expressRate.edit">
+                            <input type="number" min="0" max="9999" name="nextWeight2"
+                                   class="form-control input-xshort" ng-model="expressRate.nextWeight">
+                        </div>
+                    </td>
+                    <td>
+                        <span ng-show="!expressRate.edit">{{expressRate.nextMoney}}</span>
+
+                        <div ng-show="expressRate.edit">
+                            <input type="number" min="0" max="9999" name="nextMoney2"
+                                   class="form-control input-xshort" ng-model="expressRate.nextMoney">
+                        </div>
+                    </td>
+                    <td>
+                        <a><span ng-show="expressRate.edit"
+                                 ng-click="saveExpressRate(expressRate);">保存</span></a>
+                        <a><span ng-show="!expressRate.edit"
+                                 ng-click="selectEdit(expressRate)">编辑</span></a>
+                        <a><span ng-click="delete($index,expressRate)">删除</span></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+</div>
+

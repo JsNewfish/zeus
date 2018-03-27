@@ -1,0 +1,436 @@
+<div class="view  editDeliveryTemplate" ng-controller="editDeliveryTemplateCtrl">
+    <div class="container-fluid">
+        <div class="title-bar">
+            <div class="title-bar-inner">
+                <h3 class="title">发货单模板设计器</h3>
+            </div>
+        </div>
+
+        <div class="box">
+            <div class="form-horizontal">
+                <form class="w5c-form" novalidate w5c-form-validate="{blurTrig:true}" name="deliveryTemplate">
+                    <div class="form-group">
+                        <label class="col-xs-2 control-label">纸张类型：</label>
+
+                        <div class="col-xs-10">
+                            <select class="form-control static input-sm"
+                                    ng-model="entity.userDeliveryTemplate.paperType">
+                                <option>--选择纸张--</option>
+                                <option value="1">A4</option>
+                                <option value="2">二等分纸/241mm*140mm</option>
+                                <option value="3">三等分纸/241mm*93mm</option>
+                                <option value="4">自定义</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-show="entity.userDeliveryTemplate.paperType ==4">
+                        <label class="col-xs-2 control-label">模板宽高(毫米)：</label>
+
+                        <div class="col-xs-10">
+                            宽 <input name="templateWidth" class="form-control input-shorter static"
+                                     type="text"
+                                     ng-model="entity.userDeliveryTemplate.width">×
+                            高 <input name="templateHeight" class="form-control input-shorter static"
+                                     type="text"
+                                     ng-model="entity.userDeliveryTemplate.height">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-2 control-label">偏移设置(毫米)：</label>
+
+                        <div class="col-xs-10">
+                            <div class="static">
+                                <div class="input-group" style="width: 150px;">
+                                    <span class="input-group-addon" ng-click="decreaseY()">
+                                        <i class="glyphicon glyphicon-arrow-up"></i>
+                                    </span>
+                                    <input name="calibrationY" type="text"
+                                           class="input-shorter form-control "
+                                           ng-model="entity.userDeliveryTemplate.calibrationY">
+                                    <span class="input-group-addon" ng-click="increaseY()">
+                                        <i class="glyphicon glyphicon-arrow-down"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="static">
+                                <div class="input-group" style="width: 150px;">
+                                <span class="input-group-addon" ng-click="decreaseX()">
+                                    <i class="glyphicon glyphicon-arrow-left"></i>
+                                </span>
+                                    <input name="calibrationX" type="text"
+                                           class="input-shorter form-control "
+                                           ng-model="entity.userDeliveryTemplate.calibrationX">
+                                <span class="input-group-addon" ng-click="increaseX()">
+                                    <i class="glyphicon glyphicon-arrow-right"></i>
+                                </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-2 control-label">字体/字号/行距：</label>
+
+                        <div class="col-xs-10">
+                            <select ng-model="tableStyle.fontFamily" class="form-control static">
+                                <option value="">--选择字体--</option>
+                                <option value="SimHei">黑体</option>
+                                <option value="SimSun">宋体</option>
+                            </select>
+                            <select ng-model="tableStyle.fontSize" class="form-control static">
+                                <option value="">--选择字号--</option>
+                                <option value="20px">20</option>
+                                <option value="14px">14</option>
+                            </select>
+                            <select ng-model="tableStyle.lineHeight" class="form-control static">
+                                <option value="">--选择行距--</option>
+                                <option value="10px">10</option>
+                                <option value="16px">16</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-2 control-label">发货单打印机：</label>
+
+                        <div class="col-xs-10">
+
+                            <select class="form-control static printerList"
+                                    ng-model="entity.userDeliveryTemplate.printerKey">
+                                <option value="">--打印机名称--</option>
+                                <option ng-value="printer" ng-repeat="printer in printerList">{{printer}}</option>
+                            </select>
+
+
+                                <button class="btn btn-base" ng-click="preview()">打印测试</button>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-2 control-label">模板预览：</label>
+
+                        <div class="col-xs-7">
+                            <div class="delivery-wrap" id="delivery">
+                                <style>
+                                    ul, ol, dl {
+                                        list-style: none;
+                                        padding: 0;
+                                        margin: 0;
+                                    }
+
+                                    .delivery-template {
+                                        color: #000;
+                                        padding: 0;
+                                    }
+
+                                    .delivery-template ul li {
+                                        margin-bottom: 5px;
+                                        padding: 0 10px;
+                                        line-height: inherit;
+                                    }
+
+                                    .delivery-template ul li span {
+                                        margin-right: 10px;
+                                        display: inline-block;
+                                        min-width: 200px;
+                                    }
+
+                                    .delivery-template img {
+                                        width: 50px;
+                                        height: 50px;
+                                    }
+
+                                    .delivery-template .dt-hd {
+                                        font-weight: bold;
+                                        font-size: 15px;
+                                        text-align: center;
+                                        margin-bottom: 10px;
+                                    }
+
+                                    .delivery-template table {
+                                        margin-bottom: 0px;
+                                        border-top: 1px solid #000;
+                                        border-bottom: 1px solid #000;
+                                        width: 100%;
+                                        max-width: 100%;
+                                        border-spacing: 0;
+                                        border-collapse: collapse;
+                                    }
+
+                                    .delivery-template table thead th {
+                                        font-weight: bold;
+                                        border-bottom: 1px solid #000;
+
+                                    }
+
+                                    .delivery-template table td {
+                                        padding: 0px;
+                                        border-top: 1px solid #000;
+                                        word-break: break-all;
+                                        font-size: inherit;
+                                        line-height: inherit;
+                                        vertical-align: middle;
+                                        text-align: left;
+                                    }
+
+                                    .delivery-template .dt-ft {
+                                        padding: 0;
+                                        border-bottom: 1px solid #000;
+                                    }
+
+                                    .pull-left {
+                                        white-space: nowrap;
+                                        float: left;
+                                        text-align: left;
+                                    }
+
+                                    .pull-right {
+                                        white-space: nowrap;
+                                        float: right;
+                                        text-align: right;
+                                        /*margin-right: 20px;*/
+                                    }
+
+                                    .clearfixed:before, .clearfixed:after {
+                                        content: "";
+                                        display: table;
+                                    }
+
+                                    .clearfixed:after {
+                                        clear: both;
+                                    }
+
+                                    .clearfixed {
+                                        zoom: 1;
+                                    }
+
+                                    .inscribe {
+                                        line-height: 24px;
+                                    }
+
+                                    .delivery-template .dt-ft span {
+                                        margin-left: 10px;
+                                        display: inline-block;
+                                        text-align: left;
+                                    }
+
+                                    .delivery-template .dt-ft span em {
+                                        display: inline-block;
+                                        min-width: 80px;
+                                        overflow: hidden;
+                                        font-style: normal;
+                                        vertical-align: top;
+                                        text-align: right;
+                                    }
+                                    .wrapper{
+                                        min-height: 37px;
+                                        line-height: 37px;
+                                    }
+                                </style>
+                                <div class="delivery-template" ng-style="tableStyle">
+                                    <div class="dt-hd">
+                                        {{entity.userDeliveryTemplate.name}}
+                                        <div class="pull-right" ng-if="cellList.serial.isShow">
+                                            NO:{{cellList.serial.entryContent}}
+                                        </div>
+                                    </div>
+                                    <ul>
+                                        <li>
+                                            <span style="width: 30%;" class="d-title" ng-if="cellList.shop_title.isShow">店铺名称：{{cellList.shop_title.entryContent}}</span>
+                                            <span style="width: 30%;" class="d-nick" ng-if="cellList.buyer_nick.isShow">买家昵称：全能掌柜</span>
+                                            <span class="d-tid" ng-if="cellList.tid.isShow">订单号：813856677204503</span>
+                                        </li>
+                                        <li>
+                                            <span style="min-width: 30%;" class="d-time" ng-if="cellList.created.isShow">成交时间：2014-09-26 23:10:45</span>
+                                            <span class="d-time" ng-if="cellList.pay_time.isShow">付款时间：2014-11-06 15:52:20</span>
+
+                                        </li>
+                                        <li ng-if="cellList.receiver_info.isShow">收货人：全能掌柜，12345678901/0592-8888888，浙江省
+                                            杭州市 西湖区
+                                            同仁精华大厦，325600
+                                        </li>
+                                        <li ng-if="cellList.buyer_message.isShow">
+                                            买家留言：请尽快发货
+                                        </li>
+                                        <li ng-if="cellList.seller_memo.isShow">
+                                            卖家备注：好买家
+                                        </li>
+
+                                    </ul>
+                                    <table class="table dt-tab" ng-style="tableStyle">
+                                        <thead>
+                                        <tr>
+                                            <th ng-if="cellList.serial_number.isShow">序号</th>
+                                            <th ng-if="cellList.item_pic.isShow">商品图片</th>
+                                            <th ng-if="cellList.item_title.isShow">商品名称</th>
+                                            <th ng-if="cellList.outer_id_num.isShow">商家编码</th>
+                                            <th ng-if="cellList.sku.isShow">规格</th>
+                                            <th ng-if="cellList.item_num.isShow">数量</th>
+                                            <th ng-if="cellList.item_price.isShow">单价</th>
+                                            <th ng-if="cellList.sub_total.isShow">小计</th>
+                                            <th ng-if="cellList.custom_text.isShow">
+                                                {{cellList.custom_text.entryContent}}
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td ng-if="cellList.serial_number.isShow">1</td>
+                                            <td style="padding: 0;" ng-if="cellList.item_pic.isShow">
+                                                <img ng-src="images/components/0-item_pic.jpg"/>
+                                            </td>
+                                            <td ng-if="cellList.item_title.isShow">
+                                                <div class="wrapper">商品简称1</div>
+                                            </td>
+                                            <td ng-if="cellList.outer_id_num.isShow">R540489</td>
+                                            <td ng-if="cellList.sku.isShow">
+                                                白色;均码
+                                            </td>
+                                            <td ng-if="cellList.item_num.isShow">1</td>
+                                            <td ng-if="cellList.item_price.isShow">1436.00</td>
+                                            <td ng-if="cellList.sub_total.isShow">1436.00</td>
+                                            <td ng-if="cellList.custom_text.isShow"></td>
+                                        </tr>
+
+                                        </tbody>
+                                    </table>
+                                    <div class="dt-ft clearfixed">
+                                        <div class="pull-right" ng-if="cellList.total_amount.isShow">
+                                            <p>
+                                                <span>数量合计：3</span>
+                                            <span>
+                                                订单金额： 4308.00
+                                            </span>
+                                            <span>
+                                                运费： 1.00
+                                            </span>
+                                            </p>
+
+                                            <p>
+                                            <span>
+                                             卖家优惠： 4307.97
+                                            </span>
+                                            <span class="total-price">
+                                             合计： 1.03
+                                            </span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="inscribe">
+                                        {{cellList.inscribe.entryContent}}
+                                    </div>
+                                    <div class="pull-right" ng-show="cellList.activity_qrcode.isShow" id="code"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-2 control-label">发货单抬头：</label>
+
+                        <div class="col-xs-10">
+                            <input class="form-control form-control-static input-longer"
+                                   ng-model="entity.userDeliveryTemplate.name" ng-maxlength="20"
+                                   name="userDeliveryTemplate" type="text">
+                            <span class="remind-text">只能输入20字</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-2 control-label">发货单内容：</label>
+
+                        <div class="col-xs-7 ">
+                            <div>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" format-checkbox ng-model="cellList.shop_title.isShow">店铺名称：{{cellList.shop_title.entryContent}}
+                                    <a ng-click="updateShopTitle(cellList.shop_title)">设置</a>
+
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" format-checkbox ng-model="cellList.tid.isShow">订单编号
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" format-checkbox ng-model="cellList.buyer_nick.isShow">买家昵称
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" format-checkbox ng-model="cellList.receiver_info.isShow">
+                                    收货信息
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" format-checkbox ng-model="cellList.buyer_message.isShow">买家留言
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" format-checkbox ng-model="cellList.seller_memo.isShow">卖家备注
+                                </label>
+                            </div>
+                            <div><label class="checkbox-inline">
+                                <input type="checkbox" format-checkbox ng-model="cellList.created.isShow">成交时间
+                            </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" format-checkbox ng-model="cellList.pay_time.isShow">付款时间
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" format-checkbox ng-model="cellList.serial_number.isShow">序号
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" format-checkbox ng-model="cellList.item_pic.isShow">商品图片
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" format-checkbox ng-model="cellList.item_title.isShow">商品名称
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" format-checkbox ng-model="cellList.outer_id_num.isShow">商家编码
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" format-checkbox ng-model="cellList.sku.isShow">规格信息
+                                </label>
+                            </div>
+
+                            <div>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" format-checkbox ng-model="cellList.total_amount.isShow">金额信息
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" format-checkbox ng-model="cellList.item_num.isShow">数量
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" format-checkbox ng-model="cellList.item_price.isShow">单价
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" format-checkbox ng-model="cellList.sub_total.isShow">小计
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" format-checkbox ng-model="cellList.custom_text.isShow">自定义：{{cellList.custom_text.entryContent}}
+                                    <a ng-click="updateCustomText(cellList.custom_text)">设置</a>
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" format-checkbox ng-model="cellList.activity_qrcode.isShow">活动二维码
+                                    <a ng-click="addQrcode(cellList.activity_qrcode)">设置链接</a>
+                                </label>
+                            </div>
+                            <div>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" format-checkbox ng-model="cellList.serial.isShow">打印流水号
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-2 control-label">发货单落款：</label>
+
+                        <div class="col-xs-10">
+                        <textarea placeholder="Textarea" rows="5" ng-maxlength="500" name="inscribe"
+                                  ng-model="cellList.inscribe.entryContent"
+                                  class="form-control form-control-static input-xlong"></textarea>
+                            <span class="remind-text">只能输入500字</span>
+                        </div>
+                    </div>
+                </form>
+                <div class="text-center col-xs-6">
+                    <button class="btn btn-base w-100" cg-busy="{promise:loading ,message:'加载中。。。'}" ng-click="save()">
+                        保存模板
+                    </button>
+                    <button class="btn btn-default w-100" ng-click="back()">返回</button>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>

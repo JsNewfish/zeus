@@ -1,0 +1,195 @@
+<div cg-busy="{promise:loading ,message:'加载中。。'}">
+    <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" ng-click="cancel()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h3 class="modal-title">热敏设置</h3>
+    </div>
+    <div class="modal-body">
+        <div class="content form-horizontal">
+            <div class="form-group" ng-show="branchAccountCols">
+                <label class="control-label col-xs-3">
+                    模板名称：
+                </label>
+
+                <div class="col-xs-9">
+                    <input type="text" ng-model="userExpressTemplate.name" class="form-control static input-medium">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-xs-6">
+                            快递公司：
+                        </label>
+                                
+                        <div class="col-xs-6">
+                            <label class="form-text">
+                                <span>{{userExpressTemplate.userExpressName}} </span>
+                            </label>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-xs-6">
+                            尺寸（mm）：
+                        </label>
+
+                        <div class="col-xs-6">
+                            <label class="form-text">
+                                <span>{{userExpressTemplate.width}} x {{userExpressTemplate.height}}</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" ng-show="branchAccountCols||(interfaceType==2&&bindSubscriptionList.length!=0)">
+                <label class="control-label col-xs-3">
+                    模板Logo显示：
+                </label>
+
+                <div class="col-xs-9">
+                    <div class="checkbox-inline">
+                        <label>
+                            <input type="checkbox" format-checkbox ng-model="userExpressTemplate.printTopLogo">打印上联Logo
+                        </label>
+                    </div>
+                    <div class="checkbox-inline">
+                        <label>
+                            <input type="checkbox" format-checkbox ng-model="userExpressTemplate.printBottomLogo">打印下联Logo
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-xs-3">
+                    选择接口方式：
+                </label>
+
+                <div class="col-xs-9 ">
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="caiNiao-port" value="1" ng-model="interfaceType">
+                            使用本店铺开通的淘宝（菜鸟）接口
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="caiNiao-port" value="2" ng-model="interfaceType">
+                            使用其它店铺开通的淘宝（菜鸟）接口
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div ng-show="interfaceType==1">
+                <div class="form-group" ng-show="branchAccountCols">
+                    <label class="control-label col-xs-3">
+                        发货地（仓库）：
+                    </label>
+
+                    <div class="col-xs-9">
+                        <div class="radio" ng-repeat="shipAddress in shipAddressList">
+                            <label>
+                                <input type="radio" ng-value="shipAddress" name="address" ng-model="$parent.shipAddress">
+                                {{shipAddress.province}}{{shipAddress.city}}{{shipAddress.district}}{{shipAddress.detail}}{{shipAddress.town}}
+                                （单号余额：
+                                <span class="text-warning">{{shipAddress.quantity}}</span>）
+                            </label>
+                        </div>
+                        <div>
+                            <div>
+                                <label class="form-text">网点名称：{{shipAddress.branchName}}</label>
+                            </div>
+                            <div>
+                                <label class="form-text">网点代码：{{shipAddress.branchCode}}</label>
+                            </div>
+                            <div>
+                                <label class="form-text">发件城市：{{shipAddress.city}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" ng-show="!branchAccountCols">
+                    <div class="col-xs-9 col-xs-offset-3">
+
+                            <span class="text-danger">
+                                此店铺未开通{{userExpressTemplate.userExpressName}}的菜鸟电子面单服务
+                            </span>
+                            <a target="_blank" href="https://waybill.wuliu.taobao.com/first_page.htm">
+                                点击打开淘宝（菜鸟）电子面单开通页面
+                            </a>
+
+                    </div>
+                </div>
+            </div>
+            <div ng-show="interfaceType==2">
+                <div class="form-group" ng-show="bindSubscriptionList.length!=0">
+                    <label class="control-label col-xs-3">
+                        发货地（仓库）：
+                    </label>
+
+                    <div class="col-xs-9">
+                        <div class="radio-inline" ng-repeat="bindSubscription in bindSubscriptionList">
+                            <label>
+                                <input type="radio" name="otherPort" ng-value="bindSubscription" ng-model="$parent.otherSubscription">
+                                {{bindSubscription.name}}
+                            </label>
+                        </div>
+                        <div ng-show="!otherSubscription.shipAddressList">
+                            <span class="text-danger">
+                                此店铺未绑定其他的店铺的，或绑定的店铺并未开通菜鸟电子面单服务
+                            </span>
+                            <a target="_blank" href="https://waybill.wuliu.taobao.com/first_page.htm">
+                                点击打开淘宝（菜鸟）电子面单开通页面
+                            </a>
+                        </div>
+                        <div ng-show="otherSubscription.shipAddressList">
+                            <div class="radio" ng-repeat="shipAddress in otherSubscription.shipAddressList">
+                                <label>
+                                    <input type="radio" ng-value="shipAddress" name="address" ng-model="$parent.shipAddress">
+                                    {{shipAddress.province}}{{shipAddress.city}}{{shipAddress.district}}{{shipAddress.detail}}{{shipAddress.town}}
+                                    （单号余额：
+                                    <span class="text-warning">{{shipAddress.quantity}}</span>）
+                                </label>
+                            </div>
+                            <div>
+                                <div>
+                                    <label class="form-text">网点名称：{{shipAddress.branchName}}</label>
+                                </div>
+                                <div>
+                                    <label class="form-text">网点代码：{{shipAddress.branchCode}}</label>
+                                </div>
+                                <div>
+                                    <label class="form-text">发件城市：{{shipAddress.city}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" ng-show="bindSubscriptionList.length==0">
+                    <div class="col-xs-9 col-xs-offset-3">
+
+                            <span class="text-danger">
+                                此店铺未绑定其他的店铺的，或绑定的店铺并未开通菜鸟电子面单服务
+                            </span>
+                        <a target="_blank" href="https://waybill.wuliu.taobao.com/first_page.htm">
+                            点击打开淘宝（菜鸟）电子面单开通页面
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="text-center">
+            <button ng-show="(interfaceType==1&&branchAccountCols)||(interfaceType==2&&otherSubscription.shipAddressList)" class="btn btn-base w-100" ng-click="save()">保存</button>
+            <button class="btn btn-default w-100" data-dismisss="modal" ng-click="cancel()">取消</button>
+        </div>
+    </div>
+</div>

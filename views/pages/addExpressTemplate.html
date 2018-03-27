@@ -1,0 +1,45 @@
+<div cg-busy="{promise:loading ,message:'保存中。。'}">
+<div class="modal-header">
+	<button type="button" class="close" aria-label="Close" ng-click="cancel()">
+		<span aria-hidden="true">&times;</span>
+	</button>
+	<h3 class="modal-title">添加快递模板</h3>
+</div>
+<div class="modal-body" >
+	<div class="wrap">
+		<div class="express-list-bar">
+			<div class="search-bar">
+				<input type="text" placeholder="输入模板名称搜索" class="form-control input-sm static" ng-model="q">
+			</div>
+			<div class="express-list">
+				<table class="table">
+					<tbody>
+						<tr ng-click="checkEntry(entry)" ng-class="{'selected':entry.name==$parent.sysTemplate.name}" ng-repeat="entry in expressTemplateList|filter:q">
+							<td><input type="radio" name="expressName" ng-value="entry" ng-model="$parent.sysTemplate" ></td>
+							<td >{{entry.name}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="express-single">
+			<div class="title">
+				<span>模板名称：
+					<input type="text" class="form-control form-control-static input-longer " ng-model="sysTemplateName" >
+				</span>
+				<span>快递公司：{{sysTemplate.expressName}} </span>
+				<span>尺寸（mm）：{{sysTemplate.width}} x {{sysTemplate.height}}</span>
+			</div>
+			<div class="express-pic">
+				<img ng-src="{{sysTemplate.bgImg}}" >
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal-footer">
+	<div class="text-center">
+		<button class="btn btn-base w-100" ng-click="save()">保存</button>
+		<button class="btn btn-default w-100" data-dismisss="modal" ng-click="cancel()">取消</button>
+	</div>
+</div>
+</div>

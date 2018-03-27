@@ -1,0 +1,47 @@
+<form class="w5c-form" w5c-form-validate="" name="validateForm" novalidate>
+
+    <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" ng-click="cancel()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h3 class="modal-title">修改分类别名</h3>
+    </div>
+    <div class="modal-body">
+        <div class="bg-warning slogan slogan-help ">
+            <img style="margin-top: -6px;" src="images/pages/reminder.png" alt="" class="slogan-icon">
+
+            <div class="slogan-content">
+                <p style="margin: 0px;">提醒：商家可自定义每个分类标识代表寓意，自行管理。</p>
+            </div>
+        </div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>分类标识</th>
+                <th>别名（限10个汉字内以）</th>
+                <th>备注（限50个汉字以内）</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="customStar in customStarList">
+                <td><span class="glyphicon glyphicon-star" ng-style="customStar"></span></td>
+                <td>
+                    <input type="text" class="form-control input-sm input-medium" ng-maxlength="10" ng-minlength="1"
+                           dy-name="customStarName{{$index}}" w5c-dynamic-element ng-model="customStar.name">
+                </td>
+                <td>
+                    <input type="text" class="form-control input-sm input-medium" ng-maxlength="50"
+                           dy-name="customStarMemo{{$index}}" w5c-dynamic-element ng-model="customStar.memo">
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <div class="text-center">
+            <button class="btn btn-base w-100" w5c-form-submit="save()">保存</button>
+            <button class="btn btn-default w-100" data-dismisss="modal" ng-click="cancel()">取消</button>
+        </div>
+    </div>
+</form>

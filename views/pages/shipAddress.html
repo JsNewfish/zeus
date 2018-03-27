@@ -1,0 +1,71 @@
+<div class="view view-list express-template print" ng-controller="shipAddressCtrl">
+    <div class="container-fluid">
+
+        <div class="title-bar">
+            <div class="title-bar-inner">
+                <h3 class="title">发货地址</h3>
+            </div>
+        </div>
+        <div class="data-table-wrap">
+            <div class="tool-bar">
+                <div class="left">
+                    <button ng-click="handleShipAddress()" class="btn btn-sm btn-warning">
+                        新增发货地址
+                    </button>
+                    <a class="text-base" target="_blank" href="//mygod.cuxiao.quannengzhanggui.net/static/common/index.html#/help/helpView?id=117">
+                        电子面单如何修改发货地址？
+                    </a>
+                </div>
+            </div>
+            <table class="table data-table" ng-class="{'no-data':entity.length==0}"
+                   cg-busy="{promise:loading ,message:'加载数据中。。'}">
+                <thead>
+                <tr>
+                    <th>联系人</th>
+                    <th>地区/街道地址</th>
+                    <th>联系电话</th>
+                    <th>邮编</th>
+                    <th>公司</th>
+                    <th>备注</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="address in entity" ng-show="entity.length">
+                    <td>{{address.contactName}}</td>
+                    <td>
+                        {{address.province}}
+                        {{address.city}}
+                        {{address.country}}
+                        {{address.addr}}
+                    </td>
+                    <td>{{address.mobilePhone}}</td>
+                    <td>{{address.zipCode}}</td>
+                    <td>{{address.sellerCompany}}</td>
+                    <td>{{address.memo}}</td>
+                    <td>
+                        <ul class="operations">
+                            <li class="operation" ng-show="address.getDef" style="cursor:default;"><a>默认地址</a></li>
+                            <li class="operation" ng-hide="address.getDef" ng-click="setDefault(address)"><a>设为默认</a></li>
+                            <li class="operation" ng-click="handleShipAddress(address)"><a>编辑</a></li>
+                            <li class="operation" ng-hide="address.getDef" ng-click="delete(address)"><a>删除</a></li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr ng-show="entity.length==0">
+                    <td colspan="20">
+                        <div class="none-item-container">
+                            <div class="none-item">
+                                <div class="icon"></div>
+                                暂时没有数据哦~~
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+</div>
